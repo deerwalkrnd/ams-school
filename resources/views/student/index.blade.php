@@ -10,7 +10,15 @@
 
 <body>
     <table border="1px">
-        <a href="{{route('student.create')}}">Add a Students</a>
+        <a href="{{route('student.create')}}">Add a Student</a>
+
+        <div>
+                @if(session()->has('success'))
+                    <div>
+                        {{session('success')}}
+                    </div>
+                    @endif
+            </div>
         <thead>
             <tr>
                 <th>S.N</th>

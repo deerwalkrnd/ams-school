@@ -11,6 +11,23 @@
 <body>
     <table border="1px">
         <a href="{{route('grade.create')}}">Add a Grade</a>
+
+        <div>
+                @if(session()->has('success'))
+                    <div>
+                        {{session('success')}}
+                    </div>
+                    @endif
+            </div>
+
+            <div>
+                @if(session()->has('status'))
+                <div>
+                    {{session('status')}}
+                </div>
+                @endif
+            </div>
+
         <thead>
             <tr>
                 <th>S.N</th>

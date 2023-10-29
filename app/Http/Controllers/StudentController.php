@@ -12,7 +12,8 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        return view('student.index')->with(compact('students'));
+        //return view('student.index')->with(compact('students'));      ====> ($students)
+        return view('student.index',compact('students')); 
     }
 
     public function create(){

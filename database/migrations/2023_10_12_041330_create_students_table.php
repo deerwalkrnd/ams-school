@@ -19,7 +19,7 @@ return new class extends Migration
             $table->enum('status', ['active','dropped_out']);
             $table->unsignedBigInteger('grade_id');
             $table->timestamps();
-            $table->foreign('grade_id')->references('id')->on('grades')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreign('grade_id')->references('id')->on('grades')->cascadeOnUpdate()->cascadeOnDelete();
         });
     }
 

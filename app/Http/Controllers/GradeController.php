@@ -31,7 +31,7 @@ class GradeController extends Controller
         ]);
 
         $newTask = Grade::create($data);
-        return redirect(route('grade.index'));
+        return redirect(route('grade.index'))->with('success','Saved Successfully!');
     }
 
 
@@ -46,7 +46,7 @@ class GradeController extends Controller
         $grades->start_date=$request->input('start_date');
         $grades->end_date=$request->input('end_date');
         $grades->update();
-        return redirect(route('grade.index'))->with('status',"Stored Successfully");
+        return redirect(route('grade.index'))->with('status',"Grade Updated Successfully");
 
     }
 
