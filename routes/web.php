@@ -3,6 +3,7 @@
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,3 +43,10 @@ Route::post('/student/store/',[StudentController::class,'store'])->name('student
 Route::get('/student/{id}/edit',[StudentController::class,'edit'])->name('student.edit');
 Route::put('/student/{id}/update',[StudentController::class,'update'])->name('student.update');
 Route::get('/student/{id}/delete',[StudentController::class,'delete'])->name('student.delete');
+
+Route::get('/section',[SectionController::class,'index'])->name('section.index');
+Route::get('/section/create/',[SectionController::class,'create'])->name('section.create');
+Route::post('/section/store/',[SectionController::class,'store'])->name('section.store');
+Route::get('/section/{id}/edit',[SectionController::class,'edit'])->name('section.edit');
+Route::put('/section/{id}/update',[SectionController::class,'update'])->name('section.update');
+Route::get('/section/{id}/delete',[SectionController::class,'delete'])->name('section.delete');
