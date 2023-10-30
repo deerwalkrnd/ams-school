@@ -14,4 +14,8 @@ class Section extends Model
        'section_type',
        'section_id',
     ];
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 }

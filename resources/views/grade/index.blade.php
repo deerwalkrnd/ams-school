@@ -42,7 +42,7 @@
 
             @foreach ($grades as $grade)
                 <tr>
-                    <td>{{ $grade->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $grade->name }}</td>
                     <td>{{ $grade->start_date }}</td>
                     <td>{{ $grade->end_date }}</td>

@@ -33,7 +33,7 @@
             @foreach ($sections as $section)
 
                     <tr>
-                        <td>{{ $section->id }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $section->section_name }}</td>
                         <td>{{ $section->section_type }}</td>
                         <td>{{ $section->student->name}}</td>

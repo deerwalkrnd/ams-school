@@ -50,4 +50,4 @@ Route::get('/section/create',[SectionController::class,'create'])->name('section
 Route::post('/section/store',[SectionController::class,'store'])->name('section.store');
 Route::get('/section/{id}/edit',[SectionController::class,'edit'])->name('section.edit');
 Route::put('/section/{id}/update',[SectionController::class,'update'])->name('section.update');
-Route::get('/section/{id}/delete',[SectionController::class,'delete'])->name('section.delete');
+Route::get('/section/{id}/delete',[SectionController::class,'destroy'])->name('section.delete');

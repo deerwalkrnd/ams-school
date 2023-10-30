@@ -14,6 +14,7 @@ class SectionController extends Controller
     public function index()
     {
         $sections = Section::all();
+        //dd($sections);
         return view('section.index',compact('sections'));
     }
 
@@ -33,9 +34,11 @@ class SectionController extends Controller
     public function store(Request $request)
     {
         $sections = new Section;
+        //dd($request);
         $sections->section_name=trim($request->section_name);
         $sections->section_type = trim($request->section_type);
         $sections->student_id =trim($request->student_id);
+        //dd($sections);
         $sections->save();
         return redirect('/section')->with('success', "Section added Successfully");
     }

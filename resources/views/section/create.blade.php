@@ -12,12 +12,12 @@
     <form action="{{route('section.store')}}" method="post">
         @csrf
         <div>
-            <label for="name">Section Name</label>
-            <input type="text" name="name" placeholder="Enter Section Name">
+            <label for="section_name">Section Name</label>
+            <input type="text" name="section_name" placeholder="Enter Section Name">
         </div>
         <div>
             <label >Section Type</label>
-            <input type="text" name="type" placeholder="Enter Section Type">
+            <input type="text" name="section_type" placeholder="Enter Section Type">
         </div>
 
         <select name="student_id">
@@ -26,8 +26,9 @@
             @endforeach
         </select>
 
-        
-        <button class="btn btn-primary" type="submit">Add</button>
+        <button class="btn btn-primary" type="">Add</button>
+        <br><br>
+        <button class="btn btn-primary" type="submit">Submit</button>
 
     </form>
 

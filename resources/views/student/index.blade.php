@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index Page of Grade</title>
+    <title>Index Page of Student</title>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
             @foreach ($students as $student)
 
                     <tr>
-                        <td>{{ $student->id }}</td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->email }}</td>

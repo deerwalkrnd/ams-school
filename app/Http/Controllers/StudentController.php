@@ -22,12 +22,13 @@ class StudentController extends Controller
         return view('student.create')->with(compact('students','grades'));
     }
     public function store(Request $request){
-        // dd($request->all());
+        //dd($request->all());
         $student = new Student;
         $student->name=trim($request->name);
         $student->email = trim($request->email);
         $student->grade_id=trim($request->grade_id);
         $student->roll_no=trim($request->roll_no);
+        dd($student);
         $student->save();
         return redirect('/student')->with('success', "Admin Successfully Created");
 

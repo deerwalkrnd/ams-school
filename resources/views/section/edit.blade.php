@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <form action="{{route('section.update',['id'=>$section->id])}}" method="post">
+    <form action="{{route('section.update',['id'=>$sections->id])}}" method="post">
         @csrf
         @method('PUT')
         <div>
