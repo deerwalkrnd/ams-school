@@ -17,6 +17,7 @@
                 <th>Section Name</th>
                 <th>Type</th>
                 <th>Grade</th>
+                <th>Teacher</th>
                 <th>Action</th>
 
             </tr>
@@ -30,6 +31,7 @@
                         <td>{{ $section->name }}</td>
                         <td>{{ $section->type }}</td>
                         <td>{{ $section->grade->name}}</td>
+                        <td>{{$section->user->name}}</td>
                         <td>
                             <a href="{{route('section.edit',['id'=>$section->id])}}" class="btn btn-success">Edit</a>
                             <a href="{{route('section.delete',['id'=>$section->id])}}">Delete</a>
