@@ -11,11 +11,16 @@ class Section extends Model
     protected $fillable=[
         'name',
         'type',
-        'grade_id'
+        'grade_id',
+        'user_id',
     ];
 
     public function grade()
     {
         return $this->belongsTo(Grade::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

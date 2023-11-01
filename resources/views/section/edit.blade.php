@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,11 +25,19 @@
                 </select>
             </div>
         </div>
+        <label for="">Grade</label>
         <select name="grade_id">
             @foreach ($grades as $grade)
                 <option value="{{ $grade->id }}">{{ $grade->name }}</option>
             @endforeach
         </select>
+        <label for="">Teacher</label>
+        <select name="user_id">
+            @foreach ($users as $user)
+                <option value="{{ $user->id }}">{{ $user->name }}</option>
+            @endforeach
+        </select>
+        <br>
         <button class="btn btn-primary" type="submit">Add</button>
 
     </form>
