@@ -13,4 +13,8 @@ class Grade extends Model
         'start_date',
         'end_date'
     ];
+
+    public function section(){
+        return $this->hasMany(Section::class);
+    }
 }
