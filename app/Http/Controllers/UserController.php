@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\models\User;
 
@@ -23,23 +24,26 @@ class UserController extends Controller
 
     {
         $user = new User;
-        $user->name=trim($request->name);
-        $user->email = trim($request->email);
-        $user->password=trim($request->password);
+        $user->name = trim($request->input('name'));
+        $user->email = trim($request->input('email'));
+        $user->password = bcrypt(trim($request->input('password')));
         $user->save();
-        return redirect('/user')->with('success', "Admin Successfully Created");
-
+        $roles = $request->input('role', []);
+        $user->role()->sync($roles);
+        return redirect('/user')->with('success', 'Admin Successfully Created');
     }
     public function edit($id)
     {
         $users = User::find($id);
-        return view('user.edit', compact('users'));
+        $roles = Role::all();
+        return view('user.edit', compact('users','roles'));
     }
     public function update(Request $request,$id){
         $users=User::find($id);
         $users->name=$request->input('name');
         $users->email=$request->input('email');
         $users->update();
+        $users->role()->sync($request->input('role', []));
         return redirect('/user')->with('success', "User Updated Successfully ");
     }
     public function delete($id){

@@ -10,7 +10,7 @@
 
 <body>
     <table border="1px">
-        <a href="{{route('user.create')}}">Add a User</a>
+        <a href="{{ route('user.create') }}">Add a User</a>
         <thead>
             <tr>
                 <th>S.N</th>
@@ -27,10 +27,14 @@
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
-                    <td></td>
                     <td>
-                        <a href="{{route('user.edit',['id'=>$user->id])}}" class="btn btn-success">Edit</a>
-                        <a href="{{route('user.delete',['id'=>$user->id])}}">Delete</a>
+                        @foreach($user->role as $role)
+                        {{ucfirst($role->roles)}}
+                        @endforeach
+                    </td>
+                    <td>
+                        <a href="{{ route('user.edit', ['id' => $user->id]) }}" class="btn btn-success">Edit</a>
+                        <a href="{{ route('user.delete', ['id' => $user->id]) }}">Delete</a>
                     </td>
                 </tr>
             @endforeach

@@ -46,4 +46,8 @@ class User extends Authenticatable
     public function section(){
         return $this->hasOne(Section::class);
     }
+    public function role()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }
