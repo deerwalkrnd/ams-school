@@ -9,9 +9,9 @@
 </head>
 
 <body>
-    @if (session()->has('status'))
+    @if (session()->has('success'))
         <div class="alert">
-            {{ session()->get('status') }}
+            {{ session()->get('success') }}
         </div>
     @endif
     <table border="1px">

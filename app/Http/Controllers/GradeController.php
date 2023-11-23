@@ -31,7 +31,7 @@ class GradeController extends Controller
 
         $newTask = Grade::create($data);
 
-        return redirect(route('grade.index'))->with('status', "Stored Successfully");
+        return redirect(route('grade.index'))->with('success', "Stored Successfully");
     }
 
     public function edit($id)
@@ -48,13 +48,13 @@ class GradeController extends Controller
             'end_date' => 'required|date|after:start_date',
         ]);
         $grades->update($data);
-        return redirect(route('grade.index'))->with('status', "Stored Successfully");
+        return redirect(route('grade.index'))->with('success', "Stored Successfully");
     }
 
     public function delete($id)
     {
         $grades = Grade::find($id);
         $grades->delete();
-        return redirect(route('grade.index'))->with('status', 'Deleted Successfully');
+        return redirect(route('grade.index'))->with('success', 'Deleted Successfully');
     }
 }
