@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Grade;
-use App\Models\Section;
 
 class GradeController extends Controller
 {
@@ -25,35 +24,37 @@ class GradeController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
-
+            'name' => 'required | regex:/^[A-Za-z\s]+$/ | max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
         ]);
 
         $newTask = Grade::create($data);
-        return redirect(route('grade.index'));
-    }
 
+        return redirect(route('grade.index'))->with('status', "Stored Successfully");
+    }
 
     public function edit($id)
     {
         $grades = Grade::find($id);
         return view('grade.edit', compact('grades'));
     }
-    public function update(Request $request,$id){
-        $grades=Grade::find($id);
-        $grades->name=$request->input('name');
-        $grades->start_date=$request->input('start_date');
-        $grades->end_date=$request->input('end_date');
-        $grades->update();
-        return redirect(route('grade.index'))->with('status',"Stored Successfully");
-
+    public function update(Request $request, $id)
+    {
+        $grades = Grade::find($id);
+        $data = $request->validate([
+            'name' => 'required | regex:/^[A-Za-z\s]+$/ | max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after:start_date',
+        ]);
+        $grades->update($data);
+        return redirect(route('grade.index'))->with('status', "Stored Successfully");
     }
 
-    public function delete($id){
-        $grades=Grade::find($id);
+    public function delete($id)
+    {
+        $grades = Grade::find($id);
         $grades->delete();
-        return redirect(route('grade.index'))->with('status','Deleted Successfully');
+        return redirect(route('grade.index'))->with('status', 'Deleted Successfully');
     }
 }
