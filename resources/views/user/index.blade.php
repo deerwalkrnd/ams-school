@@ -9,6 +9,11 @@
 </head>
 
 <body>
+    @if (session()->has('success'))
+        <div class="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <table border="1px">
         <a href="{{ route('user.create') }}">Add a User</a>
         <thead>
@@ -18,18 +23,17 @@
                 <th>Email</th>
                 <th>Role</th>
                 <th>Action</th>
-
             </tr>
         </thead>
         <tbody>
             @foreach ($users as $user)
                 <tr>
-                    <td>{{ $user->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
-                        @foreach($user->role as $role)
-                        {{ucfirst($role->roles)}}
+                        @foreach ($user->role as $role)
+                            {{ ucfirst($role->roles) }}
                         @endforeach
                     </td>
                     <td>
@@ -43,5 +47,10 @@
     </table>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>

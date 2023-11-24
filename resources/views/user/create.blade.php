@@ -9,41 +9,53 @@
 </head>
 
 <body>
-    <form action="{{route('user.store')}}" method="post">
+    @if ($errors->any())
+        <div class="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </div>
+    @endif
+    <form action="{{ route('user.store') }}" method="post">
         @csrf
         <div>
             <label for="name"> Full Name</label>
-            <input type="text" name="name" placeholder="Enter Grade Name">
+            <input type="text" name="name" placeholder="Enter Grade Name" required>
         </div>
         <div>
-            <label > Email</label>
-            <input type="email" name="email" placeholder="Email">
+            <label> Email</label>
+            <input type="email" name="email" placeholder="Email" required>
         </div>
         <div>
-            <label > Password</label>
-            <input type="password" name="password" placeholder="password">
+            <label> Password</label>
+            <input type="password" name="password" placeholder="password" required>
         </div>
         <div class="col-md-8 mt-5">
             <div class="row align-items-center">
-                <label for="role" class=" col-md-3 form-label">Role</label>
+                <label for="role" class=" col-md-3 form-label" required>Role</label>
                 <div class="col-md-2 form-check form-check-inline">
-                    <input class="form-check-input" id="admin" type="checkbox" name="role[]" value="1" >
+                    <input class="form-check-input" id="admin" type="radio" name="role[]" value="1" >
                     <label class="form-check-label" for="superadmin">
                         Super Admin
                     </label>
                 </div>
                 <div class="col-md-3 form-check form-check-inline ms-1">
-                    <input class="form-check-input" id="superadmin" type="checkbox" name="role[]" value="2" >
+                    <input class="form-check-input" id="superadmin" type="radio" name="role[]" value="2" >
                     <label class="form-check-label" for="teacher">
                         Teacher
                     </label>
                 </div>
-        </div>
+            </div>
 
-        <button class="btn btn-primary" type="submit">Add</button>
+            <button class="btn btn-primary" type="submit">Add</button>
 
     </form>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>

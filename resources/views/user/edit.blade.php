@@ -9,6 +9,13 @@
 </head>
 
 <body>
+    @if ($errors->any())
+        <div class="alert">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </div>
+    @endif
     <form action="{{route('user.update',['id'=>$users->id])}}" method="post">
         @csrf
         @method('PUT')
@@ -41,5 +48,10 @@
     </form>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>
