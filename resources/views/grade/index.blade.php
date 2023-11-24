@@ -9,8 +9,13 @@
 </head>
 
 <body>
+    @if (session()->has('success'))
+        <div class="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <table border="1px">
-        <a href="{{route('grade.create')}}">Add a Grade</a>
+        <a href="{{ route('grade.create') }}">Add a Grade</a>
         <thead>
             <tr>
                 <th>S.N</th>
@@ -25,13 +30,13 @@
 
             @foreach ($grades as $grade)
                 <tr>
-                    <td>{{ $grade->id }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>{{ $grade->name }}</td>
                     <td>{{ $grade->start_date }}</td>
                     <td>{{ $grade->end_date }}</td>
                     <td>
-                        <a href="{{route('grade.edit',['id'=>$grade->id])}}" class="btn btn-success">Edit</a>
-                        <a href="{{route('grade.delete',['id'=>$grade->id])}}">Delete</a>
+                        <a href="{{ route('grade.edit', ['id' => $grade->id]) }}" class="btn btn-success">Edit</a>
+                        <a href="{{ route('grade.delete', ['id' => $grade->id]) }}">Delete</a>
                     </td>
                 </tr>
             @endforeach
@@ -40,5 +45,11 @@
     </table>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
+
 
 </html>
