@@ -9,12 +9,19 @@
 </head>
 
 <body>
+    @if ($errors->all())
+        @foreach ($errors->all() as $error)
+            <div class="alert">
+                {{ $error }}
+            </div>
+        @endforeach
+    @endif
     <form action="{{route('section.update',['id'=>$sections->id])}}" method="post">
         @csrf
         @method('PUT')
         <div>
             <label for="name"> Section Name</label>
-            <input type="text" name="name" value="{{$sections->name}}">
+            <input type="text" name="name" value="{{$sections->name}}" required>
         </div>
         <div>
             <div class="form-group">
@@ -43,5 +50,10 @@
     </form>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>

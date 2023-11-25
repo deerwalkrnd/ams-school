@@ -5,48 +5,48 @@ namespace App\Http\Controllers;
 use App\Models\Section;
 use App\Models\Grade;
 use App\Models\User;
-use Faker\Provider\ar_EG\Company;
-use Illuminate\Http\Request;
+use App\Http\Requests\SectionRequest;
 
 class SectionController extends Controller
 {
-   public function index(){
-    $sections=Section::all();
-    return view('section.index')->with(compact('sections'));
-   }
-   public function create(){
-    $sections=Section::all();
-    $grades=Grade::all();
-    $users=User::all();
-    return view('section.create')->with(compact('grades','sections','users'));
+    public function index()
+    {
+        $sections = Section::all();
+        return view('section.index')->with(compact('sections'));
+    }
+    public function create()
+    {
+        $sections = Section::all();
+        $grades = Grade::all();
+        $users = User::all();
+        return view('section.create')->with(compact('grades', 'sections', 'users'));
+    }
+    public function store(SectionRequest $request)
+    {
+        $data = $request->validated();
+        $section = Section::create($data);
+        return redirect('/section')->with('success', "Section Successfully Created");
+    }
+
+    public function edit($id)
+    {
+        $sections = Section::find($id);
+        $grades = Grade::all();
+        $users = User::all();
+        return view('section.edit')->with(compact('sections', 'grades', 'users'));
+    }
+    public function update(SectionRequest $request, $id)
+{
+    $data = $request->validated();
+    $section = Section::find($id);
+    $section->update($data);
+    return redirect('/section')->with('success', "Section Updated Successfully");
 }
-public function store(Request $request){
-    $section = new Section;
-    $section->name=trim($request->name);
-    $section->type=trim($request->type);
-    $section->grade_id=trim($request->grade_id);
-    $section->user_id=trim($request->user_id);
-    $section->save();
-    return redirect('/section')->with('success', "Section Successfully Created");
-}
-public function edit($id){
-    $sections=Section::find($id);
-    $grades=Grade::all();
-    $users=User::all();
-    return view('section.edit')->with(compact('sections','grades','users'));
-}
-public function update(Request $request,$id){
-    $sections=Section::find($id);
-    $sections->name=$request->input('name');
-    $sections->type=$request->input('type');
-    $sections->grade_id=$request->input('grade_id');
-    $sections->user_id=$request->input('grade_id');
-    $sections->update();
-    return redirect('/section')->with('success', "User Updated Successfully ");
-}
-public function delete($id){
-    $sections=Section::find($id);
-    $sections->delete();
-    return redirect(route('section.index'))->with('status','Deleted Successfully');
-}
+
+    public function delete($id)
+    {
+        $sections = Section::find($id);
+        $sections->delete();
+        return redirect(route('section.index'))->with('status', 'Deleted Successfully');
+    }
 }
