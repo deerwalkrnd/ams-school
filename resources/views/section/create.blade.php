@@ -9,11 +9,18 @@
 </head>
 
 <body>
+    @if ($errors->all())
+        @foreach ($errors->all() as $error)
+            <div class="alert">
+                {{ $error }}
+            </div>
+        @endforeach
+    @endif
     <form action="{{route('section.store')}}" method="post">
         @csrf
         <div>
             <label for="name"> Section Name</label>
-            <input type="text" name="name" placeholder="Enter Section Name">
+            <input type="text" name="name" placeholder="Enter Section Name" required>
         </div>
         <div>
             <div class="form-group">
@@ -40,5 +47,10 @@
     </form>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>

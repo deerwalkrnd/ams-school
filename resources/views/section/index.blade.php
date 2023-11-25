@@ -9,8 +9,13 @@
 </head>
 
 <body>
+    @if (session()->has('success'))
+        <div class="alert">
+            {{ session()->get('success') }}
+        </div>
+    @endif
     <table border="1px">
-        <a href="{{route('section.create')}}">Add a sections</a>
+        <a href="{{ route('section.create') }}">Add a sections</a>
         <thead>
             <tr>
                 <th>S.N</th>
@@ -25,23 +30,27 @@
         <tbody>
 
             @foreach ($sections as $section)
-
-                    <tr>
-                        <td>{{ $section->id }}</td>
-                        <td>{{ $section->name }}</td>
-                        <td>{{ $section->type }}</td>
-                        <td>{{ $section->grade->name}}</td>
-                        <td>{{$section->user->name}}</td>
-                        <td>
-                            <a href="{{route('section.edit',['id'=>$section->id])}}" class="btn btn-success">Edit</a>
-                            <a href="{{route('section.delete',['id'=>$section->id])}}">Delete</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $section->name }}</td>
+                    <td>{{ $section->type }}</td>
+                    <td>{{ $section->grade->name }}</td>
+                    <td>{{ $section->user->name }}</td>
+                    <td>
+                        <a href="{{ route('section.edit', ['id' => $section->id]) }}" class="btn btn-success">Edit</a>
+                        <a href="{{ route('section.delete', ['id' => $section->id]) }}">Delete</a>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
 
     </table>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>
