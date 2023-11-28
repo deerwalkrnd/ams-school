@@ -17,9 +17,8 @@ class Student extends Model
         'roll_no',
         'name',
         'email',
-        'grade_id',
-        'status'
-
+        'section_id',
+        'status',
     ];
 
     public function section(){

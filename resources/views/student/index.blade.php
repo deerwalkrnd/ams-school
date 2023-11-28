@@ -17,7 +17,7 @@
                 <th>Name</th>
                 <th>Roll Number</th>
                 <th>email</th>
-                <th>Grade</th>
+                <th>Section</th>
                 <th>Status</th>
                 <th>Action</th>
 
@@ -32,8 +32,8 @@
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->email }}</td>
-                        <td>{{ $student->grade->name}}</td>
-                        <td>{{ $student->status }}</td>
+                        <td>{{ $student->section->name}}</td>
+                        <td>{{ $student->status}}</td>
                         <td>
                             <a href="{{route('student.edit',['id'=>$student->id])}}" class="btn btn-success">Edit</a>
                             <a href="{{route('student.delete',['id'=>$student->id])}}">Delete</a>

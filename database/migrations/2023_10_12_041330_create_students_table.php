@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('email');
             $table->enum('status', ['active','dropped_out']);
-            $table->unsignedBigInteger('grade_id');
+            $table->unsignedBigInteger('section_id');
             $table->timestamps();
-            $table->foreign('grade_id')->references('id')->on('grades')->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreign('section_id')->references('id')->on('sections')->cascadeOnUpdate()->restrictOnDelete();
         });
     }
 
