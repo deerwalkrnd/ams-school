@@ -32,9 +32,9 @@
             <input type="email" name="email" value="{{ $students->email }}">
         </div>
 
-        <select name="grade_id">
-            @foreach ($grades as $grade)
-                <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+        <select name="section_id">
+            @foreach ($sections as $section)
+                <option value="{{ $section->id }}">{{ $section->name }}</option>
             @endforeach
         </select>
 

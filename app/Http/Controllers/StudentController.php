@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\SectionRequest;
 use App\Http\Requests\StudentRequest;
 use App\Models\Grade;
+use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -42,7 +42,7 @@ class StudentController extends Controller
             return redirect('/student')->with('error', "Student not found");
         }
         $student->update($data);
-        return redirect('/student')->with('success', "Student Updated Successfully ");
+  
     }
 
 

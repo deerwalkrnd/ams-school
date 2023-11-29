@@ -21,7 +21,7 @@
                 </div>
             @endforeach
         @endif
-    @endif
+ 
 
         <table border="1px">
             <a href="{{ route('student.create') }}">Add a Students</a>
@@ -44,8 +44,7 @@
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->email }}</td>
-                        <td>{{ $student->grade->name }}</td>
-                        <td>{{ $student->status }}</td>
+                       <td>{{ $student->grade->name }}</td>
                         <td>
                             <a href="{{ route('student.edit', ['id' => $student->id]) }}"
                                 class="btn btn-success">Edit</a>

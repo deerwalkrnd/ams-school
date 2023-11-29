@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Section extends Model
 {
     use HasFactory;
+
+    protected $hidden=[
+        'id',
+    ];
     protected $fillable=[
         'name',
         'type',
