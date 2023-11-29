@@ -9,20 +9,27 @@
 </head>
 
 <body>
-    <form action="{{route('student.update',['id'=>$students->id])}}" method="post">
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="alert">
+                {{ $error }}
+            </div>
+        @endforeach
+    @endif
+    <form action="{{ route('student.update', ['id' => $students->id]) }}" method="post">
         @csrf
         @method('PUT')
         <div>
             <label for="name"> Student Name</label>
-            <input type="text" name="name" value="{{$students->name}}">
+            <input type="text" name="name" value="{{ $students->name }}">
         </div>
         <div>
-            <label >Roll Number</label>
-            <input type="number" name="roll_no" value="{{$students->roll_no}}">
+            <label>Roll Number</label>
+            <input type="number" name="roll_no" value="{{ $students->roll_no }}">
         </div>
         <div>
             <label>Email</label>
-            <input type="email" name="email" value="{{$students->email}}">
+            <input type="email" name="email" value="{{ $students->email }}">
         </div>
 
         <select name="section_id">
@@ -36,5 +43,10 @@
     </form>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>

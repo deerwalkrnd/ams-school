@@ -9,19 +9,26 @@
 </head>
 
 <body>
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="alert">
+                {{ $error }}
+            </div>
+        @endforeach
+    @endif
     <form action="{{route('student.store')}}" method="post">
         @csrf
         <div>
             <label for="name"> Student Name</label>
-            <input type="text" name="name" placeholder="Enter Student Name">
+            <input type="text" name="name" placeholder="Enter Student Name" required>
         </div>
         <div>
             <label >Roll Number</label>
-            <input type="number" name="roll_no" placeholder="Enter Roll no">
+            <input type="text" name="roll_no" placeholder="Enter Roll no" required>
         </div>
         <div>
             <label>Email</label>
-            <input type="email" name="email" placeholder="Enter Email">
+            <input type="email" name="email" placeholder="Enter Email" required>
         </div>
 
         <select name="section_id">
@@ -37,5 +44,10 @@
     </form>
 
 </body>
+<script>
+    setTimeout(() => {
+        document.querySelector('.alert').style.display = 'none';
+    }, 2000);
+</script>
 
 </html>
