@@ -24,7 +24,7 @@ class StudentRequest extends FormRequest
         return [
             'name' => 'required|regex:/^[A-Za-z\s]+$/|max:255',
             'email' => 'required|email|',
-            'grade_id' => 'required',
+            'section_id' => 'required',
             'roll_no' => 'required|numeric',
         ];
     }

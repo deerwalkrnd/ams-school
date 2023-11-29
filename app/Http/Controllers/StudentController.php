@@ -13,14 +13,16 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        return view('student.index')->with(compact('students'));
+        $sections =Section::all();
+        return view('student.index')->with(compact('students','sections'));
     }
 
     public function create()
     {
         $grades = Grade::all();
+        $sections=Section::all();
         $students = Student::all();
-        return view('student.create')->with(compact('students', 'grades'));
+        return view('student.create')->with(compact('students', 'grades','sections'));
     }
     public function store(StudentRequest $request)
     {
@@ -32,17 +34,16 @@ class StudentController extends Controller
     {
         $students = Student::find($id);
         $grades = Grade::all();
-        return view('student.edit')->with(compact('students', 'grades'));
+        $sections = Section::all();
+        return view('student.edit')->with(compact('students', 'grades','sections'));
     }
     public function update(StudentRequest $request, $id)
     {
         $data = $request->validated();
         $student = Student::find($id);
-        if (!$student) {
-            return redirect('/student')->with('error', "Student not found");
-        }
         $student->update($data);
-  
+        return redirect(route('student.index'))->with('success', 'Student Edited Successfully');
+
     }
 
 
