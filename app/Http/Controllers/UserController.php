@@ -67,6 +67,7 @@ class UserController extends Controller
     public function delete($id)
     {
         $users = User::find($id);
+        $users->role()->detach();
         $users->delete();
         return redirect('/user')->with('success','Admin Successfully Deleted');
     }
