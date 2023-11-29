@@ -21,8 +21,7 @@
                 </div>
             @endforeach
         @endif
- 
-
+    @endif
         <table border="1px">
             <a href="{{ route('student.create') }}">Add a Students</a>
             <thead>
@@ -31,20 +30,20 @@
                     <th>Name</th>
                     <th>Roll Number</th>
                     <th>email</th>
-                    <th>Grade</th>
+                    <th>Section</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-
-                @foreach ($students as $student)
+                @foreach ($students as $student )
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->email }}</td>
-                       <td>{{ $student->grade->name }}</td>
+                        <td>{{ $student->section->name }}</td>
+                        <td>{{$student->status}}</td>
                         <td>
                             <a href="{{ route('student.edit', ['id' => $student->id]) }}"
                                 class="btn btn-success">Edit</a>
