@@ -49,17 +49,16 @@
             <div class="mb-3">
           <form action="{{ route('login') }}" method="POST">
             @csrf
-            <Label>Email</Label>
+            <h5>Email</h5>
             <input class="email" type="email" name="email" placeholder="Enter Your Email Address" />
         </div>
         <div class="mb-3">
-            <Label>Password</Label>
+            <h5>Password</h5>
             <input id="password" class="password" type="password" name="password" placeholder="********" />
         </div>
         <button class="button button3">Login</button>
             <span><a href="/forgot-password">Forgot Password?</a></span>
             </div>
-
             </div>
         </form>
     </div>

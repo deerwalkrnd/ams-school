@@ -29,7 +29,7 @@ class FortifyServiceProvider extends ServiceProvider
                 if(Str::contains($user->role, 'teacher')){
                     return view('teacher.dashboard');
                 }else if(Str::contains($user->role,'superadmin')){
-                    return view('admin.dashboard');
+                    return view('admin.dashboard.index');
                 }
             }
         });

@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,9 +29,11 @@ Route::get('/', function () {
 });
 
 
-Route::get('/home', function () {
-    return view('home');
-});
+// Route::get('/home', function () {
+//     return view('admin.dashboard.index');
+// });
+
+Route::get('/home',[DashboardController::class,'index'])->name('admin.index');
 
 Route::get('/grade',[GradeController::class,'index'])->name('grade.index');
 Route::get('/grade/create/',[GradeController::class,'create'])->name('grade.create');
