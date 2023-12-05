@@ -10,7 +10,7 @@
             <a href="/home" class="nav_link">
                 <i class='bx bxs-dashboard bx-sm'></i> <span class="nav_name">Dashboard</span>
             </a>
-            <a href="" class="nav_link">
+            <a href="{{route('user.index')}}" class="nav_link">
                 <i class='bx bx-file bx-sm' aria-hidden="true" ></i>
                 <span class="nav_name">Forms</span>
             </a>
