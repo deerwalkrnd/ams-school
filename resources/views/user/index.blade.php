@@ -29,7 +29,7 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                            @foreach ($user->role as $role)
+                            @foreach ($user->roles as $role)
                                 {{ ucfirst($role->roles) }}
                             @endforeach
                         </td>
