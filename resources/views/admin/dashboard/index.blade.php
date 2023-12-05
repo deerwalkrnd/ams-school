@@ -3,7 +3,7 @@
 @section('title','Dashboard')
 
 <div class="table_container mt-3">
-    <table class="_table mx-auto amsTable">
+    <table class="_table mx-auto amsTable" id="amsTable">
         <thead>
             <tr class="table_title">
                 <th>S.N</th>
