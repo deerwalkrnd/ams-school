@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Contracts\LoginResponse;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Responses\LoginResponse;
+
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -22,17 +26,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
-            public function toResponse($request)
-            {
-                $user = User::where('email', $request->email)->first();
-                if(Str::contains($user->role, 'teacher')){
-                    return view('teacher.dashboard');
-                }else if(Str::contains($user->role,'superadmin')){
-                    return view('admin.dashboard.index');
-                }
-            }
-        });
+        //
     }
 
     /**
@@ -46,7 +40,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
@@ -55,10 +49,24 @@ class FortifyServiceProvider extends ServiceProvider
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+
         Fortify::loginView(function () {
+
+            if (Auth::check()) {
+                return redirect('/home');
+            }
             return view('auth.login');
         });
 
-
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->email)->first();
+            if (
+                $user &&
+                Hash::check($request->password, $user->password)
+            ) {
+                return $user;
+            }
+        });
     }
 }

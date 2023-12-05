@@ -29,9 +29,6 @@ Route::get('/', function () {
 });
 
 
-// Route::get('/home', function () {
-//     return view('admin.dashboard.index');
-// });
 
 Route::get('/home',[DashboardController::class,'index'])->name('admin.index');
 

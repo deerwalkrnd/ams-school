@@ -46,8 +46,28 @@ class User extends Authenticatable
     public function section(){
         return $this->hasOne(Section::class);
     }
-    public function role()
+
+    public function roles()
     {
         return $this->belongsToMany(Role::class);
     }
+
+    /**
+     * Check if user has a given role
+     *
+     * @param  mixed $role
+     * @return void
+     */
+    public function hasRole($role)
+    {
+
+        if ($this->roles()->where('roles', $role)->first()) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+
 }
