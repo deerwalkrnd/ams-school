@@ -22,6 +22,14 @@
             @endforeach
         @endif
     @endif
+    <section class="bulkbtn col-md-3">
+        <a href="{{route('student.bulkUpload')}}">
+            <button class="btn btn-primary">
+                <i class='bx bx-add-to-queue'></i>
+                    Bulk Upload
+            </button>
+        </a>
+    </section>
         <table border="1px">
             <a href="{{ route('student.create') }}">Add a Students</a>
             <thead>
