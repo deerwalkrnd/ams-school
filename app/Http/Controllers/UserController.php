@@ -37,8 +37,9 @@ class UserController extends Controller
         $user->save();
 
         $roles = $request->input('role', []);
-        $user->role()->sync($roles);
 
+        $user->role()->sync($roles);
+        dd($user);
         return redirect('/user')->with('success', 'Admin Successfully Created');
     }
     public function edit($id)
@@ -58,10 +59,8 @@ class UserController extends Controller
         $users->name = trim($request->input('name'));
         $users->email = trim($request->input('email'));
         $users->save();
-
         $roles = $request->input('role', []);
         $users->role()->sync($roles);
-
         return redirect('/user')->with('success', 'Admin Successfully Updated');
     }
     public function delete($id)

@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
-
+use App\Http\Requests\GradeRequest;
 use Illuminate\Http\Request;
 use App\Models\Grade;
 
@@ -21,16 +20,10 @@ class GradeController extends Controller
         return view('grade.create')->with(compact('grades'));
     }
 
-    public function store(Request $request)
+    public function store(GradeRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required | regex:/^[A-Za-z\s]+$/ | max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-        ]);
-
+        $data = $request->validated();
         $newTask = Grade::create($data);
-
         return redirect(route('grade.index'))->with('success', "Stored Successfully");
     }
 
@@ -39,14 +32,10 @@ class GradeController extends Controller
         $grades = Grade::find($id);
         return view('grade.edit', compact('grades'));
     }
-    public function update(Request $request, $id)
+    public function update(GradeRequest $request, $id)
     {
         $grades = Grade::find($id);
-        $data = $request->validate([
-            'name' => 'required | regex:/^[A-Za-z\s]+$/ | max:255',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
-        ]);
+        $data = $request->validated();
         $grades->update($data);
         return redirect(route('grade.index'))->with('success', "Stored Successfully");
     }
