@@ -1,45 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Edit </title>
-</head>
-
-<body>
-    @if ($errors->any())
-        <div class="alert">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </div>
-    @endif
+<x-edit-layout>
     <form action="{{ route('grade.update', ['id' => $grades->id]) }}" method="post">
         @csrf
         @method('PUT')
         <div>
-            <label for="name"> Grade Name</label>
+            <label for="name"> Grade Name<span class="star">*</span></label>
+            <div class="input_container">
             <input type="text" name="name" value="{{ $grades->name }}" required>
+            </div>
         </div>
         <div>
-            <label> Start Date</label>
-            <input type="date" name="start_date" value="{{ $grades->start_date }}" required>
+            <label>Start Date<span class="star">*</span></label>
+            <div class="input_container">
+                <input type="date" name="start_date" value="{{ $grades->start_date }}" required>
+            </div>
         </div>
         <div>
-            <label>End Date</label>
-            <input type="date" name="end_date" value="{{ $grades->end_date }}" required>
+            <label>End Date<span class="star">*</span></label>
+            <div class="input_container">
+                <input type="date" name="end_date" value="{{ $grades->end_date }}" required>
+            </div>
         </div>
+        <br>
         <button class="btn btn-primary" type="submit">Update</button>
-
     </form>
-
-</body>
-<script>
-    setTimeout(() => {
-        document.querySelector('.alert').style.display = 'none';
-    }, 2000);
-</script>
-
-</html>
+</x-edit-layout>

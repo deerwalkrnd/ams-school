@@ -32,7 +32,7 @@ body {
     padding: 0 0 0 1rem;
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
-    transition: .5s;
+    /* transition: .5s; */
 }
 
 .row{
@@ -713,3 +713,36 @@ div {
 }
 
 
+/* Edit section */
+.star{
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+form{
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
+
+label{
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--font-color);
+    font-family:'Raleway', sans-serif;
+}
+
+.input_container{
+    margin-bottom: 2%;
+}
+
+input{
+    width: 50%;
+    height: 2.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 1%;
+    font-size: 1rem;
+    font-family:'Raleway', sans-serif;
+}

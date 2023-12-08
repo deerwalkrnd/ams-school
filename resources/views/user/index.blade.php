@@ -1,16 +1,5 @@
-@extends('layouts.admin.app')
-
-<body>
-    <div class="below_header">
-        <h1>User</h1>
-        @include('layouts.admin.formTabs')
-    </div>
-    @if (session()->has('success'))
-        <div class="alert">
-            {{ session()->get('success') }}
-        </div>
-    @endif
-        <a href="{{ route('user.create') }}">Add a User</a>
+<x-main-layout>
+    <a href="{{ route('user.create') }}">Add a User</a>
     <div class="table_container mt-3">
         <table class="_table mx-auto amsTable" id="amsTable">
             <thead>
@@ -47,13 +36,6 @@
         </table>
     </div>
 
-
+</x-main-layout>
 
 </body>
-<script>
-    setTimeout(() => {
-        document.querySelector('.alert').style.display = 'none';
-    }, 2000);
-</script>
-
-</html>

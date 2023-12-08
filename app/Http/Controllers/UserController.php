@@ -18,7 +18,8 @@ class UserController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('user.create')->with(compact('users'));
+        $roles = Role::all();
+        return view('user.create')->with(compact('users','roles'));
     }
 
     public function store(Request $request)
@@ -37,9 +38,7 @@ class UserController extends Controller
         $user->save();
 
         $roles = $request->input('role', []);
-
-        $user->role()->sync($roles);
-        dd($user);
+        $user->roles()->sync($roles);
         return redirect('/user')->with('success', 'Admin Successfully Created');
     }
     public function edit($id)
@@ -60,13 +59,13 @@ class UserController extends Controller
         $users->email = trim($request->input('email'));
         $users->save();
         $roles = $request->input('role', []);
-        $users->role()->sync($roles);
+        $users->roles()->sync($roles);
         return redirect('/user')->with('success', 'Admin Successfully Updated');
     }
     public function delete($id)
     {
         $users = User::find($id);
-        $users->role()->detach();
+        $users->roles()->detach();
         $users->delete();
         return redirect('/user')->with('success','Admin Successfully Deleted');
     }
