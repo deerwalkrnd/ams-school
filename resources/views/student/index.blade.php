@@ -1,65 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index Page of Grade</title>
-</head>
-
-<body>
-    @if (session()->has('success'))
-        <div class="alert">
-            {{ session()->get('success') }}
-        </div>
-    @else
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <div class="alert">
-                    {{ $error }}
-                </div>
-            @endforeach
-        @endif
-    @endif
-        <table border="1px">
-            <a href="{{ route('student.create') }}">Add a Students</a>
+<x-main-layout>
+    <a href="{{ route('student.create') }}">Add a User</a>
+    <div class="table_container mt-3">
+        <table class="_table mx-auto amsTable" id="amsTable">
             <thead>
-                <tr>
+                <tr class="table_title">
                     <th>S.N</th>
-                    <th>Name</th>
+                    <th>Student's Name</th>
                     <th>Roll Number</th>
-                    <th>email</th>
+                    <th>Email Address</th>
                     <th>Section</th>
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($students as $student )
+                @forelse($students as $student)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->email }}</td>
                         <td>{{ $student->section->name }}</td>
-                        <td>{{$student->status}}</td>
-                        <td>
-                            <a href="{{ route('student.edit', ['id' => $student->id]) }}"
-                                class="btn btn-success">Edit</a>
-                            <a href="{{ route('student.delete', ['id' => $student->id]) }}">Delete</a>
+                        <td>{{ $student->status }}</td>
+                        <td class="">
+                            <a href="{{ route('student.edit', ['id' => $student->id]) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ route('student.delete', ['id' => $student->id]) }}"
+                                class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan='4'>No Teachers Available</td>
+                    </tr>
+                @endforelse
             </tbody>
-
         </table>
-
-</body>
-<script>
-    setTimeout(() => {
-        document.querySelector('.alert').style.display = 'none';
-    }, 2000);
-</script>
-
-</html>
+    </div>
+</x-main-layout>
