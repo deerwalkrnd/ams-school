@@ -1,15 +1,4 @@
-@extends('layouts.admin.app')
-
-<body>
-    <div class="below_header">
-        <h1>Section</h1>
-        @include('layouts.admin.formTabs')
-    </div>
-    @if (session()->has('success'))
-        <div class="alert">
-            {{ session()->get('success') }}
-        </div>
-    @endif
+<x-main-layout>
     <a href="{{ route('section.create') }}">Add a sections</a>
     <div class="table_container mt-3">
         <table class="_table mx-auto amsTable" id="amsTable">
@@ -44,10 +33,4 @@
                 @endforelse
             </tbody>
         </table>
-
-</body>
-<script>
-    setTimeout(() => {
-        document.querySelector('.alert').style.display = 'none';
-    }, 2000);
-</script>
+</x-main-layout>
