@@ -1,53 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create </title>
-</head>
-
-<body>
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert">
-                {{ $error }}
-            </div>
-        @endforeach
-    @endif
+<x-create-layout>
+    <div class="anchor_tag">
+        <a href="/student">
+            <h5 class="go_back">Go back</h5>
+        </a>
+    </div>
     <form action="{{route('student.store')}}" method="post">
         @csrf
         <div>
-            <label for="name"> Student Name</label>
+            <label for="name"> Student Name<span class="plus">+</span></label>
+            <div class="input_container">
             <input type="text" name="name" placeholder="Enter Student Name" required>
+            </div>
         </div>
         <div>
-            <label >Roll Number</label>
-            <input type="text" name="roll_no" placeholder="Enter Roll no" required>
+            <label >Roll Number<span class="plus">+</span></label>
+            <div class="input_container">
+            <input type="number" name="roll_no" placeholder="Enter Roll no" required>
+            </div>
         </div>
         <div>
-            <label>Email</label>
-            <input type="email" name="email" placeholder="Enter Email" required>
+            <label>Email<span class="plus">+</span></label>
+            <div class="input_container">
+                <input type="email" name="email" placeholder="Enter Email" required>
+            </div>
         </div>
-
-        <select name="section_id">
-            @foreach ($sections as $section)
-                <option value="{{ $section->id }}">{{ $section->name }}</option>
-            @endforeach
-        </select>
-
-
-
-        <button class="btn btn-primary" type="submit">Add</button>
-
+        <div>
+            <label for="section">Section<span class="plus">+</span></label>
+            <div class="input_container">
+            <select name="section_id" class="select_container" >
+                @foreach ($sections as $section)
+                    <option value="{{ $section->id }}">{{ $section->name }}</option>
+                @endforeach
+            </select>
+            </div>
+        </div>
     </form>
 
-</body>
-<script>
-    setTimeout(() => {
-        document.querySelector('.alert').style.display = 'none';
-    }, 2000);
-</script>
-
-</html>
+</x-create-layout>

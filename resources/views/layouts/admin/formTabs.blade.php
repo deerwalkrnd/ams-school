@@ -15,7 +15,7 @@
             {{-- <a class="nav-item nav-link nav_item below_header_btn" href="" role="tab">Section Student</a> --}}
             {{-- <a class="nav-item nav-link nav_item below_header_btn" href="" role="tab">Teacher Section Subject</a> --}}
             <a class="nav-item nav-link nav_item below_header_btn" href="" role="tab">Holiday</a>
-            <a class="nav-item nav-link nav_item below_header_btn" href="" role="tab">Feedback Email</a>
+            {{-- <a class="nav-item nav-link nav_item below_header_btn" href="" role="tab">Feedback Email</a> --}}
 
         </nav>
     </div>
