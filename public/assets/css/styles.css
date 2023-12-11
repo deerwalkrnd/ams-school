@@ -746,3 +746,9 @@ input{
     font-size: 1rem;
     font-family:'Raleway', sans-serif;
 }
+
+.add_button{
+    margin-top: 25px;
+    margin-left: 90%;
+    width: 100px;
+}
