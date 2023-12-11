@@ -29,7 +29,6 @@ Route::get('/', function () {
 });
 
 
-
 Route::get('/home',[DashboardController::class,'index'])->name('admin.index');
 
 Route::get('/grade',[GradeController::class,'index'])->name('grade.index');
@@ -54,6 +53,8 @@ Route::post('/student/store/',[StudentController::class,'store'])->name('student
 Route::get('/student/{id}/edit',[StudentController::class,'edit'])->name('student.edit');
 Route::put('/student/{id}/update',[StudentController::class,'update'])->name('student.update');
 Route::get('/student/{id}/delete',[StudentController::class,'delete'])->name('student.delete');
+
+Route::get('/student/bulkUpload/',[StudentController::class,'bulkUpload'])->name('student.bulkUpload');
 
 Route::get('/section',[SectionController::class,'index'])->name('section.index');
 Route::get('/section/create/',[SectionController::class,'create'])->name('section.create');

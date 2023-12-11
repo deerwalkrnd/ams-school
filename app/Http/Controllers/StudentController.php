@@ -46,12 +46,20 @@ class StudentController extends Controller
 
     }
 
-
-
     public function delete($id)
     {
         $students = Student::find($id);
         $students->delete();
         return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
     }
+
+    public function bulkUpload(){
+
+        return view('student.bulkUpload');
+
+    }
+
+    
+
+
 }
