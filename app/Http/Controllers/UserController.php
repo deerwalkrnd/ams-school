@@ -11,7 +11,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('user.index')->with(compact('users'));
+        $pageTitle = 'User List';
+        return view('user.index')->with(compact('users', 'pageTitle'));
     }
 
 
@@ -19,7 +20,8 @@ class UserController extends Controller
     {
         $users = User::all();
         $roles = Role::all();
-        return view('user.create')->with(compact('users','roles'));
+        $pageTitle = 'Create User';
+        return view('user.create')->with(compact('users', 'roles', 'pageTitle'));
     }
 
     public function store(Request $request)
@@ -45,7 +47,8 @@ class UserController extends Controller
     {
         $users = User::find($id);
         $roles = Role::all();
-        return view('user.edit', compact('users', 'roles'));
+        $pageTitle = 'Edit User';
+        return view('user.edit', compact('users', 'roles', 'pageTitle'));
     }
     public function update(Request $request, $id)
     {

@@ -12,7 +12,8 @@ class SectionController extends Controller
     public function index()
     {
         $sections = Section::all();
-        return view('section.index')->with(compact('sections'));
+        $pageTitle = "Section List";
+        return view('section.index')->with(compact('sections', 'pageTitle'));
     }
     public function create()
     {

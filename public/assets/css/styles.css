@@ -815,3 +815,9 @@ option {
 .anchor_tag {
     max-width: 100px;
 }
+
+.heading{
+    margin-top: 1rem;
+    font-weight: 600;
+    text-align: center;
+}
