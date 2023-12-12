@@ -7,14 +7,12 @@
     </div>
     @if ($errors->any())
         @foreach ($errors->all() as $error)
-            <div class="alert">
+            <div class="alert alert-danger ">
                 {{ $error }}
             </div>
         @endforeach
     @endif
     {{ $slot }}
-    <button class="btn btn-success submit_button" type="submit">Add</button>
-
 </body>
 
 <script>

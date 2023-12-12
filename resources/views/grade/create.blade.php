@@ -25,5 +25,6 @@
                 <input type="date" name="start_date" placeholder="Start Date" required>
             </div>
         </div>
+        <button class="btn btn-success submit_button" type="submit">Add</button>
     </form>
 </x-create-layout>

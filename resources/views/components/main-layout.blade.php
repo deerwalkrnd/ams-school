@@ -1,14 +1,14 @@
 @extends('layouts.admin.app')
+@if (session()->has('success'))
+    <div class="alert alert-success ">
+        {{ session()->get('success') }}
+    </div>
+@endif
 
 <body>
     <div class="below_header">
         @include('layouts.admin.formTabs', ['title' => ucfirst(Request::segment(1))])
     </div>
-    @if (session()->has('success'))
-        <div class="alert">
-            {{ session()->get('success') }}
-        </div>
-    @endif
     {{ $slot }}
 </body>
 

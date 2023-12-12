@@ -44,6 +44,6 @@
                 </select>
             </div>
         </div>
-
+        <button class="btn btn-success submit_button" type="submit">Add</button>
     </form>
 </x-create-layout>
