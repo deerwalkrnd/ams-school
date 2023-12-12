@@ -1,5 +1,6 @@
 <x-main-layout>
-    <a href="{{ route('user.create') }}">Add a User</a>
+    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <a href="{{ route('user.create') }}" class="btn btn-primary add_button">Add</a>
     <div class="table_container mt-3">
         <table class="_table mx-auto amsTable" id="amsTable">
             <thead>

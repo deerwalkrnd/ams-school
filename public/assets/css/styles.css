@@ -12,12 +12,12 @@
     --body-font: 'Nunito', sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
-    --primary-color:rgba(231, 94, 15, 1);
+    --primary-color: rgba(231, 94, 15, 1);
     --light-primary: #E9F6FF;
     --font-color: #011B2E;
-    --red-color:#F90808;
-    --green-color:#20C997;
-    --yellow-color:#FFB55E;
+    --red-color: #F90808;
+    --green-color: #20C997;
+    --yellow-color: #FFB55E;
 }
 
 *,
@@ -35,7 +35,7 @@ body {
     /* transition: .5s; */
 }
 
-.row{
+.row {
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -171,7 +171,7 @@ a {
     margin-top: 10vh;
 }
 
-@media screen and (max-width: 1024px){
+@media screen and (max-width: 1024px) {
     :root {
         --nav-width: 7%;
     }
@@ -227,16 +227,19 @@ a {
 }
 
 
-.below_header{
+.below_header {
     display: flex;
     flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .below_header h1 {
     font-weight: 700;
     line-height: 42px;
     padding: 3%;
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 .nav_item {
@@ -256,34 +259,38 @@ a {
     color: var(--primary-color);
 }
 
-.nav .active{
+.nav .active {
     background-color: white !important;
     color: var(--font-color) !important;
 }
 
 /* Admin dashboad */
 
-.red_text{
+.red_text {
     color: var(--red-color);
 }
 
-.total_absent,.pie_chart,.line_chart{
+.total_absent,
+.pie_chart,
+.line_chart {
     width: 32%;
 }
 
-.graphs,.table_container{
+.graphs,
+.table_container {
     margin-right: 2%;
 }
 
-.table_title{
+.table_title {
     background-color: rgba(231, 94, 15, 1) !important;
-    color:white;
+    color: white;
 }
 
-.title{
+.title {
     color: var(--font-color);
     font-weight: 700;
-    font-family:'Raleway', sans-serif; ;
+    font-family: 'Raleway', sans-serif;
+    ;
 
 }
 
@@ -296,19 +303,19 @@ a {
     background-color: #0f5288;
 }
 
-@media screen and (max-width:768px){
+@media screen and (max-width:768px) {
 
-    .pie_chart{
+    .pie_chart {
         /* width: 45%; */
         display: none;
     }
 
-    .line_chart{
+    .line_chart {
         /* width: 45%; */
         display: none;
     }
 
-    .total_absent{
+    .total_absent {
         width: 90% !important;
     }
 
@@ -324,17 +331,18 @@ a {
     caption-side: top;
 }
 
-.addbtn{
+.addbtn {
     margin-top: 2%;
     margin-left: 90%;
 }
 
-._table td, ._table th {
+._table td,
+._table th {
     padding-left: 1%;
 }
 
 ._table tr:nth-child(odd) {
-    background-color:#d2ddebd0;
+    background-color: #d2ddebd0;
 }
 
 .action {
@@ -353,7 +361,7 @@ a {
     background-color: var(--light-primary);
 }
 
-.container1{
+.container1 {
     margin-top: 5vh;
     margin-right: 2%;
     padding-top: 2%;
@@ -362,25 +370,25 @@ a {
 
 }
 
-.form-control{
-    width:55% !important;
+.form-control {
+    width: 55% !important;
 }
 
-.form_label{
+.form_label {
     width: 65%;
 }
 
-.red_text{
+.red_text {
     color: red;
 }
 
 
 
 option:hover {
-    background-color: yellow  !important;
+    background-color: yellow !important;
 }
 
-.button{
+.button {
     margin-left: 80%;
     margin-top: 4%;
     margin-bottom: 3%;
@@ -394,30 +402,31 @@ option:hover {
 
 } */
 
-.create h2{
+.create h2 {
     font-size: 2.5vh;
     padding-top: 2%;
     font-weight: 600;
 }
 
-.bulkbtn{
+.bulkbtn {
     margin-top: 1%;
     margin-left: 86%;
     /* margin-left: 85.5%; */
 }
+
 @media screen and (max-width: 768px) {
 
-    .container1{
+    .container1 {
         font-size: 10px;
     }
 
-    .create h2{
+    .create h2 {
         font-size: 1vh;
         padding-top: 5%;
         font-weight: 600;
     }
 
-    .container1{
+    .container1 {
         margin-top: 3vh;
         margin-right: 0.5%;
         padding-top: 2%;
@@ -436,7 +445,7 @@ option:hover {
 
 @media screen and (max-width: 820px) {
 
-    .container1{
+    .container1 {
         font-size: 10px;
     }
 
@@ -445,13 +454,13 @@ option:hover {
         width:55% ;
     } */
 
-    .create h2{
+    .create h2 {
         font-size: 1vh;
         padding-top: 5%;
         font-weight: 600;
     }
 
-    .container1{
+    .container1 {
         margin-top: 3vh;
         margin-right: 0.5%;
         padding-top: 2%;
@@ -462,7 +471,7 @@ option:hover {
 }
 
 /* Important width for Form Control */
-.formControlWidth{
+.formControlWidth {
     width: 100%;
 }
 
@@ -683,8 +692,8 @@ div {
     margin-left: 87%;
 }
 
-.dataTables_filter{
-    margin-bottom:5px !important;
+.dataTables_filter {
+    margin-bottom: 5px !important;
 }
 
 ._table td,
@@ -713,36 +722,102 @@ div {
 }
 
 
+div.dataTables_filter input {
+    width: 200px;
+}
+
 /* Edit section */
-.star{
+.star {
     color: var(--primary-color);
     font-size: 1.5rem;
 }
 
-form{
+form {
     margin-top: 2%;
     margin-left: 5%;
     margin-right: 5%;
     margin-bottom: 5%;
 }
 
-label{
+label {
     font-weight: 600;
     font-size: 1.2rem;
     color: var(--font-color);
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
-.input_container{
+.input_container {
     margin-bottom: 2%;
 }
 
-input{
+input {
     width: 50%;
     height: 2.5rem;
     border-radius: 5px;
     border: 1px solid #ccc;
     padding-left: 1%;
     font-size: 1rem;
-    font-family:'Raleway', sans-serif;
+    font-family: 'Raleway', sans-serif;
+}
+
+.add_button {
+    margin-top: 25px;
+    margin-left: 90%;
+    width: 100px;
+}
+
+
+/* Create */
+.container {}
+
+.plus {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+option {
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+}
+
+.select_container {
+    width: 50%;
+    height: 2.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 1%;
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+}
+
+.submit_button {
+    margin-top: -20px;
+    width: 100px;
+    margin-bottom: 15px;
+}
+
+.go_back {
+    margin-top: -20px;
+    width: 100px;
+    margin-bottom: 15px;
+    background-color: white;
+    color: var(--primary-color);
+    align-items: center;
+    text-align: center;
+}
+
+.go_back:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 45px;
+}
+
+.anchor_tag {
+    max-width: 100px;
+}
+
+.heading{
+    margin-top: 1rem;
+    font-weight: 600;
+    text-align: center;
 }

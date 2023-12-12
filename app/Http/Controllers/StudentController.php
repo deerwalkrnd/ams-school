@@ -14,7 +14,8 @@ class StudentController extends Controller
     {
         $students = Student::all();
         $sections =Section::all();
-        return view('student.index')->with(compact('students','sections'));
+        $pageTitle = "Student List";
+        return view('student.index')->with(compact('students','sections', 'pageTitle'));
     }
 
     public function create()
@@ -59,7 +60,7 @@ class StudentController extends Controller
 
     }
 
-    
+
 
 
 }

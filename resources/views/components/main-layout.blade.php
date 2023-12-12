@@ -2,8 +2,7 @@
 
 <body>
     <div class="below_header">
-        <h1>User</h1>
-        @include('layouts.admin.formTabs')
+        @include('layouts.admin.formTabs', ['title' => ucfirst(Request::segment(1))])
     </div>
     @if (session()->has('success'))
         <div class="alert">
