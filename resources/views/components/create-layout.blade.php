@@ -2,7 +2,7 @@
 
 <body>
     <div class="below_header">
-        <h1 class="heading">Create User</h1>
+        {{-- <h1 class="heading">Create User</h1> --}}
         {{-- @include('layouts.admin.formTabs') --}}
     </div>
     @if ($errors->any())
