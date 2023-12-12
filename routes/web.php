@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SectionController;
@@ -62,3 +63,6 @@ Route::post('/section/store/',[SectionController::class,'store'])->name('section
 Route::get('/section/{id}/edit',[SectionController::class,'edit'])->name('section.edit');
 Route::put('/section/{id}/update',[SectionController::class,'update'])->name('section.update');
 Route::get('/section/{id}/delete',[SectionController::class,'delete'])->name('section.delete');
+
+//report
+Route::get('/report', [ReportController::class, 'index'])->name('report.index');

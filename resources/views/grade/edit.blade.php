@@ -11,7 +11,7 @@
         <div>
             <label for="name"> Grade Name<span class="star">*</span></label>
             <div class="input_container">
-            <input type="text" name="name" value="{{ $grades->name }}" required>
+            <input type="number" name="name" value="{{ $grades->name }}" required>
             </div>
         </div>
         <div>

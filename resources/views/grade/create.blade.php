@@ -10,7 +10,7 @@
         <div>
             <label for="name"> Grade Name<span class="plus">+</span></label>
             <div class="input_container">
-                <input type="text" name="name" placeholder="Enter Grade Name" required>
+                <input type="number" name="name" placeholder="Enter Grade Name" required>
             </div>
         </div>
         <div>

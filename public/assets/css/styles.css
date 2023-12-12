@@ -226,12 +226,9 @@ a {
     z-index: -10;
 }
 
-
 .below_header {
     display: flex;
     flex-direction: column;
-    text-align: center;
-    justify-content: center;
     align-items: center;
 }
 
@@ -819,4 +816,10 @@ option {
     margin-top: 1rem;
     font-weight: 600;
     text-align: center;
+}
+
+hr{
+    border: 1px solid var(--primary-color);
+    margin-top: -1rem;
+    margin-left: -5rem;
 }
