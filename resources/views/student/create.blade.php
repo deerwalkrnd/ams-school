@@ -1,4 +1,5 @@
 <x-create-layout>
+    <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="anchor_tag">
         <a href="/student">
             <h5 class="go_back">Go back</h5>

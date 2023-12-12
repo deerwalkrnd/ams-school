@@ -20,7 +20,8 @@ class SectionController extends Controller
         $sections = Section::all();
         $grades = Grade::all();
         $users = User::all();
-        return view('section.create')->with(compact('grades', 'sections', 'users'));
+        $pageTitle = "Add New Section";
+        return view('section.create')->with(compact('sections', 'grades', 'users', 'pageTitle'));
     }
     public function store(SectionRequest $request)
     {

@@ -18,7 +18,8 @@ class GradeController extends Controller
     public function create()
     {
         $grades = Grade::all();
-        return view('grade.create')->with(compact('grades'));
+        $pageTitle = "Add New Grade";
+        return view('grade.create')->with(compact('grades', 'pageTitle'));
     }
 
     public function store(GradeRequest $request)

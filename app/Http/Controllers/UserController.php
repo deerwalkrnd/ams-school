@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $users = User::all();
         $roles = Role::all();
-        $pageTitle = 'Create User';
+        $pageTitle = 'Add New User';
         return view('user.create')->with(compact('users', 'roles', 'pageTitle'));
     }
 

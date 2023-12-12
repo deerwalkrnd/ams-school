@@ -23,7 +23,8 @@ class StudentController extends Controller
         $grades = Grade::all();
         $sections=Section::all();
         $students = Student::all();
-        return view('student.create')->with(compact('students', 'grades','sections'));
+        $pageTitle="Add New Student";
+        return view('student.create')->with(compact('grades','sections','students','pageTitle'));
     }
     public function store(StudentRequest $request)
     {
