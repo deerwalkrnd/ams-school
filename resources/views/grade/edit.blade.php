@@ -1,4 +1,10 @@
 <x-edit-layout>
+    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <div class="anchor_tag">
+        <a href="/grade">
+            <h5 class="go_back">Go back</h5>
+        </a>
+    </div>
     <form action="{{ route('grade.update', ['id' => $grades->id]) }}" method="post">
         @csrf
         @method('PUT')

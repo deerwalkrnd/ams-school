@@ -13,18 +13,18 @@ class StudentController extends Controller
     public function index()
     {
         $students = Student::all();
-        $sections =Section::all();
+        $sections = Section::all();
         $pageTitle = "Student List";
-        return view('student.index')->with(compact('students','sections', 'pageTitle'));
+        return view('student.index')->with(compact('students', 'sections', 'pageTitle'));
     }
 
     public function create()
     {
         $grades = Grade::all();
-        $sections=Section::all();
+        $sections = Section::all();
         $students = Student::all();
-        $pageTitle="Add New Student";
-        return view('student.create')->with(compact('grades','sections','students','pageTitle'));
+        $pageTitle = "Add New Student";
+        return view('student.create')->with(compact('grades', 'sections', 'students', 'pageTitle'));
     }
     public function store(StudentRequest $request)
     {
@@ -37,7 +37,8 @@ class StudentController extends Controller
         $students = Student::find($id);
         $grades = Grade::all();
         $sections = Section::all();
-        return view('student.edit')->with(compact('students', 'grades','sections'));
+        $pageTitle = "Edit Student Information";
+        return view('student.edit')->with(compact('students', 'grades', 'sections', 'pageTitle'));
     }
     public function update(StudentRequest $request, $id)
     {
@@ -45,7 +46,6 @@ class StudentController extends Controller
         $student = Student::find($id);
         $student->update($data);
         return redirect(route('student.index'))->with('success', 'Student Edited Successfully');
-
     }
 
     public function delete($id)
@@ -55,13 +55,9 @@ class StudentController extends Controller
         return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
     }
 
-    public function bulkUpload(){
+    public function bulkUpload()
+    {
 
         return view('student.bulkUpload');
-
     }
-
-
-
-
 }
