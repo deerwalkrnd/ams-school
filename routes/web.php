@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\PasswordChangeController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StudentController;
@@ -66,3 +67,7 @@ Route::get('/section/{id}/delete',[SectionController::class,'delete'])->name('se
 
 //report
 Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+
+//password change
+Route::get('/change-password', [PasswordChangeController::class, 'index'])->name('pass-change.index');
+

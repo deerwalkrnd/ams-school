@@ -818,8 +818,8 @@ option {
     text-align: center;
 }
 
-hr{
-    border: 1px solid var(--primary-color);
-    margin-top: -1rem;
-    margin-left: -5rem;
+.hr_line{
+    height: 5px;
+    background-color: var(--primary-color);
+    margin-top: 1rem;
 }
