@@ -1,8 +1,9 @@
 <x-edit-layout>
     <h1 class="heading"> {{ $pageTitle }}</h1>
+    <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
         <a href="/user">
-            <h5 class="go_back">Go back</h5>
+            <h5 class="go_back">←</h5>
         </a>
     </div>
     <form action="{{ route('user.update', ['id' => $users->id]) }}" method="post">
@@ -36,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary" type="submit">Update</button>
+            <button class="btn btn-success" type="submit">Update</button>
         </div>
     </form>
 </x-edit-layout>

@@ -1,5 +1,6 @@
 <x-main-layout>
     <h1 class="heading"> {{ $pageTitle }}</h1>
+    <div class="underline mx-auto hr_line"></div>
     <a href="{{ route('student.create') }}" class="btn btn-primary add_button">Add</a>
     <div class="table_container mt-3">
         <table class="_table mx-auto amsTable" id="amsTable">
