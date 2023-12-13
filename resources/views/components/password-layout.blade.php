@@ -6,10 +6,7 @@
 @endif
 
 <body>
-    <div class="below_header">
-        @include('layouts.admin.formTabs', ['title' => ucfirst(Request::segment(1))])
-    </div>
-    {{ $slot }}
+    {{$slot}}
 </body>
 
 <script>

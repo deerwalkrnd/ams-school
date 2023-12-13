@@ -1,4 +1,11 @@
 <x-edit-layout>
+    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <div class="underline mx-auto hr_line"></div>
+    <div class="anchor_tag">
+        <a href="/section">
+            <h5 class="go_back">←</h5>
+        </a>
+    </div>
     <form action="{{ route('section.update', ['id' => $sections->id]) }}" method="post">
         @csrf
         @method('PUT')
@@ -36,7 +43,7 @@
             </select>
         </div>
         <br>
-        <button class="btn btn-primary" type="submit">Update</button>
+        <button class="btn btn-success" type="submit">Update</button>
 
     </form>
 

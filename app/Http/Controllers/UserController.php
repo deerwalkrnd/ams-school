@@ -47,7 +47,7 @@ class UserController extends Controller
     {
         $users = User::find($id);
         $roles = Role::all();
-        $pageTitle = 'Edit User';
+        $pageTitle = 'Edit User Information';
         return view('user.edit', compact('users', 'roles', 'pageTitle'));
     }
     public function update(Request $request, $id)

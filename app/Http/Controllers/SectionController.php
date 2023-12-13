@@ -35,7 +35,8 @@ class SectionController extends Controller
         $sections = Section::find($id);
         $grades = Grade::all();
         $users = User::all();
-        return view('section.edit')->with(compact('sections', 'grades', 'users'));
+        $pageTitle = "Edit Section Information";
+        return view('section.edit')->with(compact('sections', 'grades', 'users', 'pageTitle'));
     }
     public function update(SectionRequest $request, $id)
 {

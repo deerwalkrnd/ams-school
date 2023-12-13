@@ -1,8 +1,9 @@
 <x-create-layout>
     <h1 class="heading"> {{ $pageTitle }}</h1>
+    <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
         <a href="/grade">
-            <h5 class="go_back">Go back</h5>
+            <h5 class="go_back">←</h5>
         </a>
     </div>
     <form action="{{ route('grade.store') }}" method="post">
@@ -10,7 +11,7 @@
         <div>
             <label for="name"> Grade Name<span class="plus">+</span></label>
             <div class="input_container">
-                <input type="text" name="name" placeholder="Enter Grade Name" required>
+                <input type="number" name="name" placeholder="Enter Grade Name" required>
             </div>
         </div>
         <div>
@@ -25,5 +26,6 @@
                 <input type="date" name="start_date" placeholder="Start Date" required>
             </div>
         </div>
+        <button class="btn btn-success submit_button" type="submit">Add</button>
     </form>
 </x-create-layout>

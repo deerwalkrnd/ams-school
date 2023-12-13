@@ -15,16 +15,11 @@
                 <span class="nav_name">Forms</span>
             </a>
 
-             <a href="" class="nav_link">
-                 <i class='bx bx-comment-dots bx-sm' aria-hidden="true"></i>
-                <span class="nav_name">Feedback</span>
-            </a>
-
-            <a href="" class="nav_link">
+            <a href="{{route('report.index')}}" class="nav_link">
                 <i class='bx bx-bar-chart-alt-2 bx-sm'></i> <span class="nav_name">Report</span>
             </a>
 
-            <a href="" class="nav_link">
+            <a href="{{route('pass-change.index')}}" class="nav_link">
                 <i class="bx bx-key bx-sm" aria-hidden="true"></i>
                 <span class="nav_name">Change Password</span>
             </a>

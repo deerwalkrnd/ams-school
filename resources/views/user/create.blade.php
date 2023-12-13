@@ -1,8 +1,9 @@
 <x-create-layout>
     <h1 class="heading"> {{ $pageTitle }}</h1>
+    <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
         <a href="/user">
-            <h5 class="go_back">Go back</h5>
+            <h5 class="go_back">←</h5>
         </a>
     </div>
     <form action="{{ route('user.store') }}" method="post">
@@ -42,5 +43,6 @@
                 </div>
             </div>
         </div>
+        <button class="btn btn-success submit_button" type="submit">Add</button>
     </form>
 </x-create-layout>

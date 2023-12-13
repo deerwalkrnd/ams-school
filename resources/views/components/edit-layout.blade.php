@@ -2,12 +2,12 @@
 
 <body>
     <div class="below_header">
-        <h1>Edit User</h1>
-        @include('layouts.admin.formTabs')
+        {{-- <h1>Edit User</h1> --}}
+        {{-- @include('layouts.admin.formTabs') --}}
     </div>
     @if ($errors->any())
         @foreach ($errors->all() as $error)
-            <div class="alert">
+            <div class="alert alert-danger">
                 {{ $error }}
             </div>
         @endforeach
