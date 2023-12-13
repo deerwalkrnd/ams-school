@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-name  mt-4">
                     <div class="row align-items-center">
-                    <label for="student_csv" class=" col-md-2 form-label" >CSV File<span class="red_text"><b>*</b></span></label>
+                    <label for="student_csv" class=" col-md-2 form-label" >CSV File<span class="star"><b>*</b></span></label>
                     <input type="file" name="student_csv" class="form-control" id="student_csv" required>
                     </div>
                 </div>
