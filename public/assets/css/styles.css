@@ -760,7 +760,11 @@ input {
 .add_button {
     margin-top: 25px;
     margin-left: 90%;
-    width: 100px;
+    width: auto;
+}
+
+.button_container{
+    display: grid;
 }
 
 
