@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -40,9 +41,6 @@
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script>
-        let table = new DataTable('#amsTable');
-    </script>
 
     <title>@yield('title')</title>
 </head>
@@ -90,4 +88,8 @@
 
 
 </body>
+<script>
+    let table = new DataTable('#amsTable');
+</script>
+
 </html>
