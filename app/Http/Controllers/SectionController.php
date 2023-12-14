@@ -19,7 +19,9 @@ class SectionController extends Controller
     {
         $sections = Section::all();
         $grades = Grade::all();
-        $users = User::all();
+        $users = User::whereHas('roles', function ($query) {
+            $query->where('role', 'teacher');
+        })->get();
         $pageTitle = "Add New Section";
         return view('section.create')->with(compact('sections', 'grades', 'users', 'pageTitle'));
     }

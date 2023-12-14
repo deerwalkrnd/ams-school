@@ -7,25 +7,15 @@
         </a>
     </div>    <form action="{{ route('section.store') }}" method="post">
         @csrf
-        <div class="container">
-            <label for="name"> Section Name<span class="plus">+</span></label>
+        <div class="">
+            <label for="name"> Section Name<span class="star">*</span></label>
             <div class="input_container">
                 <input type="text" name="name" placeholder="Enter Section Name" required>
             </div>
         </div>
 
         <div class="form-group">
-            <label for="Choose Section Type">Choose Section Type<span class="plus">+</span></label>
-            <div class="input_container">
-                <select name="type" class="select_container">
-                    <option value="optional">Optional</option>
-                    <option value="compulsory">Compulsory</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="">Grade<span class="plus">+</span></label>
+            <label for="">Grade<span class="star">*</span></label>
             <div class="input_container">
                 <select name="grade_id" class="select_container">
                     @foreach ($grades as $grade)
@@ -36,7 +26,7 @@
         </div>
 
         <div class="form-group">
-            <label for="">Teacher<span class="plus">+</span></label>
+            <label for="">Teacher<span class="star">*</span></label>
             <div class="input_container">
                 <select name="user_id" class="select_container">
                     @foreach ($users as $user)

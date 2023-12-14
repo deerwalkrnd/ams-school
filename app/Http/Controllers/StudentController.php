@@ -63,7 +63,6 @@ class StudentController extends Controller
 
     public function getBulkUpload()
     {
-
         return view('student.bulkUpload');
     }
     public function bulkUpload(Request $request)

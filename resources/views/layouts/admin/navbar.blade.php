@@ -8,26 +8,27 @@
         <div class="nav_list">
 
             <a href="/home" class="nav_link">
-                <i class='bx bxs-dashboard bx-sm'></i> <span class="nav_name">Dashboard</span>
+                <i class='bx bxs-dashboard bx-sm'></i><span class="nav_name">&nbsp;Dashboard</span>
             </a>
-            <a href="{{route('user.index')}}" class="nav_link">
-                <i class='bx bx-file bx-sm' aria-hidden="true" ></i>
-                <span class="nav_name">Forms</span>
-            </a>
-
-            <a href="{{route('report.index')}}" class="nav_link">
-                <i class='bx bx-bar-chart-alt-2 bx-sm'></i> <span class="nav_name">Report</span>
+            <a href="{{ route('user.index') }}" class="nav_link">
+                <i class='bx bx-file bx-sm' aria-hidden="true"></i><span class="nav_name">&nbsp;Forms</span>
             </a>
 
-            <a href="{{route('pass-change.index')}}" class="nav_link">
-                <i class="bx bx-key bx-sm" aria-hidden="true"></i>
-                <span class="nav_name">Change Password</span>
+            <a href="{{ route('report.index') }}" class="nav_link">
+                <i class='bx bx-bar-chart-alt-2 bx-sm'></i><span class="nav_name">&nbsp;Report</span>
             </a>
 
-            <form action="{{ route('logout') }}" method="post">
-                @csrf
-                <button type="submit" class="btn nav_link "><i class='bx bx-log-out bx-sm'></i><span class="nav_name">Logout</span></button>
-            </form>
+            <a href="{{ route('pass-change.index') }}" class="nav_link">
+                <i class="bx bx-key bx-sm" aria-hidden="true"></i><span class="nav_name">&nbsp;Change Password</span>
+            </a>
+
+            <div class="logout_button">
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn nav_link "><i class='bx bx-log-out bx-sm'></i><span
+                            class="nav_name">&nbsp;&nbsp;Logout</span></button>
+                </form>
+            </div>
 
         </div>
     </nav>
