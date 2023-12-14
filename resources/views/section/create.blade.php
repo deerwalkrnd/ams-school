@@ -13,17 +13,6 @@
                 <input type="text" name="name" placeholder="Enter Section Name" required>
             </div>
         </div>
-
-        <div class="form-group">
-            <label for="Choose Section Type">Choose Section Type<span class="plus">+</span></label>
-            <div class="input_container">
-                <select name="type" class="select_container">
-                    <option value="optional">Optional</option>
-                    <option value="compulsory">Compulsory</option>
-                </select>
-            </div>
-        </div>
-
         <div class="form-group">
             <label for="">Grade<span class="plus">+</span></label>
             <div class="input_container">

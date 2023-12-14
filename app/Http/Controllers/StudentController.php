@@ -57,7 +57,6 @@ class StudentController extends Controller
 
     public function bulkUpload()
     {
-
         return view('student.bulkUpload');
     }
 }

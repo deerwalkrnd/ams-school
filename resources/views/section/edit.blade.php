@@ -15,17 +15,6 @@
                 <input type="text" name="name" value="{{ $sections->name }}" required>
             </div>
         </div>
-        <div>
-            <div class="form-group">
-                <label for="Choose Section Type">Choose Section Type<span class="star">*</span></label>
-                <div class="input_container">
-                    <select name="type" class="form-control">
-                        <option value="optional">Optional</option>
-                        <option value="compulsory">Compulsory</option>
-                    </select>
-                </div>
-            </div>
-        </div>
         <label for="">Grade<span class="star">*</span></label>
         <div class="input_container">
             <select name="grade_id">

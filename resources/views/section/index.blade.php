@@ -9,7 +9,6 @@
                 <tr class="table_title">
                     <th>S.N</th>
                     <th>Section Name</th>
-                    <th>Type</th>
                     <th>Grade</th>
                     <th>Teacher</th>
                     <th>Action</th>
@@ -20,7 +19,6 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $section->name }}</td>
-                        <td>{{ $section->type }}</td>
                         <td>{{ $section->grade->name }}</td>
                         <td>{{ $section->user->name }}</td>
                         <td class="">
@@ -31,7 +29,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan='4'>No Sections Available</td>
+                        <td colspan='5'>No Sections Available</td>
                     </tr>
                 @endforelse
             </tbody>

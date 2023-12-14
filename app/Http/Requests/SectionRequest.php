@@ -24,7 +24,6 @@ class SectionRequest extends FormRequest
     {
         return [
             'name' => 'required|regex:/^[A-Za-z\s]+$/|max:255',
-            'type' => 'required',
             'grade_id' => 'required',
             'user_id' => 'required',
         ];
