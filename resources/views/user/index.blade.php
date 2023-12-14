@@ -1,8 +1,8 @@
 <x-main-layout>
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
-    <div class="button_container container ">
-        <a href="{{ route('user.create') }}" class="btn btn-primary add_button">Add</a>
+    <div class="button_container ">
+        <a href="{{ route('user.create') }}" class="btn  add_button"><i class='bx bx-add-to-queue'></i>Add</a>
     </div>
     <div class="table_container mt-3">
         <table class="_table mx-auto amsTable" id="amsTable">
@@ -24,7 +24,6 @@
 
                         <td>
                             @foreach ($user->roles as $role)
-
                                 {{ ucfirst($role->role) }}
                             @endforeach
                         </td>
@@ -40,7 +39,7 @@
                 @endforelse
             </tbody>
         </table>
-    </div>
+        </div>
 
 </x-main-layout>
 
