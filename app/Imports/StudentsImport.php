@@ -8,6 +8,7 @@ use App\Models\Student;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\SkipsErrors;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnError;
@@ -18,7 +19,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
-class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, WithValidation, SkipsOnFailure
+class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, WithValidation, SkipsOnFailure, SkipsEmptyRows
 {
     use Importable,SkipsErrors, SkipsFailures;
 

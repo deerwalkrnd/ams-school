@@ -79,12 +79,17 @@ class StudentController extends Controller
         $studentImport = new StudentsImport;
         
         $studentImport->import($path);
-        
+
         if($studentImport->failures()->isNotEmpty()){
             return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
         }
         Storage::delete($path);
         return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully'); 
           
+    }
+
+    public function bulkSample(){
+          $file = public_path('files/sample.xlsx');
+          return response()->download($file);
     }
 } 

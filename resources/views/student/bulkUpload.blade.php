@@ -37,6 +37,9 @@
                 @endforeach
             </table>    
         @endif
+        <div class="button">
+        <a href="{{route('student.bulkSample')}}"><button class="btn btn-success">Download Sample</button></a> 
+        </div>
         <form action="{{route('student.bulkUpload')}}" method="POST" name="myform" class="form-group" enctype="multipart/form-data">
         @csrf
             <div class="row">
@@ -45,7 +48,7 @@
                     <label for="student_csv" class=" col-md-2 form-label" >CSV File<span class="red_text"><b>*</b></span></label>
                     <input type="file" name="student_csv" class="form-control" id="student_csv" required>
                     </div>
-                </div>
+                </div>   
             </div>
             <div class="d-grid col-md-1 button">
                 <button class="btn btn-success" type="submit">Add</button>
