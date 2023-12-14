@@ -13,6 +13,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
 
 
+
 class StudentController extends Controller
 {
     public function index()
@@ -76,9 +77,14 @@ class StudentController extends Controller
         $path=$request->file('student_csv')->storeAs('public/csv',$fileName);
 
         $studentImport = new StudentsImport;
-
+        
         $studentImport->import($path);
-            Storage::delete($path);
-        return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully');   
+        
+        if($studentImport->failures()->isNotEmpty()){
+            return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
+        }
+        Storage::delete($path);
+        return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully'); 
+          
     }
 } 
