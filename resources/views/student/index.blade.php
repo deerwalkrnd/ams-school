@@ -1,8 +1,10 @@
 <x-main-layout>
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
-    <a href="{{ route('student.create') }}" class="btn btn-primary add_button">Add</a>
-    <div class="table_container mt-3">
+    <div class="button_container container ">
+        <a href="{{ route('student.create') }}" class="btn btn-primary add_button">Add</a>
+        <a href="{{ route('student.bulkUpload') }}" class="btn btn-primary add_button">Bulk Upload</a>
+    </div>    <div class="table_container mt-3">
         <table class="_table mx-auto amsTable" id="amsTable">
             <thead>
                 <tr class="table_title">
