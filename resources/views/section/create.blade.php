@@ -15,16 +15,6 @@
         </div>
 
         <div class="form-group">
-            <label for="Choose Section Type">Choose Section Type<span class="star">*</span></label>
-            <div class="input_container">
-                <select name="type" class="select_container">
-                    <option value="optional">Optional</option>
-                    <option value="compulsory">Compulsory</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-group">
             <label for="">Grade<span class="star">*</span></label>
             <div class="input_container">
                 <select name="grade_id" class="select_container">

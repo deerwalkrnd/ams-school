@@ -14,7 +14,6 @@ class Section extends Model
     ];
     protected $fillable=[
         'name',
-        'type',
         'grade_id',
         'user_id',
     ];
