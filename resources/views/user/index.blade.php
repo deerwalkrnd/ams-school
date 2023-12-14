@@ -21,9 +21,11 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+
                         <td>
                             @foreach ($user->roles as $role)
-                                {{ ucfirst($role->roles) }}
+
+                                {{ ucfirst($role->role) }}
                             @endforeach
                         </td>
                         <td class="">

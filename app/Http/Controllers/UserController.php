@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\models\User;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -27,7 +28,11 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|regex:/^[A-Za-z\s]+$/|max:255',
+            'name' => [
+                'required',
+                'regex:/^[A-Za-z\s]+$/',
+                'max:255',
+            ],
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
             'role' => 'required',
@@ -38,7 +43,6 @@ class UserController extends Controller
         $user->email = trim($request->input('email'));
         $user->password = bcrypt(trim($request->input('password')));
         $user->save();
-
         $roles = $request->input('role', []);
         $user->roles()->sync($roles);
         return redirect('/user')->with('success', 'Admin Successfully Created');
@@ -54,7 +58,7 @@ class UserController extends Controller
     {
         $users = User::find($id);
         $request->validate([
-            'name' => 'required|regex:/^[A-Za-z\s]+$/|max:255',
+            'name' => ['required|regex:/^[A-Za-z\s]+$/|max:255',Rule::unique('users', 'name')->ignore($users->id),],
             'email' => 'required|email|unique:users,email,' . $users->id,
             'role' => 'required',
         ]);

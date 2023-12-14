@@ -11,7 +11,7 @@
         <div class="container">
             <label for="name"> Full Name<span class="plus">+</span></label>
             <div class="input_container">
-                <input type="text" name="name" placeholder="Enter Grade Name" required>
+                <input type="text" name="name" placeholder="Enter Teacher Name" required>
             </div>
         </div>
         <div class="container">

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
+use Illuminate\Validation\Rule;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -23,7 +24,11 @@ class SectionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|regex:/^[A-Za-z\s]+$/|max:255',
+            'name' => ['string',
+            'required',
+            'max:255',
+            Rule::unique('sections','name'),
+        ],
             'grade_id' => 'required',
             'user_id' => 'required',
         ];
