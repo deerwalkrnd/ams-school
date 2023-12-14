@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
+use App\Imports\StudentsImport;
 use App\Models\Grade;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\File;
+
+
 
 class StudentController extends Controller
 {
@@ -55,8 +61,34 @@ class StudentController extends Controller
         return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
     }
 
-    public function bulkUpload()
+    public function getBulkUpload()
     {
         return view('student.bulkUpload');
     }
-}
+    public function bulkUpload(Request $request)
+    {
+        $request->validate([
+            'student_csv' => 'required|mimes:csv,xlsx,txt'
+        ]);
+
+        $extension =$request->file('student_csv')->extension();
+        $fileName=time().'.'.$extension;
+        $path=$request->file('student_csv')->storeAs('public/csv',$fileName);
+
+        $studentImport = new StudentsImport;
+        
+        $studentImport->import($path);
+
+        if($studentImport->failures()->isNotEmpty()){
+            return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
+        }
+        Storage::delete($path);
+        return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully'); 
+          
+    }
+
+    public function bulkSample(){
+          $file = public_path('files/sample.xlsx');
+          return response()->download($file);
+    }
+} 

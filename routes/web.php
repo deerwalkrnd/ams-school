@@ -56,7 +56,9 @@ Route::get('/student/{id}/edit',[StudentController::class,'edit'])->name('studen
 Route::put('/student/{id}/update',[StudentController::class,'update'])->name('student.update');
 Route::get('/student/{id}/delete',[StudentController::class,'delete'])->name('student.delete');
 
-Route::get('/student/bulkUpload/',[StudentController::class,'bulkUpload'])->name('student.bulkUpload');
+Route::get('/student/bulk',[StudentController::class,'getBulkUpload'])->name('student.getBulkUpload');
+Route::post('/student/bulk',[StudentController::class,'bulkUpload'])->name('student.bulkUpload');
+Route::get('/student/bulk-sample-download',[StudentController::class,'bulkSample'])->name('student.bulkSample');
 
 Route::get('/section',[SectionController::class,'index'])->name('section.index');
 Route::get('/section/create/',[SectionController::class,'create'])->name('section.create');
