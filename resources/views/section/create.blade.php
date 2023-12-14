@@ -7,7 +7,7 @@
         </a>
     </div>    <form action="{{ route('section.store') }}" method="post">
         @csrf
-        <div class="container">
+        <div class="">
             <label for="name"> Section Name<span class="plus">+</span></label>
             <div class="input_container">
                 <input type="text" name="name" placeholder="Enter Section Name" required>
