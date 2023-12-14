@@ -1,10 +1,11 @@
 <x-main-layout>
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
-    <div class="button_container container ">
-        <a href="{{ route('grade.create') }}" class="btn btn-primary add_button">Add</a>
-    </div>    <div class="table_container mt-3">
-        <table class="_table mx-auto amsTable" id="amsTable">
+    <div class="button_container  ">
+        <a href="{{ route('grade.create') }}" class="btn add_button"><i class='bx bx-add-to-queue'></i>Add</a>
+    </div>
+    <div class="table_container mt-3">
+        <table class="_table mx-auto" id="amsTable">
             <thead>
                 <tr class="table_title">
                     <th>S.N</th>
@@ -23,7 +24,7 @@
                         <td>{{ $grade->end_date }}</td>
                         <td class="">
                             <a href="{{ route('grade.edit', ['id' => $grade->id]) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('grade.delete', ['id' => $grade->id]) }}" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('grade.delete', ['id' => $grade->id]) }}"class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 @empty

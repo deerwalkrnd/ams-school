@@ -22,14 +22,14 @@
                 <label for="role" class=" col-md-3 form-label">Role<span class="star">*</span></label>
                 <div class="input_container">
                     <div class="col-md-2 form-check form-check-inline">
-                        <input class="form-check-input" id="admin" type="checkbox" name="role[]" value="1"
+                        <input class="form-check-input" id="admin" type="radio" name="role[]" value="1"
                             {{ in_array(1, old('roles', $users->roles->pluck('id')->toArray())) ? 'checked' : '' }}>
                         <label class="form-check-label" for="admin">
                             Admin
                         </label>
                     </div>
                     <div class="col-md-3 form-check form-check-inline ms-1">
-                        <input class="form-check-input" id="teacher" type="checkbox" name="role[]" value="2"
+                        <input class="form-check-input" id="teacher" type="radio" name="role[]" value="2"
                             {{ in_array(2, old('roles', $users->roles->pluck('id')->toArray())) ? 'checked' : '' }}>
                         <label class="form-check-label" for="teacher">
                             Teacher
