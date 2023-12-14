@@ -33,6 +33,8 @@ body {
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
     /* transition: .5s; */
+    width: auto;
+    height: auto;
 }
 
 .row {
@@ -269,7 +271,8 @@ a {
 
 .graphs,
 .table_container {
-    margin-right: 2%;
+    /* margin-right: 2%; */
+    margin-top: 50px;
 }
 
 .table_title {

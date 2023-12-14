@@ -34,7 +34,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan='8'>No Teachers Available</td>
+                        <td colspan='8'>No Students Available</td>
                     </tr>
                 @endforelse
             </tbody>

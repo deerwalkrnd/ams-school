@@ -125,7 +125,7 @@
 
 
     <!-- view teachers section -->
-    <div class="table_container mt-3">
+    <div class="table_container">
         <table class="_table mx-auto amsTable" id="amsTable">
             <thead>
                 <tr class="table_title">
