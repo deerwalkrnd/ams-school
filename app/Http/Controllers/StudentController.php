@@ -20,8 +20,9 @@ class StudentController extends Controller
     {
         $students = Student::all();
         $sections = Section::all();
+        $grades = Grade::all();
         $pageTitle = "Student List";
-        return view('student.index')->with(compact('students', 'sections', 'pageTitle'));
+        return view('student.index')->with(compact('students', 'sections', 'pageTitle','grades'));
     }
 
     public function create()
@@ -76,19 +77,19 @@ class StudentController extends Controller
         $path=$request->file('student_csv')->storeAs('public/csv',$fileName);
 
         $studentImport = new StudentsImport;
-        
+
         $studentImport->import($path);
 
         if($studentImport->failures()->isNotEmpty()){
             return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
         }
         Storage::delete($path);
-        return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully'); 
-          
+        return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully');
+
     }
 
     public function bulkSample(){
           $file = public_path('files/sample.xlsx');
           return response()->download($file);
     }
-} 
+}

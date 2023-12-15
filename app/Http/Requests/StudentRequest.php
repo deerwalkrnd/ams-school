@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StudentRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class StudentRequest extends FormRequest
             'name' => 'required|regex:/^[A-Za-z\s]+$/|max:255',
             'email' => 'required|email|',
             'section_id' => 'required',
-            'roll_no' => 'required|numeric',
+            'roll_no' => ['required','numeric','max:255',Rule::unique('students','roll_no'),],
         ];
     }
 }

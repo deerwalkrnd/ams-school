@@ -31,17 +31,17 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, With
                 ['name', $row['section']],
                 ['grade_id', $grade->id]
             ])->first();
-    
+
             unset($row['grade']);
             unset($row['section']);
-    
+
             if ($grade != null) {
                 $row['grade_id'] = $grade->id;
             }
             if ($section != null) {
                 $row['section_id'] = $section->id;
             }
-            
+
             Validator::make($row->toArray(), [
                 'name' => ['required'],
                 'email' => ['required','email','unique:students,email'],
@@ -54,11 +54,11 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, With
                 'name' => $row['name'],
                 'roll_no' => $row['roll_no'],
                 'email' => $row['email'],
-                'section_id' => $row['section_id'], 
+                'section_id' => $row['section_id'],
                 'status' => 'active',
             ]);
 
-        
+
         }
     }
     public function rules(): array{
@@ -67,7 +67,7 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, With
             '*.roll_no' => ['unique:students,roll_no']
         ];
     }
-   
-     
+
+
 
 }
