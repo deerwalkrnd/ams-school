@@ -14,6 +14,7 @@ class LoginResponse implements LoginResponseContract
     public function toResponse($request)
     {
         $user = User::where('email', $request->email)->first();
+
         $home = $user->roles->first()->role == "admin" ? '/home' : '/dashboard';
  
         return redirect()->intended($home);

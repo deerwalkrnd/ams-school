@@ -9,10 +9,10 @@ class Section extends Model
 {
     use HasFactory;
 
-    protected $hidden=[
+    protected $hidden = [
         'id',
     ];
-    protected $fillable=[
+    protected $fillable = [
         'name',
         'grade_id',
         'user_id',
@@ -22,12 +22,14 @@ class Section extends Model
     {
         return $this->belongsTo(Grade::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function student(){
+
+    public function student()
+    {
         return $this->hasMany(Student::class);
     }
-
 }

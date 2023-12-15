@@ -33,6 +33,14 @@
                     <tr>
 
                         <td colspan='5'>No Sections Available</td>
+                        {{-- Colspan doesn't work with DataTables.  
+                        The following trick is used to suppress column count error.
+                        --}}
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                    
                     </tr>
                 @endforelse
             </tbody>

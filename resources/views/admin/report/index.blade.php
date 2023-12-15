@@ -7,116 +7,116 @@
         <h1 class="heading">Attendance Report</h1>
     </div>
     <hr class="">
-    <div class="row">
-        <div class="col-md-6 mt-5">
-            <div class="align-items-center">
-                <label for="batch" class=" col-md-4 form-label">Grade</label>
-
-                <select id="batch" name="batch" class="col-md-4 form-control form-select  form-select-sm "
-                    onchange="evaluateAttendanceFilter()">
-                    <option disabled selected>--Choose Grade--</option>
-                    {{-- @foreach ($batches as $batch)
-                            <option value="{{$batch->id}}"> {{$batch->name }} - {{$batch->stream->name}}</option>
-                        @endforeach --}}
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6 mt-5">
-            <div class="align-items-center">
-                <label for="student" class=" col-md-4 form-label">Student</label>
-
-                <select id="student" name="student" class="col-md-4 form-control form-select  form-select-sm ">
-                    <option disabled selected>--Choose Student--</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-6 my-5 ">
-            <div class=" align-items-center">
-                <label for="subject" class=" col-md-4 form-label">Subject</label>
-
-                <select id="subject" name="subject" class="col-md-4 form-control form-select  form-select-sm ">
-                    <option disabled selected>--Choose Subject--</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="col-md-3 my-5">
-            <div class="row align-items-center">
-                <label for="start_date" class="col form-label"> Start Date</label>
-                <input id="start_date" name="start_date" type="date" class="col form-control form-control-sm"
-                    onchange="evaluateDate()">
-            </div>
-        </div>
-        <div class="col-md-3 my-5">
-            <div class="row align-items-center">
-                <label for="end_date" class="col-md-4 form-label"> End Date</label>
-                <input id="end_date" name="end_date" type="date" class="col-md-4 form-control form-control-sm"
-                    onchange="evaluateDate()">
-            </div>
-        </div>
-    </div>
-    {{-- <div class="row">
-        <div class="col-md-7">
-            <div class="input-group input-group-sm mb-3">
-                <label for="below_50" class="col-md-4 form-label">Attendance Present Percentage</label>
-                <input type="text" class="form-control" name="attendanceFilter" id="attendanceFilter"
-                    placeholder="Enter Present Percentage" onchange="evaluateAttendanceFilter()">
-                <span class="input-group-text" id="basic-addon2">%</span>
-            </div>
-        </div>
-    </div> --}}
-    {{-- <div class="row">
-        <div class="col-md-12">
-            <label for="Attendance Subject Filter All">Apply Attendance Percentage Filter For All Subject</label>
-            <input type="checkbox" name="attendanceFilterForAllSubject" id="attendanceFilterForAllSubject" value="1"
-                onchange="applyAttendanceFilter(this.value)">
-        </div>
-    </div> --}}
-    <div class="row w-100">
-        <div class="offset-md-6 col-md-6 mb-5 pe-5 d-flex justify-content-end">
-            {{-- <button class="btn btn-primary px-3 py-2 me-5" id="search_submit" type="submit">Search</button> --}}
-            <a href="#" class="btn btn-success px-3 py-2" onclick="downloadReport()">
-                <i class="fas fa-file-download me-2"></i>Download
-            </a>
-        </div>
-    </div>
-    </form>
-    {{-- <form action="{{ route('report.download')}}" method="POST" id="reportDownloadForm">
+    <form action="{{ route('report.search') }}">
         @csrf
-        <input type="hidden" id="batchDownload" name="batch">
+        <div class="row">
+            <div class="col-md-6 mt-5">
+                <div class="align-items-center">
+                    <label for="grade" class=" col-md-4 form-label">Grade</label>
+
+                    <select id="grade" name="grade" class="col-md-4 form-control form-select  form-select-sm ">
+                        <option disabled selected>--Choose Grade--</option>
+                        @foreach ($grades as $grade)
+                            @foreach ($grade->section as $section)
+                                <option value="{{ $section->id }}"> Grade {{ $grade->name }} - Section
+                                    {{ $section->name }}</option>
+                            @endforeach
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6 mt-5">
+                <div class="align-items-center">
+                    <label for="student" class=" col-md-4 form-label">Student</label>
+
+                    <select id="student" name="student" class="col-md-4 form-control form-select  form-select-sm ">
+                        <option disabled selected>--Choose Student--</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-3 my-5">
+                <div class="row align-items-center">
+                    <label for="start_date" class="col form-label"> Start Date</label>
+                    <input id="start_date" name="start_date" type="date" class="col form-control form-control-sm"
+                        onchange="evaluateDate()">
+                </div>
+            </div>
+            <div class="col-md-3 my-5">
+                <div class="row align-items-center">
+                    <label for="end_date" class="col-md-4 form-label"> End Date</label>
+                    <input id="end_date" name="end_date" type="date" class="col-md-4 form-control form-control-sm"
+                        onchange="evaluateDate()">
+                </div>
+            </div>
+        </div>
+        <div class="row w-100">
+            <div class="offset-md-6 col-md-6 mb-3 pe-5 d-flex justify-content-end">
+                <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
+
+            </div>
+        </div>
+    </form>
+    <form action="{{route('admin-report.download')}}" method="POST" id="reportDownloadForm">
+        @csrf
+        <input type="hidden" id="gradeDownload" name="grade">
         <input type="hidden" id="studentDownload" name="student">
-        <input type="hidden" id="subjectDownload" name="subject">
         <input type="hidden" id="startDateDownload" name="start_date">
         <input type="hidden" id="endDateDownload" name="end_date">
-    </form> --}}
-    <table class="_table mx-auto amsTable" id="amsTable">
+        <div class="offset-md-6 col-md-6 mb-5 pe-5 d-flex justify-content-end">
+            <button class="btn btn-success px-3 py-2" id="download_submit">
+                <i class="fas fa-file-download me-2"></i>Download
+            </button>
+        </div>
+    </form>
+    <table class="_table mx-auto mb-5">
         <thead>
             <tr class="table_title">
-                <th>S.N</th>
                 <th>Student's Name</th>
-                <th>Roll Number</th>
-                <th>Email Address</th>
-                <th>Section</th>
-                <th>Status</th>
+                @forelse ($attendanceDates as $date)
+                    <th colspan="2" class="text-center border-end">
+                        {{ $date }}
+                    </th>
+                @empty
+                    <td colspan="3" class="text-center">
+                        <h5>
+                            No Attendance Taken
+                        </h5>
+                    </td>
+                @endforelse
             </tr>
         </thead>
         <tbody>
-            <td>1</td>
-            <td>Student 1</td>
-            <td>1</td>
-            <td>
-                <a href="mailto:
-                    student@gmail.com">student@gmail.com</a>
-            </td>
-            <td>A</td>
-            <td>Present</td>
-            </tr>
-            {{-- @empty
+            @foreach ($students as $student)
                 <tr>
-                    <td colspan='4'>No Teachers Available</td>
+                    <td class="border-end">{{ $student->name }}</td>
+                    @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
+                        <td class="border-end">
+                            @if ($dateOfAttendance['present'] > 0)
+                                @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
+                                    <span class="attendanceSymbol presentSymbol">P</span>
+                                @endfor
+                            @endif
+                            @if ($dateOfAttendance['absent'] > 0)
+                                @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
+                                    <span class="attendanceSymbol absentSymbol">A</span>
+                                @endfor
+                            @endif
+
+                        </td>
+                    @empty
+                        <td class="text-center border-end"> Attendance has not been taken. </td>
+                    @endforelse
                 </tr>
-                @endforelse --}}
+            @endforeach
         </tbody>
+        <tfoot>
+            <tr>
+                <td class="border-end"> Total Classes</td>
+                <td colspan="{{ $attendanceDates->count() }}">
+                    {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+            </tr>
+        </tfoot>
     </table>
 
 @endsection
@@ -124,44 +124,35 @@
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type='text/javascript'>
         $(document).ready(function() {
-            $('#subject').select2();
-            $('#batch').select2();
+            $('#grade').select2();
             $('#student').select2();
 
         });
     </script>
     {{-- Script To Update subject,student and dates on change --}}
-    {{-- <script>
-        $(document).ready(function () {
+    <script>
+        $(document).ready(function() {
             //get the parameters from the browser url
-            var batch = getUrlParameter('batch');
+            var grade = getUrlParameter('grade');
             var student = getUrlParameter('student');
-            var subject = getUrlParameter('subject');
             var startDate = getUrlParameter('start_date');
             var endDate = getUrlParameter('end_date');
-            var attendanceFilter = getUrlParameter('attendanceFilter');
-            var attendanceFilterForAllSubject = getUrlParameter('attendanceFilterForAllSubject');
             //set the end and start date max to today
             let endDateInput = document.getElementById('end_date');
             let startDateInput = document.getElementById('start_date');
             endDateInput.max = new Date().toISOString().split("T")[0];
             startDateInput.max = new Date().toISOString().split("T")[0];
             //set the hidden inputs of download form
-            document.getElementById('batchDownload').value = batch;
+            document.getElementById('gradeDownload').value = grade;
             document.getElementById('studentDownload').value = student;
-            document.getElementById('subjectDownload').value = subject;
             document.getElementById('startDateDownload').value = startDate;
             document.getElementById('endDateDownload').value = endDate;
 
-            if (batch) {
-                $('#batch').val(batch).trigger('change');
-                batchChange(batch).then(() => {
+            if (grade) {
+                $('#grade').val(grade).trigger('change');
+                gradeChange(grade).then(() => {
                     if (student) {
                         $('#student').val(student).trigger('change');
-                    }
-
-                    if (subject) {
-                        $('#subject').val(subject).trigger('change');
                     }
 
                     if (startDate) {
@@ -170,35 +161,23 @@
                     if (endDate) {
                         $('#end_date').val(endDate);
                     }
-
-                    if (attendanceFilter) {
-                        $('#attendanceFilter').val(attendanceFilter);
-                        $('#attendanceValue').text('No student has attendance below ' + attendanceFilter + '%.');
-                    }
-
-                    if (attendanceFilterForAllSubject) {
-                        $('#attendanceFilterForAllSubject').prop("checked", true);
-                    }
                 });
             }
         });
 
-        $('#batch').change(function () {
+        $('#grade').change(function() {
             //first run ajax
-            batchChange($(this).val());
+            gradeChange($(this).val());
             //then set the hidden value
-            $('#batchDownload').val($(this).val());
+            $('#gradeDownload').val($(this).val());
         });
 
-        $('#student').change(function () {
+        $('#student').change(function() {
             //set the hidden value
             $('#studentDownload').val($(this).val());
         });
 
-        $('#subject').change(function () {
-            //set the hiddent value
-            $('#subjectDownload').val($(this).val());
-        })
+
 
         function getUrlParameter(sParam) {
             var sPageURL = window.location.search.substring(1),
@@ -216,13 +195,13 @@
             return false;
         };
 
-        async function fetchBatch(batchValue) {
+        async function fetchGrade(gradeValue) {
             let result;
             try {
                 result = await $.ajax({
-                    url: "{{ route('report.batchSearch') }}",
+                    url: "{{ route('report.gradeSearch') }}",
                     data: {
-                        batch: batchValue
+                        grade: gradeValue
                     },
                     datatype: 'json',
                 });
@@ -232,40 +211,32 @@
             return result;
         }
 
-        async function batchChange(batchValue) {
-            $('#subject').empty();
+        async function gradeChange(gradeValue) {
             $('#student').empty();
-            var $subject = $('#subject');
             var $student = $('#student');
 
-            await fetchBatch(batchValue)
+            await fetchGrade(gradeValue)
                 .then((data) => {
-                    if (jQuery.isEmptyObject(data.subjects)) {
-                        $subject.html('<option selected disabled>---No Subject assigned to the Batch---</option>')
-                    } else {
-                        $subject.html('<option selected disabled>---Choose Subject---</option>');
-                        $.each(data.subjects, function (id, value) {
-                            $subject.append('<option value="' + id + '">' + value + '</option>');
-                        });
-                    }
 
                     if (jQuery.isEmptyObject(data.students)) {
-                        $student.html('<option selected disabled>---No Student assigned to the Batch---</option>')
+                        $student.html('<option selected disabled>---No Student assigned to the Grade---</option>')
 
                     } else {
                         $student.html('<option selected disabled>---Choose Student---</option>');
-                        $.each(data.students, function (id, value) {
+                        $.each(data.students, function(id, value) {
                             $student.append('<option value="' + id + '">' + value + '</option>');
                         });
                     }
-                    $('#start_date').attr({"min": data.start_date});
+                    $('#start_date').attr({
+                        "min": data.start_date
+                    });
 
                 });
 
             $('#subject').val("");
             $('#student').val("");
         }
-    </script> --}}
+    </script>
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -303,14 +274,14 @@
 
         function evaluateAttendanceFilter() {
             let attendanceFilter = document.getElementById('attendanceFilter');
-            let batch = document.getElementById('batch');
+            let grade = document.getElementById('grade');
             attendanceFilterVal = attendanceFilter.value;
-            batchVal = batch.selectedIndex;
+            gradeVal = grade.selectedIndex;
             console.log(attendanceFilterVal);
-            if (batchVal <= 0 && attendanceFilterVal) {
+            if (gradeVal <= 0 && attendanceFilterVal) {
                 Toast.fire({
                     icon: 'error',
-                    title: 'Please select a batch to filter students.'
+                    title: 'Please select a grade to filter students.'
                 });
 
                 submitBtn.disabled = true;

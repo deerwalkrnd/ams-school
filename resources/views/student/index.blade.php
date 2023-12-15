@@ -35,7 +35,17 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan='4'>No Student Available</td>
+                        <td colspan="7" align="center">No Students Available</td>
+                        {{-- Colspan doesn't work with DataTables.  
+                        The following trick is used to suppress column count error.
+                        --}}
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+
                     </tr>
                 @endforelse
             </tbody>

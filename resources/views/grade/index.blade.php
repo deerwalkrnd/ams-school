@@ -23,13 +23,21 @@
                         <td>{{ $grade->start_date }}</td>
                         <td>{{ $grade->end_date }}</td>
                         <td class="">
-                            <a href="{{ route('grade.edit', ['id' => $grade->id]) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('grade.delete', ['id' => $grade->id]) }}"class="btn btn-danger">Delete</a>
+                            <a href="{{ route('grade.edit',  $grade->id) }}" class="btn btn-success">Edit</a>
+                            <a href="{{ route('grade.delete', $grade->id) }}"
+                                class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan='5'>No Grades Available</td>
+                        {{-- Colspan doesn't work with DataTables.  
+                        The following trick is used to suppress column count error.
+                        --}}
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
+                        <td style="display: none;"></td>
                     </tr>
                 @endforelse
             </tbody>

@@ -3,9 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -43,7 +46,8 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function section(){
+    public function section()
+    {
         return $this->hasOne(Section::class);
     }
 
@@ -52,13 +56,28 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function students()
+    {
+        return $this->hasManyThrough(Student::class, Section::class);
+    }
+
+    /**
+     * Defines one-to-many relationship between teachers and attendance
+     *
+     * @return void
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'teacher_id', 'id');
+    }
+
     /**
      * Check if user has a given role
      *
-     * @param  mixed $role
+     * @param  string $role
      * @return void
      */
-    public function hasRole($role)
+    public function hasRole(string $role)
     {
 
         if ($this->roles()->where('role', $role)->first()) {
@@ -68,6 +87,42 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * Get all the attendances date
+     * 
+     * Set a limit to the number of attendance dates to get
+     * @param integer $limit
+     * @param date $startDate
+     * @param date $endDate
+     * 
+     * @return mixed
+     */
+    public function getAllAttendanceDates($startDate, $endDate, $limit=50)
+    {
+        $startDate = $startDate ?? Auth::user()->section->grade->start_date;
+        $endDate = $endDate ?? date('Y-m-d');
 
+        $attendance = $this->attendances
+                            ->whereBetween('date', [$startDate, $endDate])
+                            ->groupBy(function ($query) {
+                                return Carbon::parse($query->date)->format('m/d');
+                            })
+                            ->take($limit);
 
+        return $attendance->keys();
+    }
+
+    /**
+     * Get total classes count
+     * @param date $startDate
+     * @param date $endDate
+     * 
+     * @return mixed
+     */
+    public function getTotalClasses($startDate, $endDate)
+    {
+        $startDate = $startDate ?? Auth::user()->section->grade->start_date;
+        $endDate = $endDate ?? date('Y-m-d');
+        return $this->attendances->whereBetween('date', [$startDate, $endDate])->count() ?? "-";
+    }
 }

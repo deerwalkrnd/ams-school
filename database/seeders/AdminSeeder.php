@@ -20,5 +20,12 @@ class AdminSeeder extends Seeder
         $admin->save(); 
         $admin->roles()->attach('1');
 
+        $teacher = new User();
+        $teacher->name = "Test";
+        $teacher->email = "test@deerwalk.edu.np";
+        $teacher->password = bcrypt("teacher");
+        $teacher->save();
+        $teacher->roles()->attach('2');
+
     }
 }
