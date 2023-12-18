@@ -51,7 +51,7 @@ class ReportController extends Controller
         $students = $students->get()
             ->sortBy('roll_no');
 
-        
+
         $startDate = $startDate ?? $teacher->section->grade->start_date;
 
         $attendanceDates = $teacher->getAllAttendanceDates($startDate, $endDate);
