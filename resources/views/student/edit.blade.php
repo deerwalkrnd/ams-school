@@ -21,14 +21,15 @@
         <div class="input_container">
             <input type="email" name="email" value="{{ $students->email }}">
         </div>
-        <label>section<span class="star">*</span></label>
-        <div class="input_container">
-            <select name="section_id">
+        <label for="section">Section<span class="star">*</span></label>
+            <div class="input_container">
+            <select name="section_id" class="select_container" >
                 @foreach ($sections as $section)
-                    <option value="{{ $section->id }}">{{ $section->name }}</option>
+                    <option value="{{ $section->id }}">Grade:{{$section->grade->name}}-Section:{{ $section->name }}</option>
                 @endforeach
             </select>
-        </div>
+            </div>
+
         <br>
         <button class="btn btn-success" type="submit">Update</button>
 
