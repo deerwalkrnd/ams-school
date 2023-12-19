@@ -27,10 +27,10 @@
                 @foreach ($attendanceDates as $date=>$attendanceDate)
                     <th class="border-end"> {{$date}}</th>
                 @endforeach
-                
+
                 @if($attendanceDates->isEmpty())
                     <th colspan="1"></th>
-                @endif                    
+                @endif
                 <th colspan="1">
                     @if(!$attendanceDates->has(now()->format('M/d')))
                         {{date('M/d')}}
@@ -69,7 +69,6 @@
                 <td>{{ $student->getAbsentDays(auth()->user()->id) }}</td>
             </tr>
             @endforeach
-            
         </table>
         <div class="row justify-content-center">
             @if ( !$attendanceDates->has(now()->format('M/d')))
@@ -99,7 +98,7 @@
                                 toast.addEventListener('mouseleave', Swal.resumeTimer)
                             }
                         });
-                      
+
 
         let imageLink = {
             0: "A.svg",
@@ -111,16 +110,18 @@
             let attendanceState = el.getAttribute("data-attendance-state");
 
             attendanceState = attendanceState == 1 ? 0 : 1;
-
             el.setAttribute("data-attendance-state", attendanceState);
             el.children[0].setAttribute("src", "http://" +window.location.host +"/assets/images/" +imageLink[attendanceState]);
+
+
+
         }
 
         // Submit Attendance
         let submit = document.getElementById("attendance_submit");
         submit.addEventListener("click", function(event){
             event.preventDefault();
-                        
+
             Swal.fire({
                 title:"Are you Sure?",
                 text:"Once submitted, it cannot be changed.",
@@ -134,7 +135,7 @@
                 if(result.isConfirmed){
                     let student = prepareData();
                     // console.log(student);
-                    $.ajaxSetup({                   
+                    $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': '{{csrf_token()}}'
                         }
@@ -188,7 +189,7 @@
 
                     let attendanceStates = $(this).find('td.student_attendance_status').each(function(){
                         let attendanceState = $(this).children(".attendance-state").attr("data-attendance-state");
-                        
+
                         if(attendanceState == 1)
                         {
                             studentAttendanceState.present++;
@@ -200,7 +201,7 @@
                     });
                     student.push({'rollNo': rollNo,'attendanceStatus':studentAttendanceState});
                 }
-                
+
             });
 
             return student;
