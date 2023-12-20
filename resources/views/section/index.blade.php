@@ -1,4 +1,5 @@
 <x-main-layout>
+    @section('title','Section List')
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="button_container ">
@@ -32,15 +33,15 @@
                 @empty
                     <tr>
 
-                        <td colspan='5'>No Sections Available</td>
-                        {{-- Colspan doesn't work with DataTables.  
+                        <td colspan='5' align="center">No Sections Available</td>
+                        {{-- Colspan doesn't work with DataTables.
                         The following trick is used to suppress column count error.
                         --}}
                         <td style="display: none;"></td>
                         <td style="display: none;"></td>
                         <td style="display: none;"></td>
                         <td style="display: none;"></td>
-                    
+
                     </tr>
                 @endforelse
             </tbody>

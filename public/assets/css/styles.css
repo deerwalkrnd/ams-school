@@ -218,6 +218,16 @@ a {
 
 /* Below header part  */
 
+.lightBlue_section {
+    /* background-color: var(--light-primary); */
+    background: linear-gradient(180deg, #E9F6FF -13.37%, rgba(253, 254, 255, 0) 95.21%);
+    min-height: 10.5rem;
+    position: absolute;
+    width: 100%;
+    left: 0;
+    z-index: -10;
+}
+
 .below_header {
     display: flex;
     flex-direction: column;
@@ -726,12 +736,33 @@ div.dataTables_filter input {
     font-size: 1.5rem;
 }
 
+form {
+    margin-top: 2%;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 5%;
+}
 
+label {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--font-color);
+    font-family: 'Raleway', sans-serif;
+}
 
 .input_container {
     margin-bottom: 2%;
 }
 
+input {
+    width: 50%;
+    height: 2.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 1%;
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+}
 
 .add_button {
     margin-top: 25px;
@@ -748,7 +779,6 @@ div.dataTables_filter input {
 
 .button_container {
     display: grid;
-    margin-right: 2%;
 }
 
 
@@ -760,6 +790,10 @@ div.dataTables_filter input {
     font-size: 1.5rem;
 }
 
+option {
+    font-size: 1rem;
+    font-family: 'Raleway', sans-serif;
+}
 
 .select_container {
     width: 50%;
@@ -829,21 +863,4 @@ div.dataTables_filter input {
 
 .logout_button {
     margin-left: -10px;
-}
-
-.attendanceSymbol {
-    color: white;
-    width: 150px;
-    padding: 0 5px;
-    font-family: monospace;
-    font-size: 1.25rem;
-    border-radius: 3px;
-}
-
-.absentSymbol {
-    background-color: red;
-}
-
-.presentSymbol {
-    background-color: #48c65f;
 }

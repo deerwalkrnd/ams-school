@@ -1,10 +1,11 @@
 <x-main-layout>
+    @section('title','Student List')
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
 
     <div class="button_container container ">
-        <a href="{{ route('student.create') }}" class="btn btn-primary add_button">Add</a>
-        <a href="{{ route('student.getBulkUpload') }}" class="btn btn-primary add_button">Bulk Upload</a>
+        <a href="{{ route('student.create') }}" class="btn add_button">Add</a>
+        <a href="{{ route('student.getBulkUpload') }}" class="btn add_button">Bulk Upload</a>
     </div>
     <div class="table_container mt-3">
         <table class="_table mx-auto amsTable" id="amsTable">
@@ -36,7 +37,7 @@
                 @empty
                     <tr>
                         <td colspan="7" align="center">No Students Available</td>
-                        {{-- Colspan doesn't work with DataTables.  
+                        {{-- Colspan doesn't work with DataTables.
                         The following trick is used to suppress column count error.
                         --}}
                         <td style="display: none;"></td>

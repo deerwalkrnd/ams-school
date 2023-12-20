@@ -1,4 +1,5 @@
 <x-edit-layout>
+    @section('title','Edit Section')
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">

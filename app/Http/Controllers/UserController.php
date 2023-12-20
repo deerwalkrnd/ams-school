@@ -33,6 +33,7 @@ class UserController extends Controller
                 'required',
                 'regex:/^[A-Za-z\s]+$/',
                 'max:255',
+                Rule::unique('users', 'name'),
             ],
             'email' => 'required|email|unique:users',
             'password' => 'required|min:8',
@@ -60,7 +61,7 @@ class UserController extends Controller
     {
         $users = User::find($id);
         $request->validate([
-            'name' => ['required|regex:/^[A-Za-z\s]+$/|max:255',Rule::unique('users', 'name')->ignore($users->id),],
+            'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $users->id,
             'role' => 'required',
         ]);

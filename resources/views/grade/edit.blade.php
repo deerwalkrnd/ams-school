@@ -1,4 +1,5 @@
 <x-edit-layout>
+    @section('title', 'Edit Grade')
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
@@ -12,7 +13,7 @@
         <div>
             <label for="name"> Grade Name<span class="star">*</span></label>
             <div class="input_container">
-            <input type="number" name="name" value="{{ $grades->name }}" required>
+                <input type="number" name="name" value="{{ $grades->name }}" required>
             </div>
         </div>
         <div>
