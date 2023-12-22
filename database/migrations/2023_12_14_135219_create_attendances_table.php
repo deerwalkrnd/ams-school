@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('present');
             $table->integer('absent');
             $table->date('date')->default(date('Y-m-d'));
+            $table->text('comment')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

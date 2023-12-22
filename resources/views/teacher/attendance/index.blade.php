@@ -19,10 +19,8 @@
                     @if (!$attendanceDates->has(now()->format('M/d')))
                         <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
                     @endif
-                    <th class="border-end">Absent Days</th>
-                    <th class="border-end">Comment</th>
+                    <th class="border-end">Absent Comment</th>
                 </tr>
-
                 <tr class="table_date">
                     <th colspan="2" class="border-end"></th>
                     @foreach ($attendanceDates as $date => $attendanceDate)
@@ -69,9 +67,10 @@
                                 </div>
                             </td>
                         @endif
-                        <td>{{ $student->getAbsentDays(auth()->user()->id) }}</td>
+
                         <td>
-                            <input type="text" name="comment" id="comment{{$student->roll_no}}" style="display:none" placeholder="Reason:">
+                            <input type="text" name="comment[{{ $student->roll_no }}]"
+                                id="comment{{ $student->roll_no }}" placeholder="Reason:" disabled>
                         </td>
                     </tr>
                 @endforeach
@@ -120,15 +119,18 @@
             el.setAttribute("data-attendance-state", attendanceState);
             el.children[0].setAttribute("src", "http://" + window.location.host + "/assets/images/" + imageLink[
                 attendanceState]);
+
             //Comment Box Logic Start Here
             let commentBoxId = "comment" + id.split("_")[1];
             let commentBox = document.getElementById(commentBoxId);
+
+            commentBox.disabled = true;
             if (attendanceState == 0) {
-                commentBox.style.display = "block";
+                commentBox.disabled = false;
                 commentBox.value = '';
                 commentBox.focus();
             } else {
-                commentBox.style.display = "none";
+                commentBox.disabled = true;
             }
         }
 
@@ -203,6 +205,7 @@
                     'absent': 0
                 };
                 let rollNo = $(this).find('td.roll_no').text();
+
                 if (rollNo != "") {
 
                     let attendanceStates = $(this).find('td.student_attendance_status').each(function() {
@@ -217,7 +220,9 @@
                     });
                     student.push({
                         'rollNo': rollNo,
-                        'attendanceStatus': studentAttendanceState
+                        'attendanceStatus': studentAttendanceState,
+
+
                     });
                 }
 
