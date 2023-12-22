@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('absent');
             $table->string('comment');
             $table->date('date')->default(date('Y-m-d'));
+            $table->text('comment')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

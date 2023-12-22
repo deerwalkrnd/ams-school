@@ -30,8 +30,11 @@ class SectionRequest extends FormRequest
                 'string',
                 'required',
                 'max:255',
-                Rule::unique('sections', 'name')->ignore($sectionId),
+                Rule::unique('sections', 'name')->ignore($this->route()->id),
+
             ],
+
+
             'grade_id' => 'required',
             'user_id' => 'required',
         ];
