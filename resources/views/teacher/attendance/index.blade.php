@@ -115,7 +115,6 @@
             let id = el.id;
             let attendanceState = el.getAttribute("data-attendance-state");
             attendanceState = attendanceState == 1 ? 0 : 1;
-
             el.setAttribute("data-attendance-state", attendanceState);
             el.children[0].setAttribute("src", "http://" + window.location.host + "/assets/images/" + imageLink[
                 attendanceState]);
@@ -213,6 +212,7 @@
                             "data-attendance-state");
 
                         if (attendanceState == 1) {
+
                             studentAttendanceState.present++;
                         } else if (attendanceState == 0) {
                             studentAttendanceState.absent++;

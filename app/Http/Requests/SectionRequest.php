@@ -24,12 +24,14 @@ class SectionRequest extends FormRequest
      */
     public function rules(): array
     {
+        $sectionId = $this->route('id');
         return [
             'name' => [
                 'string',
                 'required',
                 'max:255',
                 Rule::unique('sections', 'name')->ignore($this->route()->id),
+
             ],
 
 

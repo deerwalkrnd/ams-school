@@ -667,3 +667,9 @@ option:hover {
 .leaveSymbol {
     background-color: #f78a02;
 }
+
+.heading{
+    margin-top: 1rem;
+    font-weight: 600;
+    text-align: center;
+}

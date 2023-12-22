@@ -1,4 +1,5 @@
 <x-main-layout>
+@section('title','User List')
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="button_container ">
@@ -34,7 +35,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan='5'>No Users Available</td>
+                        <td colspan='5' align="center">No Users Available</td>
                     </tr>
                 @endforelse
             </tbody>
