@@ -56,9 +56,9 @@
         <table class="_table mx-auto mb-5">
             <thead>
                 <tr class="table_title">
-                    <th>Student's Name</th>
+                    <th class="border-end fw-bolder">Student's Name</th>
                     @forelse ($attendanceDates as $date)
-                        <th colspan="2" class="text-center border-end">
+                        <th class="text-center border-end">
                             {{ $date }}
                         </th>
                     @empty
@@ -75,7 +75,7 @@
                     <tr>
                         <td class="border-end">{{ $student->name }}</td>
                         @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
-                            <td class="border-end">
+                            <td class="border-end text-center">
                                 @if ($dateOfAttendance['present'] > 0)
                                     @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
                                         <span class="attendanceSymbol presentSymbol">P</span>
@@ -95,9 +95,9 @@
                 @endforeach
             </tbody>
             <tfoot>
-                <tr>
-                    <td class="border-end"> Total Classes</td>
-                    <td colspan="{{ $attendanceDates->count() }}">
+                <tr class="total_class">
+                    <td class="border-end fw-bolder "> Total Classes</td>
+                    <td class="border-end fw-bolder text-center" colspan="{{ $attendanceDates->count() }}">
                         {{ auth()->user()->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
                 </tr>
             </tfoot>

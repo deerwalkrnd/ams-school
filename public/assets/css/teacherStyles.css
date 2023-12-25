@@ -1,23 +1,23 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap'); */
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;700;800;900&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
 :root {
     --header-height: 2rem;
     --nav-width: 4.5%;
-    --first-color-light: #e9f6ff;
+    --first-color-light: #E9F6FF;
     --white-color: #878787;
     /* --body-font: 'Raleway', sans-serif; */
     /* --body-font: 'Poppins', sans-serif; */
-    --body-font: "Nunito", sans-serif;
+    --body-font: 'Nunito', sans-serif;
     --normal-font-size: 1rem;
     --z-fixed: 100;
-    --primary-color: #027cd4;
-    --light-primary: #e9f6ff;
-    --font-color: #011b2e;
-    --red-color: #f90808;
-    --green-color: #20c997;
-    --yellow-color: #ffb55e;
+    --primary-color: rgba(231, 94, 15, 1);
+    --light-primary: #E9F6FF;
+    --font-color: #011B2E;
+    --red-color: #F90808;
+    --green-color: #20C997;
+    --yellow-color: #FFB55E;
 }
 
 *,
@@ -338,6 +338,11 @@ a {
     color: tomato;
 }
 
+.total_class{
+    margin-top: 2%;
+    margin-left: 2%;
+    border: var(--primary-color) 5px solid;
+}
 .action:hover {
     color: maroon;
 }
