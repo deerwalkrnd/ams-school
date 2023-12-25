@@ -8,13 +8,6 @@
         <h1>Daily Attendance : Class {{ auth()->user()->section->grade->name }}
             - Sec {{ auth()->user()->section->name }}</h1>
     </div>
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger ">
-                {{ $error }}
-            </div>
-        @endforeach
-    @endif
 
     <!-- table start -->
     <div class="table_container mt-5">

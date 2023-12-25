@@ -65,7 +65,6 @@ class AttendanceController extends Controller
                 $attendance->date = date('Y-m-d');
                 $attendance->save();
             }
-            Log::info('Request data received:', ['request_data' => $request->all()]);
             DB::commit();
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!', 200]);
         } catch (Exception $e) {
