@@ -15,6 +15,7 @@
             </div>
         @endforeach
     @endif
+
     <!-- table start -->
     <div class="table_container mt-5">
         <form>
@@ -75,7 +76,7 @@
                             </td>
                         @endif
                         <td>
-                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:"
+                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
                                 disabled>
                         </td>
                     </tr>
@@ -140,15 +141,6 @@
         }
 
 
-        //show comment
-        function showComments(comments) {
-            comments.forEach(function(comment) {
-                let commentBoxId = "comment" + comment.rollNo;
-                let commentBox = document.getElementById(commentBoxId);
-                commentBox.value = comment.comment;
-            });
-        }
-
         // Submit Attendance
         let submit = document.getElementById("attendance_submit");
         submit.addEventListener("click", function(event) {
@@ -163,7 +155,7 @@
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, Submit it!"
             }).then((result) => {
-                // console.log(result.isConfirmed);
+                console.log(result.isConfirmed);
                 if (result.isConfirmed) {
                     let student = prepareData();
                     // console.log(student);
@@ -185,9 +177,6 @@
                                 icon: 'success',
                                 title: data.msg
                             });
-                            if(data.comments){
-                                showComments(data.comments);
-                            }
                             setTimeout(() => {
                                 window.location.replace(
                                     "{{ route('attendance.create') }}");
@@ -223,7 +212,6 @@
                     'absent': 0,
                     'comment': ''
                 };
-
                 let rollNo = $(this).find('td.roll_no').text();
 
                 if (rollNo != "") {
@@ -242,7 +230,7 @@
                             studentAttendanceState.comment = commentBox.value;
                         }
                     });
-
+                    console.log(studentAttendanceState);
                     student.push({
                         'rollNo': rollNo,
                         'attendanceStatus': studentAttendanceState,

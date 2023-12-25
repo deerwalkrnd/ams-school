@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('teacher_id');
             $table->integer('present');
             $table->integer('absent');
-            $table->string('comment', 255)->default('');
+            $table->text('comment')->default('');
             $table->date('date')->default(date('Y-m-d'));
             $table->softDeletes();
             $table->timestamps();

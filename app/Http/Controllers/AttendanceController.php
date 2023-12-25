@@ -46,7 +46,6 @@ class AttendanceController extends Controller
     public function store(AttendanceRequest $request)
     {
         $input = $request->validated();
-        $comments = [];
 
         try {
             DB::beginTransaction();
@@ -60,23 +59,18 @@ class AttendanceController extends Controller
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
                 // Handle comments for absent students
                 if ($attendance->absent) {
-                    $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : 'absent';
+                    $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : '';
                     $attendance->comment = $comment;
-
-                    // Add comment to the array for returning to the front end
-                    $comments[] = [
-                        'rollNo' => $student->roll_no,
-                        'comment' => $comment,
-                    ];
                 }
                 $attendance->date = date('Y-m-d');
                 $attendance->save();
             }
+            Log::info('Request data received:', ['request_data' => $request->all()]);
             DB::commit();
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!', 200]);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occured while uploading attendance.' .  $e);
+            Log::error('Error occurred while uploading attendance.' .  $e);
             return response()->json(['msg' => 'Oops! Error Occured. Please Try Again Later.', 400]);
         }
     }
