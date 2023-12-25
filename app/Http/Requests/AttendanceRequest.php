@@ -12,8 +12,11 @@ class AttendanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::user()->hasRole("admin") || Auth::user()->hasRole("teacher"))
+        if (Auth::user()->hasRole("admin") || Auth::user()->hasRole("teacher")) {
             return true;
+        }
+
+        return false;
     }
 
     /**
@@ -23,13 +26,31 @@ class AttendanceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'attendances'                               => ['required'],
-            'attendances.*'                             => ['required'],
+        $rules = [
+            'attendances'                               => ['required', 'array'],
+            'attendances.*'                             => ['required', 'array'],
             'attendances.*.rollNo'                      => ['required', 'exists:students,roll_no'],
             'attendances.*.attendanceStatus'            => ['required'],
             'attendances.*.attendanceStatus.present'    => ['required', 'numeric'],
             'attendances.*.attendanceStatus.absent'     => ['required', 'numeric'],
         ];
+
+        $this->mergeCommentRules($rules);
+
+        return $rules;
+    }
+
+    /**
+     * Merge the 'comment' field rules based on 'attendanceStatus'.
+     *
+     * @param array<string, mixed> $rules
+     */
+    private function mergeCommentRules(array &$rules): void
+    {
+        foreach ($this->input('attendances', []) as $key => $attendance) {
+            if (isset($attendance['attendanceStatus']) && $attendance['attendanceStatus'] === 'absent') {
+                $rules["attendances.{$key}.comment"] = ['required','numeric'];
+            }
+        }
     }
 }

@@ -46,6 +46,7 @@ class AttendanceController extends Controller
     public function store(AttendanceRequest $request)
     {
         $input = $request->validated();
+        $comments = [];
 
         try {
             DB::beginTransaction();
@@ -57,6 +58,17 @@ class AttendanceController extends Controller
                 $attendance->teacher_id = Auth::user()->id;
                 $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
+                // Handle comments for absent students
+                if ($attendance->absent) {
+                    $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : 'absent';
+                    $attendance->comment = $comment;
+
+                    // Add comment to the array for returning to the front end
+                    $comments[] = [
+                        'rollNo' => $student->roll_no,
+                        'comment' => $comment,
+                    ];
+                }
                 $attendance->date = date('Y-m-d');
                 $attendance->save();
             }

@@ -8,6 +8,13 @@
         <h1>Daily Attendance : Class {{ auth()->user()->section->grade->name }}
             - Sec {{ auth()->user()->section->name }}</h1>
     </div>
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+            <div class="alert alert-danger ">
+                {{ $error }}
+            </div>
+        @endforeach
+    @endif
     <!-- table start -->
     <div class="table_container mt-5">
         <form>
@@ -67,10 +74,9 @@
                                 </div>
                             </td>
                         @endif
-
                         <td>
-                            <input type="text" name="comment[{{ $student->roll_no }}]"
-                                id="comment{{ $student->roll_no }}" placeholder="Reason:" disabled>
+                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:"
+                                disabled>
                         </td>
                     </tr>
                 @endforeach
@@ -133,6 +139,16 @@
             }
         }
 
+
+        //show comment
+        function showComments(comments) {
+            comments.forEach(function(comment) {
+                let commentBoxId = "comment" + comment.rollNo;
+                let commentBox = document.getElementById(commentBoxId);
+                commentBox.value = comment.comment;
+            });
+        }
+
         // Submit Attendance
         let submit = document.getElementById("attendance_submit");
         submit.addEventListener("click", function(event) {
@@ -169,6 +185,9 @@
                                 icon: 'success',
                                 title: data.msg
                             });
+                            if(data.comments){
+                                showComments(data.comments);
+                            }
                             setTimeout(() => {
                                 window.location.replace(
                                     "{{ route('attendance.create') }}");
@@ -201,23 +220,29 @@
             $('table tr').each(function() {
                 var studentAttendanceState = {
                     'present': 0,
-                    'absent': 0
+                    'absent': 0,
+                    'comment': ''
                 };
+
                 let rollNo = $(this).find('td.roll_no').text();
 
                 if (rollNo != "") {
-
                     let attendanceStates = $(this).find('td.student_attendance_status').each(function() {
                         let attendanceState = $(this).children(".attendance-state").attr(
                             "data-attendance-state");
 
                         if (attendanceState == 1) {
-
                             studentAttendanceState.present++;
                         } else if (attendanceState == 0) {
                             studentAttendanceState.absent++;
+
+                            // Retrieve comments if the student is absent
+                            let commentBoxId = "comment" + rollNo;
+                            let commentBox = document.getElementById(commentBoxId);
+                            studentAttendanceState.comment = commentBox.value;
                         }
                     });
+
                     student.push({
                         'rollNo': rollNo,
                         'attendanceStatus': studentAttendanceState,
@@ -225,7 +250,6 @@
 
                     });
                 }
-
             });
 
             return student;
