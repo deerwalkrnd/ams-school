@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->datetime('last_login')->nullable();
+            $table->enum('change_password_status', ['1', '0'])->default('0');
+            $table->enum('visibility', ['1', '0'])->default('1');
             $table->rememberToken();
             $table->timestamps();
         });

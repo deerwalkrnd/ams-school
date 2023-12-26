@@ -18,7 +18,7 @@
                 <i class='bx bx-bar-chart-alt-2 bx-sm'></i><span class="nav_name">&nbsp;Report</span>
             </a>
 
-            <a href="{{ route('pass-change.index') }}" class="nav_link">
+            <a href="{{ route('change-password') }}" class="nav_link">
                 <i class="bx bx-key bx-sm" aria-hidden="true"></i><span class="nav_name">&nbsp;Change Password</span>
             </a>
 
