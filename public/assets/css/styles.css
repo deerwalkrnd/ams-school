@@ -365,6 +365,12 @@ a {
     background-color: var(--light-primary);
 }
 
+.total_class {
+    margin-top: 2%;
+    margin-left: 2%;
+    border: var(--primary-color) 5px solid;
+}
+
 .container1 {
     margin-top: 5vh;
     margin-right: 2%;
@@ -772,7 +778,7 @@ input {
     color: white;
 }
 
-.add_button:hover{
+.add_button:hover {
     background-color: var(--primary-color);
     color: white;
 }

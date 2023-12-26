@@ -44,8 +44,8 @@
             </div>
             <div class="col-md-3 my-5">
                 <div class="row align-items-center">
-                    <label for="end_date" class="col-md-4 form-label"> End Date</label>
-                    <input id="end_date" name="end_date" type="date" class="col-md-4 form-control form-control-sm"
+                    <label for="end_date" class="col form-label"> End Date</label>
+                    <input id="end_date" name="end_date" type="date" class="col form-control form-control-sm"
                         onchange="evaluateDate()">
                 </div>
             </div>
@@ -57,7 +57,7 @@
             </div>
         </div>
     </form>
-    <form action="{{route('admin-report.download')}}" method="POST" id="reportDownloadForm">
+    <form action="{{ route('admin-report.download') }}" method="POST" id="reportDownloadForm">
         @csrf
         <input type="hidden" id="gradeDownload" name="grade">
         <input type="hidden" id="studentDownload" name="student">
@@ -88,10 +88,10 @@
         </thead>
         <tbody>
             @foreach ($students as $student)
-                <tr>
+                <tr >
                     <td class="border-end">{{ $student->name }}</td>
                     @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
-                        <td class="border-end">
+                        <td class="border-end text-center ">
                             @if ($dateOfAttendance['present'] > 0)
                                 @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
                                     <span class="attendanceSymbol presentSymbol">P</span>
@@ -111,9 +111,9 @@
             @endforeach
         </tbody>
         <tfoot>
-            <tr>
-                <td class="border-end"> Total Classes</td>
-                <td colspan="{{ $attendanceDates->count() }}">
+            <tr class="total_class fw-bolder">
+                <td class="border-end "> Total Classes</td>
+                <td colspan="{{ $attendanceDates->count() }}" class="border-end text-center fw-bolder">
                     {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
             </tr>
         </tfoot>
