@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserCredentialMail;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use App\models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 
@@ -34,7 +36,6 @@ class UserController extends Controller
                 Rule::unique('users', 'name'),
             ],
             'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
             'role' => 'required',
         ]);
 
@@ -43,17 +44,21 @@ class UserController extends Controller
         $user->email = trim($request->input('email'));
         $user->password = bcrypt('password2@23');
         $user->save();
-        $roles = $request->input('role', []);
+        $roles = $request->input('role');
         $user->roles()->sync($roles);
+
+        Mail::to($user->email)->send(new UserCredentialMail($user, [Role::select('role')->where('id', $request->role)->first()->role]));
 
         return redirect(route('user.index'))->with('success', 'User Successfully Created');
     }
+
     public function edit($id)
     {
         $users = User::find($id);
         $roles = Role::all();
         return view('admin.user.edit', compact('users', 'roles'));
     }
+
     public function update(Request $request, $id)
     {
         $users = User::find($id);
@@ -70,11 +75,12 @@ class UserController extends Controller
 
         return redirect(route('user.index'))->with('success', 'User Successfully Updated');
     }
+
     public function delete($id)
     {
         $users = User::find($id);
         $users->roles()->detach();
         $users->delete();
-        return redirect(route('user.index'))->with('success','User Successfully Deleted');
+        return redirect(route('user.index'))->with('success', 'User Successfully Deleted');
     }
 }
