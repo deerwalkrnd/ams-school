@@ -4,13 +4,7 @@
 
     <div class="underline mx-auto hr_line"></div>
     <div class="container1">
-        @if (isset($errors) && $errors->any())
-            <div class="alert alert-danger">
-                @foreach ($errors->all() as $error)
-                    {{ $error }}
-                @endforeach
-            </div>
-        @endif
+
         @if (session()->has('failures'))
             <table class="table table-danger">
                 <tr>

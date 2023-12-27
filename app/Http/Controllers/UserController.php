@@ -13,8 +13,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        $pageTitle = 'User List';
-        return view('user.index')->with(compact('users', 'pageTitle'));
+        return view('admin.user.index')->with(compact('users'));
     }
 
 
@@ -22,8 +21,7 @@ class UserController extends Controller
     {
         $users = User::all();
         $roles = Role::all();
-        $pageTitle = 'Add New User';
-        return view('user.create')->with(compact('users', 'roles', 'pageTitle'));
+        return view('admin.user.create')->with(compact('users', 'roles'));
     }
 
     public function store(Request $request)
@@ -43,19 +41,18 @@ class UserController extends Controller
         $user = new User;
         $user->name = trim($request->input('name'));
         $user->email = trim($request->input('email'));
-        $user->password = bcrypt(trim($request->input('password')));
+        $user->password = bcrypt('password2@23');
         $user->save();
         $roles = $request->input('role', []);
         $user->roles()->sync($roles);
 
-        return redirect('/user')->with('success', 'Admin Successfully Created');
+        return redirect(route('user.index'))->with('success', 'User Successfully Created');
     }
     public function edit($id)
     {
         $users = User::find($id);
         $roles = Role::all();
-        $pageTitle = 'Edit User Information';
-        return view('user.edit', compact('users', 'roles', 'pageTitle'));
+        return view('admin.user.edit', compact('users', 'roles'));
     }
     public function update(Request $request, $id)
     {
@@ -71,13 +68,13 @@ class UserController extends Controller
         $roles = $request->input('role', []);
         $users->roles()->sync($roles);
 
-        return redirect('/user')->with('success', 'Admin Successfully Updated');
+        return redirect(route('user.index'))->with('success', 'User Successfully Updated');
     }
     public function delete($id)
     {
         $users = User::find($id);
         $users->roles()->detach();
         $users->delete();
-        return redirect('/user')->with('success','Admin Successfully Deleted');
+        return redirect(route('user.index'))->with('success','User Successfully Deleted');
     }
 }

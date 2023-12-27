@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use App\Models\Student;
 use App\Models\Attendance;
 use App\Http\Requests\AttendanceRequest;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +21,13 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        $attendances = Attendance::where('date', date('Y-m-d'))
+                                    ->get()
+                                    ->groupBy('teacher_id');
+        
+        $users = User::with('section')->whereIn('id', $attendances->keys())->get();
+
+        return view('admin.attendance.index', compact('users'));
     }
 
     /**
@@ -85,17 +91,52 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        //
+        $attendances = Attendance::with('student')
+                                    ->where('teacher_id',$user->id)
+                                    ->where('date',date('Y-m-d'))
+                                    ->get()
+                                    ->sortBy('student.roll_no');
+        
+        return view('admin.attendance.edit', compact('attendances', 'user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AttendanceRequest $request, User $user)
     {
-        //
+       $input = $request->validated();
+        try {
+            DB::beginTransaction();
+            foreach($input['attendances'] as $attendanceAndRoll){
+                $student = Student::where('roll_no',$attendanceAndRoll['rollNo'])->first();
+                $attendance = Attendance::where('teacher_id', $user->id)
+                                            ->where('student_id', $student->id)
+                                            ->where('date', date('Y-m-d'))
+                                            ->first();
+
+                $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
+                $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
+                // Handle comments for absent students
+                if ($attendanceAndRoll['attendanceStatus']['absent']>0) {
+                    $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : '';
+                    $attendance->comment = $comment;
+                }else{
+                    $attendance->comment = "";
+                }
+                $attendance->save();
+             
+            }
+            DB::commit();
+            return response()->json(['msg'=>'Attendance Has Been Updated Successfully!'],200);
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::error('Error occured while updating attendance.' .  $e);
+            return response()->json([ 'msg'=>'Oops! Error Occured. Please Try Again Later.'],400);
+        }
     }
 
     /**

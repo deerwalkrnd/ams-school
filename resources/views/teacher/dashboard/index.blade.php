@@ -35,7 +35,7 @@
                             <h5><b>Present :</b></h5>
                         </span>
                         <span class="presentnum ps-2">
-                            <h5><b>1</b></h5>
+                            <h5><b>{{auth()->user()->section->getPresentCount(auth()->user())}}</b></h5>
                         </span>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                             <h5><b>Absent :</b></h5>
                         </span>
                         <span class="absentnum ps-2">
-                            <h5><b>1</b></h5>
+                            <h5><b>{{auth()->user()->section->getAbsentCount(auth()->user())}}</b></h5>
                         </span>
                     </div>
                 </div>

@@ -42,17 +42,13 @@
                         <td class="border-end roll_no">{{ $student->roll_no }}</td>
                         <td class="border-end">{{ $student->name }}</td>
 
-                        @forelse ($student->getAttendances(null, null, 6) as $dateOfAttendance)
+                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(6), null, 6) as $dateOfAttendance)
                             <td class="border-end">
                                 @if ($dateOfAttendance['present'] > 0)
-                                    @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
-                                        <span class="attendanceSymbol presentSymbol">P</span>
-                                    @endfor
+                                    <span class="attendanceSymbol presentSymbol">P</span>
                                 @endif
                                 @if ($dateOfAttendance['absent'] > 0)
-                                    @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                        <span class="attendanceSymbol absentSymbol">A</span>
-                                    @endfor
+                                    <span class="attendanceSymbol absentSymbol">A</span>
                                 @endif
 
                             </td>
@@ -148,7 +144,7 @@
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Yes, Submit it!"
             }).then((result) => {
-                console.log(result.isConfirmed);
+                // console.log(result.isConfirmed);
                 if (result.isConfirmed) {
                     let student = prepareData();
                     // console.log(student);
@@ -211,7 +207,6 @@
                     let attendanceStates = $(this).find('td.student_attendance_status').each(function() {
                         let attendanceState = $(this).children(".attendance-state").attr(
                             "data-attendance-state");
-
                         if (attendanceState == 1) {
                             studentAttendanceState.present++;
                         } else if (attendanceState == 0) {
@@ -223,7 +218,7 @@
                             studentAttendanceState.comment = commentBox.value;
                         }
                     });
-                    console.log(studentAttendanceState);
+                    // console.log(studentAttendanceState);
                     student.push({
                         'rollNo': rollNo,
                         'attendanceStatus': studentAttendanceState,

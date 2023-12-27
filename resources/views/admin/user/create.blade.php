@@ -1,6 +1,6 @@
 <x-create-layout>
     @section('title', 'Add User')
-    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <h1 class="heading"> Add New User</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag mt-5">
         <a href="/user">
@@ -22,12 +22,7 @@
                     <input type="email" name="email" placeholder="Email" required>
                 </div>
             </div>
-            <div class="container">
-                <label> Password<span class="star">*</span></label>
-                <div class="input_container">
-                    <input type="password" name="password" placeholder="password" required>
-                </div>
-            </div>
+
             <div class="col-md-8 mt-4">
                 <div class="row align-items-center">
                     <label for="role" class="col-md-3 form-label" required>Role<span class="star">*</span></label>

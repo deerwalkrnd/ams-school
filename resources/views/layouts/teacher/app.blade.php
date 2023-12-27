@@ -75,5 +75,6 @@
     </script>
     {{-- @include('sweetalert::alert') --}}
 </body>
+@include('sweetalert::alert')
 
 </html>

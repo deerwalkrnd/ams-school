@@ -1,6 +1,6 @@
 <x-main-layout>
     @section('title','Student List')
-    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <h1 class="heading"> Student List</h1>
     <div class="underline mx-auto hr_line"></div>
 
     <div class="button_container container ">

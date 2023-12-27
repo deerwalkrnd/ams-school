@@ -1,9 +1,9 @@
 <x-create-layout>
     @section('title', 'Add Grade')
-    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <h1 class="heading"> Add New Grade</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
-        <a href="/grade">
+        <a href="{{route("grade.index")}}">
             <h5 class="go_back">←</h5>
         </a>
     </div>

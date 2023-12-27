@@ -50,7 +50,7 @@
           <form action="{{ route('login') }}" method="POST">
             @csrf
             <h5>Email</h5>
-            <input class="email" type="email" name="email" placeholder="Enter Your Email Address" />
+            <input class="email" type="email" name="email" placeholder="Enter Your Email Address" value="{{old("email")}}" />
         </div>
         <div class="mb-3">
             <h5>Password</h5>
@@ -63,6 +63,9 @@
         </form>
     </div>
   </body>
+  @include('sweetalert::alert')
+
+</html>
 
 
 

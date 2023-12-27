@@ -11,42 +11,39 @@ class GradeController extends Controller
     public function index()
     {
         $grades = Grade::all();
-        $pageTitle = "Grade List";
-        return view('grade.index')->with(compact('grades', 'pageTitle'));
+        return view('admin.grade.index')->with(compact('grades'));
     }
 
     public function create()
     {
         $grades = Grade::all();
-        $pageTitle = "Add New Grade";
-        return view('grade.create')->with(compact('grades', 'pageTitle'));
+        return view('admin.grade.create')->with(compact('grades'));
     }
 
     public function store(GradeRequest $request)
     {
         $data = $request->validated();
         $newTask = Grade::create($data);
-        return redirect(route('grade.index'))->with('success', "Stored Successfully");
+        return redirect(route('grade.index'))->with('success', "Grade stored successfully");
     }
 
     public function edit($id)
     {
         $grades = Grade::find($id);
-        $pageTitle = "Edit Grade Information";
-        return view('grade.edit')->with(compact('grades', 'pageTitle'));
+        return view('grade.edit')->with(compact('grades'));
     }
     public function update(GradeRequest $request, $id)
     {
         $grades = Grade::find($id);
         $data = $request->validated();
         $grades->update($data);
-        return redirect(route('grade.index'))->with('success', "Stored Successfully");
+        return redirect(route('grade.index'))->with('success', "Grade updated successfully");
     }
 
     public function delete($id)
     {
         $grades = Grade::find($id);
         $grades->delete();
-        return redirect(route('grade.index'))->with('success', 'Deleted Successfully');
+        return redirect(route('grade.index'))->with('success', 'Grade deleted Successfully');
     }
 }

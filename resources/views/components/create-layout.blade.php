@@ -5,13 +5,6 @@
         {{-- <h1 class="heading">Create User</h1> --}}
         {{-- @include('layouts.admin.formTabs') --}}
     </div>
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger ">
-                {{ $error }}
-            </div>
-        @endforeach
-    @endif
     {{ $slot }}
 </body>
 

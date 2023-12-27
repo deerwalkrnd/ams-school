@@ -1,6 +1,6 @@
 <x-main-layout>
 @section('title','User List')
-    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <h1 class="heading"> User List</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="button_container ">
         <a href="{{ route('user.create') }}" class="btn  add_button"><i class='bx bx-add-to-queue'></i>Add</a>
