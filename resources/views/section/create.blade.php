@@ -1,12 +1,14 @@
 <x-create-layout>
-    @section('title','Add Section')
+    @section('title', 'Add Section')
     <h1 class="heading"> {{ $pageTitle }}</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
         <a href="/section">
             <h5 class="go_back">←</h5>
         </a>
-    </div>    <form action="{{ route('section.store') }}" method="post">
+    </div>
+    <div class="form_container">
+    <form action="{{ route('section.store') }}" method="post">
         @csrf
         <div class="">
             <label for="name"> Section Name<span class="star">*</span></label>
@@ -38,4 +40,5 @@
         </div>
         <button class="btn btn-success submit_button" type="submit">Add</button>
     </form>
+</div>
 </x-create-layout>

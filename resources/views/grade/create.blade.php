@@ -7,26 +7,28 @@
             <h5 class="go_back">←</h5>
         </a>
     </div>
-    <form action="{{ route('grade.store') }}" method="post">
-        @csrf
-        <div>
-            <label for="name"> Grade Name<span class="star">*</span></label>
-            <div class="input_container">
-                <input type="number" name="name" placeholder="Enter Grade Name" required>
+    <div class="form_container">
+        <form action="{{ route('grade.store') }}" method="post">
+            @csrf
+            <div>
+                <label for="name"> Grade Name<span class="star">*</span></label>
+                <div class="input_container">
+                    <input type="number" name="name" placeholder="Enter Grade Name" required>
+                </div>
             </div>
-        </div>
-        <div>
-            <label> Start Date<span class="star">*</span></label>
-            <div class="input_container">
-                <input type="date" name="start_date" placeholder="Start Date" required>
+            <div>
+                <label> Start Date<span class="star">*</span></label>
+                <div class="input_container">
+                    <input type="date" name="start_date" placeholder="Start Date" required>
+                </div>
             </div>
-        </div>
-        <div>
-            <label>End Date<span class="star">*</span></label>
-            <div class="input_container">
-                <input type="date" name="end_date" placeholder="End Date" required>
+            <div>
+                <label>End Date<span class="star">*</span></label>
+                <div class="input_container">
+                    <input type="date" name="end_date" placeholder="End Date" required>
+                </div>
             </div>
-        </div>
-        <button class="btn btn-success submit_button" type="submit">Add</button>
-    </form>
+            <button class="btn btn-success submit_button" type="submit">Add</button>
+        </form>
+    </div>
 </x-create-layout>
