@@ -65,6 +65,8 @@ class FortifyServiceProvider extends ServiceProvider
                 $user &&
                 Hash::check($request->password, $user->password)
             ) {
+                $user['last_login'] = date('Y-m-d H:i:s');
+                    $user->update();
                 return $user;
             }
         });

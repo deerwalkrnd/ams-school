@@ -74,7 +74,9 @@ Route::group(['middleware' => ['role:admin']], function(){
 
 });
 
-Route::group(['middleware'=>['role:teacher']], function(){
+
+
+Route::group(['middleware'=>['role:teacher','password.change']], function(){
     //dashboard
     Route::get('/dashboard', [TeacherDashboardController::class, 'dashboard'])->name('teacher.dashboard');
     //attendance
@@ -93,5 +95,5 @@ Route::get('/student/bulk-sample-download',[StudentController::class,'bulkSample
 
 
 //password change
-Route::get('/change-password', [PasswordChangeController::class, 'index'])->name('pass-change.index');
+Route::get('/change-password', [PasswordChangeController::class, 'index'])->name('change-password');
 
