@@ -89,7 +89,7 @@ class User extends Authenticatable
 
     /**
      * Get all the attendances date
-     * 
+     *
      * Set a limit to the number of attendance dates to get
      * @param integer $limit
      * @param date $startDate
@@ -116,7 +116,7 @@ class User extends Authenticatable
      * Get total classes count
      * @param date $startDate
      * @param date $endDate
-     * 
+     *
      * @return mixed
      */
     public function getTotalClasses($startDate, $endDate)

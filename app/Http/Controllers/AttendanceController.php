@@ -57,6 +57,11 @@ class AttendanceController extends Controller
                 $attendance->teacher_id = Auth::user()->id;
                 $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
+                // Handle comments for absent students
+                if ($attendance->absent) {
+                    $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : '';
+                    $attendance->comment = $comment;
+                }
                 $attendance->date = date('Y-m-d');
                 $attendance->save();
             }
@@ -64,7 +69,7 @@ class AttendanceController extends Controller
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!', 200]);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occured while uploading attendance.' .  $e);
+            Log::error('Error occurred while uploading attendance.' .  $e);
             return response()->json(['msg' => 'Oops! Error Occured. Please Try Again Later.', 400]);
         }
     }

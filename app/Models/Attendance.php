@@ -8,9 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'attendances';
-    
+    protected $fillable = [
+        'student_id',
+        'teacher_id',
+        'present',
+        'absent',
+        'comment',
+        'date'
+    ];
+
+
     /**
      * Defines one-to-many relationship between students and  attendance
      *
