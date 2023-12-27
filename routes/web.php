@@ -74,7 +74,7 @@ Route::group(['middleware' => ['role:admin']], function(){
 
 });
 
-Route::view('change-password','auth.passwords.changePassword')->name('change-password');
+
 
 Route::group(['middleware'=>['role:teacher','password.change']], function(){
     //dashboard

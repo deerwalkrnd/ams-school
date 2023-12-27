@@ -12,7 +12,7 @@ class PasswordChangeController extends Controller
     public function index()
     {
         //
-        return view('auth.password.index');
+        return view('auth.password.index')->with('success', 'Student Edited Successfully');
     }
 
     /**
