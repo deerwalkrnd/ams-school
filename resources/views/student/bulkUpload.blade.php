@@ -4,10 +4,10 @@
 
     <div class="underline mx-auto hr_line"></div>
     <div class="container1">
-        @if (isset($errors) &&  $errors->any())
+        @if (isset($errors) && $errors->any())
             <div class="alert alert-danger">
-                @foreach ($errors->all() as $error )
-                    {{$error}}
+                @foreach ($errors->all() as $error)
+                    {{ $error }}
                 @endforeach
             </div>
         @endif
@@ -19,40 +19,44 @@
                     <th>Errors</th>
                     <th>Value</th>
                 </tr>
-                @foreach (session()->get('failures') as $validation )
+                @foreach (session()->get('failures') as $validation)
                     <tr>
-                        <td>{{$validation->row()}}</td>
-                        <td>{{$validation->attribute()}}</td>
+                        <td>{{ $validation->row() }}</td>
+                        <td>{{ $validation->attribute() }}</td>
                         <td>
                             <ul>
                                 @foreach ($validation->errors() as $e)
-                                    <li>{{$e}}</li>
+                                    <li>{{ $e }}</li>
                                 @endforeach
                             </ul>
                         </td>
                         <td>
-                        {{ $validation->values()[$validation->attribute()] }}
+                            {{ $validation->values()[$validation->attribute()] }}
                         </td>
                     </tr>
                 @endforeach
-            </table>    
+            </table>
         @endif
         <div class="button">
-        <a href="{{route('student.bulkSample')}}"><button class="btn btn-success">Download Sample</button></a> 
+            <a href="{{ route('student.bulkSample') }}"><button class="btn btn-success">Download Sample</button></a>
         </div>
-        <form action="{{route('student.bulkUpload')}}" method="POST" name="myform" class="form-group" enctype="multipart/form-data">
-        @csrf
-            <div class="row">
-                <div class="col-name  mt-4">
-                    <div class="row align-items-center">
-                    <label for="student_csv" class=" col-md-2 form-label" >CSV File<span class="star"><b>*</b></span></label>
-                    <input type="file" name="student_csv" class="form-control" id="student_csv" required>
+        <div class="form_container">
+            <form action="{{ route('student.bulkUpload') }}" method="POST" name="myform" class="form-group"
+                enctype="multipart/form-data">
+                @csrf
+                <div class="row">
+                    <div class="col-name  mt-4">
+                        <div class="row align-items-center">
+                            <label for="student_csv" class=" col-md-2 form-label">CSV File<span
+                                    class="star"><b>*</b></span></label>
+                            <input type="file" name="student_csv" class="form-control" id="student_csv" required>
+                        </div>
                     </div>
-                </div>   
-            </div>
-            <div class="d-grid col-md-1 button">
-                <button class="btn btn-success" type="submit">Add</button>
-            </div>
-        </form>
-    </div>
+                </div>
+                <div class="d-grid col-md-1 button">
+                    <button class="btn btn-success" type="submit">Add</button>
+                </div>
+            </form>
+        </div>
+
 </x-bulk-layout>

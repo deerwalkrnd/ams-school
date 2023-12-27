@@ -365,6 +365,12 @@ a {
     background-color: var(--light-primary);
 }
 
+.total_class {
+    margin-top: 2%;
+    margin-left: 2%;
+    border: var(--primary-color) 5px solid;
+}
+
 .container1 {
     margin-top: 5vh;
     margin-right: 2%;
@@ -394,7 +400,7 @@ option:hover {
 
 .button {
     margin-left: 80%;
-    margin-top: 4%;
+    margin-top: -4%;
     margin-bottom: 3%;
     padding-bottom: 3%;
 
@@ -772,7 +778,7 @@ input {
     color: white;
 }
 
-.add_button:hover{
+.add_button:hover {
     background-color: var(--primary-color);
     color: white;
 }
@@ -811,19 +817,17 @@ option {
 }
 
 .go_back {
-    margin-top: -20px;
-    width: 100px;
-    margin-bottom: 15px;
     background-color: var(--primary-color);
     color: white;
     border-radius: 45px;
     align-items: center;
     text-align: center;
+    padding: 10px;
+    font-size: 1rem;
 }
-
-
 .anchor_tag {
     max-width: 100px;
+    margin-left: 5rem;
 }
 
 .heading {
@@ -863,4 +867,8 @@ option {
 
 .logout_button {
     margin-left: -10px;
+}
+
+.form_container{
+    margin-left: 8rem;
 }
