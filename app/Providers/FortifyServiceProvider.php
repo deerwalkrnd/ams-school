@@ -17,6 +17,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Responses\LoginResponse;
+use Illuminate\Validation\ValidationException;
+
 
 
 class FortifyServiceProvider extends ServiceProvider
@@ -68,6 +70,10 @@ class FortifyServiceProvider extends ServiceProvider
                 $user['last_login'] = date('Y-m-d H:i:s');
                     $user->update();
                 return $user;
+            }else{
+                throw ValidationException::withMessages([
+                    "role" => "Incorrect Email or Password.",
+                ]);
             }
         });
 

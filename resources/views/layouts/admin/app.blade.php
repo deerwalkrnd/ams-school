@@ -88,6 +88,7 @@
 
 
 </body>
+@include('sweetalert::alert')
 <script>
     let table = new DataTable('#amsTable');
 </script>

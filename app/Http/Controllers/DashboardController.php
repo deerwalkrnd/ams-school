@@ -9,8 +9,7 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function index(){
-        $users = User::all();
-        $grades = Grade::all();
-        return view('admin.dashboard.index')->with(compact('users','grades'));
+        $users = User::select('id','name','email')->get();
+        return view('admin.dashboard.index')->with(compact('users'));
     }
 }

@@ -1,6 +1,6 @@
 <x-edit-layout>
     @section('title','Edit User')
-    <h1 class="heading"> {{ $pageTitle }}</h1>
+    <h1 class="heading"> Edit User</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
         <a href="/user">

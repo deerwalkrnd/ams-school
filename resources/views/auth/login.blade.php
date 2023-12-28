@@ -28,13 +28,6 @@
 </head>
 
 <body>
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger ">
-                {{ $error }}
-            </div>
-        @endforeach
-    @endif
     <div class="container-fluid" style="max-height: 100vh">
         <div class="row">
             <div class="col-md-6">
@@ -46,7 +39,8 @@
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
                         <h5>Email</h5>
-                        <input class="email" type="email" name="email" placeholder="Enter Your Email Address" />
+                        <input class="email" type="email" name="email" placeholder="Enter Your Email Address"
+                            value="{{ old('email') }}" />
                 </div>
                 <div class="mb-3">
                     <h5>Password</h5>
@@ -59,8 +53,6 @@
         </form>
     </div>
 </body>
-<script>
-    setTimeout(() => {
-        document.querySelector('.alert').style.display = 'none';
-    }, 2000);
-</script>
+@include('sweetalert::alert')
+
+</html>

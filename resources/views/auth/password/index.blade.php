@@ -9,11 +9,6 @@
             <div class="underline mx-auto hr_line"></div>
         </section>
         <!-- page title end -->
-        @if(session('toast_success'))
-        <div class="alert alert-success">
-            {{ session('toast_success') }}
-        </div>
-        @endif
         <!-- form start -->
         <section class="change_password_form_container mx-auto">
             <div class="row mx-auto">
