@@ -25,7 +25,7 @@
                         <td>{{ $grade->end_date }}</td>
                         <td class="">
                             <a href="{{ route('grade.edit', $grade->id) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('grade.delete', $grade->id) }}" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('grade.destroy', $grade->id) }}" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 @empty

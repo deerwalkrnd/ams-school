@@ -3,11 +3,11 @@
     <h1 class="heading"> Edit Grade</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
-        <a href="{{route('grade.index')}}">
+        <a href="{{ route('grade.index') }}">
             <h5 class="go_back">←</h5>
         </a>
     </div>
-    <form action="{{ route('grade.update', ['id' => $grades->id]) }}" method="post">
+    <form action="{{ route('grade.update', ['grade' => $grades->id]) }}" method="post">
         @csrf
         @method('PUT')
         <div>

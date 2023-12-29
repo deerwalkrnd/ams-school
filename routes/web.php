@@ -35,13 +35,8 @@ Route::get('/', function () {
 Route::group(['middleware' => ['role:admin']], function(){
     Route::get('/home',[DashboardController::class,'index'])->name('admin.index');
 
-    Route::get('/grade',[GradeController::class,'index'])->name('grade.index');
-    Route::get('/grade/create/',[GradeController::class,'create'])->name('grade.create');
-    Route::post('/grade/store/',[GradeController::class,'store'])->name('grade.store');
-    Route::get('/grade/{id}/edit',[GradeController::class,'edit'])->name('grade.edit');
-    Route::put('/grade/{id}/update',[GradeController::class,'update'])->name('grade.update');
-    Route::get('/grade/{id}/delete',[GradeController::class,'delete'])->name('grade.delete');
 
+    Route::resource('grade', GradeController::class);
 
     Route::get('/user',[UserController::class,'index'])->name('user.index');
     Route::get('/user/create/',[UserController::class,'create'])->name('user.create');
