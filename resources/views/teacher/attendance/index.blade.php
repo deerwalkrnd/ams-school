@@ -48,7 +48,7 @@
                                     <span class="attendanceSymbol presentSymbol">P</span>
                                 @endif
                                 @if ($dateOfAttendance['absent'] > 0)
-                                    <span class="attendanceSymbol absentSymbol">A</span>
+                                    <span class="attendanceSymbol absentSymbol" data-toogle="tooltip" title="{{$dateOfAttendance['comment']}}" date-placement="top">A</span>
                                 @endif
 
                             </td>

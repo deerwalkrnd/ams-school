@@ -75,6 +75,7 @@ class Student extends Model
                             ->map(function($attendance){
                                 $temp['present'] = $attendance->first()->present;
                                 $temp['absent'] = $attendance->first()->absent;
+                                $temp['comment'] = $attendance->first()->comment;
                                 return $temp;
                             })
                             ->take($limit);
