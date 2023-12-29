@@ -38,6 +38,7 @@ Route::group(['middleware' => ['role:admin']], function(){
 
     Route::resource('grade', GradeController::class);
     Route::resource('user', UserController::class);
+    Route::resource('section', SectionController::class);
 
 
     Route::get('/student',[StudentController::class,'index'])->name('student.index');
@@ -48,12 +49,12 @@ Route::group(['middleware' => ['role:admin']], function(){
     Route::get('/student/{id}/delete',[StudentController::class,'delete'])->name('student.delete');
     Route::get('/student/bulkUpload/',[StudentController::class,'bulkUpload'])->name('student.bulkUpload');
 
-    Route::get('/section',[SectionController::class,'index'])->name('section.index');
-    Route::get('/section/create/',[SectionController::class,'create'])->name('section.create');
-    Route::post('/section/store/',[SectionController::class,'store'])->name('section.store');
-    Route::get('/section/{id}/edit',[SectionController::class,'edit'])->name('section.edit');
-    Route::put('/section/{id}/update',[SectionController::class,'update'])->name('section.update');
-    Route::get('/section/{id}/delete',[SectionController::class,'delete'])->name('section.delete');
+    // Route::get('/section',[SectionController::class,'index'])->name('section.index');
+    // Route::get('/section/create/',[SectionController::class,'create'])->name('section.create');
+    // Route::post('/section/store/',[SectionController::class,'store'])->name('section.store');
+    // Route::get('/section/{id}/edit',[SectionController::class,'edit'])->name('section.edit');
+    // Route::put('/section/{id}/update',[SectionController::class,'update'])->name('section.update');
+    // Route::get('/section/{id}/delete',[SectionController::class,'delete'])->name('section.delete');
 
     //report
     Route::get('/report', [ReportController::class, 'adminIndex'])->name('report.index');

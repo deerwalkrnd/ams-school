@@ -7,7 +7,7 @@
             <h5 class="go_back">←</h5>
         </a>
     </div>
-    <form action="{{ route('section.update', ['id' => $sections->id]) }}" method="post">
+    <form action="{{ route('section.update', ['section' => $sections->id]) }}" method="post" class="mt-5 shadow p-3 ">
         @csrf
         @method('PUT')
         <div>

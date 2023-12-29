@@ -7,8 +7,8 @@
             <h5 class="go_back">←</h5>
         </a>
     </div>
-    <div class="form_container">
-        <form action="{{ route('student.store') }}" method="post">
+    <div class="form_container" class="mt-5 shadow pb-2 ">
+        <form action="{{ route('student.store') }}" method="post" class="mt-5 shadow p-3" >
             @csrf
             <div>
                 <label for="name"> Student Name<span class="star">*</span></label>

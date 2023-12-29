@@ -7,7 +7,7 @@
             <h1>Attendance Report</h1>
 
         </div>
-        <form action="{{ route('teacher-report.search') }}">
+        <form action="{{ route('teacher-report.search') }}" class="mt-5 shadow p-3">
 
             <div class="row">
                 <div class="col-md-6 mt-5">

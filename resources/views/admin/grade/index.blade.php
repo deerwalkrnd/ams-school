@@ -25,7 +25,11 @@
                         <td>{{ $grade->end_date }}</td>
                         <td class="">
                             <a href="{{ route('grade.edit', $grade->id) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('grade.destroy', $grade->id) }}" class="btn btn-danger">Delete</a>
+                            <form action="{{ route('grade.destroy', $grade->id) }}" method="post" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @empty

@@ -12,7 +12,7 @@
         <!-- form start -->
         <section class="change_password_form_container mx-auto">
             <div class="row mx-auto">
-                <form class="main_form p-4" method="POST" action="/user/password">
+                <form class="main_form p-4 mt-5 shadow p-3" method="POST" action="/user/password">
                     @csrf
                     @method('PUT')
 

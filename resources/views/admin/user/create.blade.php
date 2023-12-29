@@ -8,20 +8,16 @@
         </a>
     </div>
     <div class="form_container">
-        <form action="{{ route('user.store') }}" method="post">
+        <form action="{{ route('user.store') }}" method="post"  class="mt-5 shadow p-3 ">
             @csrf
-            <div class="container">
                 <label for="name"> Full Name<span class="star">*</span></label>
                 <div class="input_container">
                     <input type="text" name="name" placeholder="Enter Teacher Name" required>
                 </div>
-            </div>
-            <div class="container">
                 <label>Email<span class="star">*</span></label>
                 <div class="input_container">
                     <input type="email" name="email" placeholder="Email" required>
                 </div>
-            </div>
 
             <div class="col-md-8 mt-4">
                 <div class="row align-items-center">
