@@ -27,9 +27,9 @@ class UserRequest extends FormRequest
                 'required',
                 'regex:/^[A-Za-z\s]+$/',
                 'max:255',
-                Rule::unique('users', 'name'),
+                Rule::unique('users', 'name')->ignore($this->route('id')),
             ],
-            'email' => 'required|email|unique:users',
+            'email' => 'required|email|unique:users,email,' . $this->route('id'),
             'role' => 'required',
         ];
     }
