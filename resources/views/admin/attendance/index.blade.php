@@ -5,7 +5,11 @@
 @section('content')
 <div class="below_header">
     <h1>Today's Attendances</h1>
-
+</div>
+<div class="col-sm-2">
+    <div class="takeAttendancebtn">
+        <a class="btn btn-primary" href="{{route('attendance.admin.index')}}"> </i> Take  Attendance</a>
+    </div>
 </div>
 @forelse ($users as $user)
 <div class="cardclass2">
@@ -63,7 +67,7 @@
 
         No Any Attendances Has Been Taken Today.
 
-    </div>   
+    </div>
 </div>
 
 @endforelse

@@ -73,6 +73,7 @@ Route::group(['middleware' => ['role:admin']], function(){
     Route::post('/admin-report/download', [ReportController::class, 'adminReportDownload'])->name('admin-report.download');
     // attendance edit
     Route::get('/today-attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::get('/today-attendance/admin', [AttendanceController::class, 'adminAttendanceIndex'])->name('attendance.admin.index');
     Route::get('/attendance/{user}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::put('/attendance/{user}', [AttendanceController::class, 'update'])->name('attendance.update');
 

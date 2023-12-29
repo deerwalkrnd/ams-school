@@ -1,24 +1,50 @@
-@extends('layouts.teacher.app')
+@extends('layouts.admin.app')
 
-@section('title', 'Attendance Page')
 
-@section('content')
-    <div class="below_header">
-        <!-- <h1>Attendance</h1> -->
-        {{-- {{auth()->user()}} --}}
-        <h1>Daily Attendance : Class {{ auth()->user()->section->grade->name }}
-            - Sec {{ auth()->user()->section->name }}</h1>
+<div class="below_header">
+    <h1 class="heading"> Admin Attendance </h1>
+    <div class="underline mx-auto hr_line"></div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    </ul>
+</div>
 
+<form action= "">
+    @csrf
+    <div class="row">
+        <div class="col-md-6 mt-5">
+            <div class="align-items-center">
+                <label for="grade" class=" col-md-4 form-label">Grade</label>
+
+                <select id="grade" name="grade" class="col-md-4 form-control form-select  form-select-sm ">
+                    <option disabled selected>--Choose Grade--</option>
+                    @foreach ($grades as $grade)
+                        @foreach ($grade->section as $section)
+                            <option value="{{ $section->id }}"> Grade {{ $grade->name }} - Section
+                                {{ $section->name }}</option>
+                        @endforeach
+                    @endforeach
+                </select>
+            </div>
+        </div>
     </div>
-
+    <div class="row w-100">
+        <div class="offset-md-6 col-md-6 mb-3 pe-5 d-flex justify-content-end">
+            <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
+        </div>
+    </div>
+</form>
+<hr>
+@section('content')
     <!-- table start -->
     <div class="table_container mt-5">
-        <form>
+
+        <form method="POST" action= "{{ route('attendance.store') }}">
             <table class="_table mx-auto">
                 <tr class="table_title">
                     <th class="border-end">Roll</th>
                     <th class="border-end">Name</th>
-                    <th colspan="{{ $attendanceDates->count() }}" class="text-center border-end">Status</th>
+                    <th colspan="{{ $attendanceDates->count()}}" class="text-center border-end">Status</th>
+
                     @if (!$attendanceDates->has(now()->format('M/d')))
                         <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
                     @endif
@@ -40,53 +66,51 @@
                     </th>
                 </tr>
                 @foreach (auth()->user()->students as $student)
-                    <tr>
-                        <td class="border-end roll_no">{{ $student->roll_no }}</td>
-                        <td class="border-end">{{ $student->name }}</td>
+                {{-- {{dd(auth()->user())}} --}}
+                <tr>
+                    <td class="border-end roll_no">{{ $student->roll_no }}</td>
+                    <td class="border-end">{{ $student->name }}</td>
 
-                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(6), null, 6) as $dateOfAttendance)
-                            <td class="border-end">
-                                @if ($dateOfAttendance['present'] > 0)
-                                    <span class="attendanceSymbol presentSymbol">P</span>
-                                @endif
-                                @if ($dateOfAttendance['absent'] > 0)
-                                    <span class="attendanceSymbol absentSymbol">A</span>
-                                @endif
+                    @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(6), null, 6) as $dateOfAttendance)
+                        <td class="border-end">
+                            @if ($dateOfAttendance['present'] > 0)
+                                <span class="attendanceSymbol presentSymbol">P</span>
+                            @endif
+                            @if ($dateOfAttendance['absent'] > 0)
+                                <span class="attendanceSymbol absentSymbol">A</span>
+                            @endif
 
-                            </td>
-                        @empty
-                            <td class="text-center border-end"> Attendance has not been taken. </td>
-                        @endforelse
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                            <td class="border-end student_attendance_status">
-                                <div onclick="toggleState(this)" class="attendance-state"
-                                    id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
-                                    <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
-                                        id="r_{{ $student->roll_no }}">
-                                </div>
-                            </td>
-                        @endif
-                        <td>
-                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
-                                disabled>
                         </td>
-                    </tr>
-                @endforeach
+                    @empty
+                        <td class="text-center border-end"> Attendance has not been taken. </td>
+                    @endforelse
+                    @if (!$attendanceDates->has(now()->format('M/d')))
+                        <td class="border-end student_attendance_status">
+                            <div onclick="toggleState(this)" class="attendance-state"
+                                id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
+                                <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
+                                    id="r_{{ $student->roll_no }}">
+                            </div>
+                        </td>
+                    @endif
+                    <td>
+                        <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
+                            disabled>
+                    </td>
+                </tr>
+            @endforeach
 
-            </table>
-            <div class="row justify-content-center">
-                @if (!$attendanceDates->has(now()->format('M/d')))
-                    <div class="justify-content-center text-end my-3 me-5">
-                        <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
-                    </div>
-                @endif
+
+            {{-- @include('admin.attendance._form') --}}
+            <div class="justify-content-center text-end my-3 me-5">
+                <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
             </div>
-        </form>
+    </div>
+    </form>
 
-        <!-- table end -->
+    <!-- table end -->
     </div>
     <!--Container Main end-->
-
 @endsection
 @section('scripts')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
