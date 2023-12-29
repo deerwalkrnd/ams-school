@@ -76,7 +76,7 @@ class UserController extends Controller
         return redirect(route('user.index'))->with('success', 'User Successfully Updated');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $users = User::find($id);
         $users->roles()->detach();

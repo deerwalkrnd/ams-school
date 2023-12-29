@@ -1,5 +1,5 @@
 <x-main-layout>
-@section('title','User List')
+    @section('title', 'User List')
     <h1 class="heading"> User List</h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="button_container ">
@@ -29,8 +29,12 @@
                             @endforeach
                         </td>
                         <td class="">
-                            <a href="{{ route('user.edit', ['id' => $user->id]) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('user.delete', ['id' => $user->id]) }}" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success">Edit</a>
+                            <form action="{{ route('user.destroy', $user->id) }}" method="post" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -40,8 +44,6 @@
                 @endforelse
             </tbody>
         </table>
-        </div>
+    </div>
 
 </x-main-layout>
-
-</body>

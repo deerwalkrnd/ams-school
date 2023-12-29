@@ -37,13 +37,7 @@ Route::group(['middleware' => ['role:admin']], function(){
 
 
     Route::resource('grade', GradeController::class);
-
-    Route::get('/user',[UserController::class,'index'])->name('user.index');
-    Route::get('/user/create/',[UserController::class,'create'])->name('user.create');
-    Route::post('/user/store/',[UserController::class,'store'])->name('user.store');
-    Route::get('/user/{id}/edit',[UserController::class,'edit'])->name('user.edit');
-    Route::put('/user/{id}/update',[UserController::class,'update'])->name('user.update');
-    Route::get('/user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
+    Route::resource('user', UserController::class);
 
 
     Route::get('/student',[StudentController::class,'index'])->name('student.index');
