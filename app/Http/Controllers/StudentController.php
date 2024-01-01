@@ -53,7 +53,7 @@ class StudentController extends Controller
         return redirect(route('student.index'))->with('success', 'Student Edited Successfully');
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
         $students = Student::find($id);
         $students->delete();

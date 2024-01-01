@@ -30,8 +30,12 @@
                         <td>{{ $student->section->grade->name }}-{{ $student->section->name }}</td>
                         <td>{{ $student->status }}</td>
                         <td class="">
-                            <a href="{{ route('student.edit', ['id' => $student->id]) }}" class="btn btn-success">Edit</a>
-                            <a href="{{ route('student.delete', ['id' => $student->id]) }}" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('student.edit', ['student' => $student->id]) }}" class="btn btn-success">Edit</a>
+                            <form action="{{ route('student.destroy', ['student' => $student->id]) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger delete-btn">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @empty

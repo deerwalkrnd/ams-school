@@ -7,7 +7,7 @@
             <h5 class="go_back">←</h5>
         </a>
     </div>
-    <form action="{{ route('student.update', ['id' => $students->id]) }}" method="post"  class="mt-5 shadow p-3">
+    <form action="{{ route('student.update', ['student' => $students->id]) }}" method="post"  class="mt-5 shadow p-3">
         @csrf
         @method('PUT')
         <label for="name"> Student Name<span class="star">*</span></label>
