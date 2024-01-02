@@ -7,7 +7,7 @@
             <h5 class="go_back">←</h5>
         </a>
     </div>
-    <form action="{{ route('student.update', ['student' => $students->id]) }}" method="post"  class="mt-5 shadow p-3">
+    <form action="{{ route('student.update', ['student' => $students->id]) }}" method="post" class="mt-5 shadow p-3">
         @csrf
         @method('PUT')
         <label for="name"> Student Name<span class="star">*</span></label>
@@ -23,13 +23,14 @@
             <input type="email" name="email" value="{{ $students->email }}">
         </div>
         <label for="section">Section<span class="star">*</span></label>
-            <div class="input_container">
-            <select name="section_id" class="select_container" >
+        <div class="input_container">
+            <select name="section_id" class="select_container">
                 @foreach ($sections as $section)
-                    <option value="{{ $section->id }}">Grade:{{$section->grade->name}}-Section:{{ $section->name }}</option>
+                    <option value="{{ $section->id }}">Grade:{{ $section->grade->name }}-Section:{{ $section->name }}
+                    </option>
                 @endforeach
             </select>
-            </div>
+        </div>
 
         <br>
         <button class="btn btn-success" type="submit">Update</button>

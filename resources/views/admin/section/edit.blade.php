@@ -1,5 +1,5 @@
 <x-edit-layout>
-    @section('title','Edit Section')
+    @section('title', 'Edit Section')
     <h1 class="heading"> Edit Section </h1>
     <div class="underline mx-auto hr_line"></div>
     <div class="anchor_tag">
@@ -18,7 +18,7 @@
         </div>
         <label for="">Grade<span class="star">*</span></label>
         <div class="input_container">
-            <select name="grade_id">
+            <select name="section_id" class="select_container">
                 @foreach ($grades as $grade)
                     <option value="{{ $grade->id }}">{{ $grade->name }}</option>
                 @endforeach
@@ -26,7 +26,7 @@
         </div>
         <label for="">Teacher<span class="star">*</span></label>
         <div class="input_container">
-            <select name="user_id">
+            <select name="section_id" class="select_container">
                 @foreach ($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                 @endforeach
