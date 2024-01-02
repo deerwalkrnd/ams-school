@@ -22,7 +22,9 @@
                     @if (!$attendanceDates->has(now()->format('M/d')))
                         <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
                     @endif
-                    <th class="border-end">Absent Comment</th>
+                    @if (!$attendanceDates->has(now()->format('M/d')))
+                        <th class="border-end">Absent Comment</th>
+                    @endif
                 </tr>
                 <tr class="table_date">
                     <th colspan="2" class="border-end"></th>
@@ -43,8 +45,7 @@
                     <tr>
                         <td class="border-end roll_no">{{ $student->roll_no }}</td>
                         <td class="border-end">{{ $student->name }}</td>
-
-                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(6), null, 6) as $dateOfAttendance)
+                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(7), null, 6) as $dateOfAttendance)
                             <td class="border-end">
                                 @if ($dateOfAttendance['present'] > 0)
                                     <span class="attendanceSymbol presentSymbol">P</span>
@@ -66,10 +67,12 @@
                                 </div>
                             </td>
                         @endif
+                        @if (!$attendanceDates->has(now()->format('M/d')))
                         <td>
                             <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
                                 disabled>
                         </td>
+                        @endif
                     </tr>
                 @endforeach
 

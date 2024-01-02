@@ -8,7 +8,7 @@
 </div>
 <div class="col-sm-2">
     <div class="takeAttendancebtn">
-        <a class="btn btn-primary" href="{{route('attendance.admin.index')}}"> </i> Take  Attendance</a>
+        <a class="btn btn-primary" href="{{route('attendance.takeAttendance')}}"> </i> Take  Attendance</a>
     </div>
 </div>
 @forelse ($users as $user)

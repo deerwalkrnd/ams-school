@@ -28,11 +28,6 @@ class Student extends Model
         return $this->belongsTo(Section::class);
     }
 
-    public function grade()
-    {
-        return $this->belongsTo(Grade::class);
-    }
-
     /**
      * Defines one-to-many relationship between student and attendance
      *

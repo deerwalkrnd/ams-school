@@ -56,8 +56,10 @@ Route::group(['middleware' => ['role:admin']], function(){
     Route::post('/student/store/',[StudentController::class,'store'])->name('student.store');
     Route::get('/student/{id}/edit',[StudentController::class,'edit'])->name('student.edit');
     Route::put('/student/{id}/update',[StudentController::class,'update'])->name('student.update');
-    Route::get('/student/{id}/delete',[StudentController::class,'delete'])->name('student.delete');
-    Route::get('/student/bulkUpload/',[StudentController::class,'bulkUpload'])->name('student.bulkUpload');
+    Route::get('/student/{id}/delete',[StudentController::class,'delete'])->name('student.delete');    
+    Route::get('/student/bulk',[StudentController::class,'getBulkUpload'])->name('student.getBulkUpload');
+    Route::post('/student/bulk',[StudentController::class,'bulkUpload'])->name('student.bulkUpload');
+    Route::get('/student/bulk-sample-download',[StudentController::class,'bulkSample'])->name('student.bulkSample');
 
     Route::get('/section',[SectionController::class,'index'])->name('section.index');
     Route::get('/section/create/',[SectionController::class,'create'])->name('section.create');
@@ -72,10 +74,12 @@ Route::group(['middleware' => ['role:admin']], function(){
     Route::get('/report/search', [ReportController::class, 'adminSearch'])->name('report.search');
     Route::post('/admin-report/download', [ReportController::class, 'adminReportDownload'])->name('admin-report.download');
     // attendance edit
+    Route::post('/admin-attendance', [AttendanceController::class, 'store'])->name('admin.attendance.store');
     Route::get('/today-attendance', [AttendanceController::class, 'index'])->name('attendance.index');
-    Route::get('/today-attendance/admin', [AttendanceController::class, 'adminAttendanceIndex'])->name('attendance.admin.index');
+    Route::get('/today-attendance/take-attendance', [AttendanceController::class, 'adminAttendanceIndex'])->name('attendance.takeAttendance');
     Route::get('/attendance/{user}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::put('/attendance/{user}', [AttendanceController::class, 'update'])->name('attendance.update');
+
 
 });
 
@@ -93,9 +97,6 @@ Route::group(['middleware'=>['role:teacher','password.change']], function(){
     Route::post('/teacher-report/download', [ReportController::class, 'teacherReportDownload'])->name('teacher-report.download');
 });
 
-Route::get('/student/bulk',[StudentController::class,'getBulkUpload'])->name('student.getBulkUpload');
-Route::post('/student/bulk',[StudentController::class,'bulkUpload'])->name('student.bulkUpload');
-Route::get('/student/bulk-sample-download',[StudentController::class,'bulkSample'])->name('student.bulkSample');
 
 
 

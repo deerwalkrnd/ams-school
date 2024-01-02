@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\Attendance;
 use App\Http\Requests\AttendanceRequest;
 use App\Models\Grade;
+use App\Models\Section;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +54,6 @@ class AttendanceController extends Controller
     public function store(AttendanceRequest $request)
     {
         $input = $request->validated();
-
         try {
             DB::beginTransaction();
 
@@ -61,7 +61,7 @@ class AttendanceController extends Controller
                 $student = Student::where('roll_no', $attendanceAndRoll['rollNo'])->first();
                 $attendance = new Attendance();
                 $attendance->student_id = $student->id;
-                $attendance->teacher_id = Auth::user()->id;
+                $attendance->teacher_id = $request->teacher ?? Auth::user()->id;
                 $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
                 // Handle comments for absent students
@@ -146,18 +146,25 @@ class AttendanceController extends Controller
         //
     }
 
-    public function adminAttendanceIndex()
+    public function adminAttendanceIndex(Request $request)
     {
-        $grades = Grade::all();
+        $sections = Section::with('grade')->get();
+        if ($request->has('section')) {
 
-        $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
-        ->where('created_at', '>', Carbon::now()->subDays(6))
-        ->get()
-        ->groupBy(function ($query) {
-            return Carbon::parse($query->created_at)->format('M/d');
-        })
-        ->take(5);
+            $students = Student::where('section_id', $request->section)->get();
+            $checkIfTodayAttendanceExists =  Attendance::whereHas('student', function ($query) use ($request) {
+                return $query->where('students.section_id', $request->section);
+            })
+                ->whereDate("created_at", date('Y-m-d'))
+                ->count();
 
-    return view('admin.attendance.adminAttendance', compact("attendanceDates",'grades'));
+            if ($checkIfTodayAttendanceExists) {
+                return redirect()->route('attendance.takeAttendance')->with('error', "Attendance for the grade on today's date already exist");
+            }
+
+            return view('admin.attendance.adminAttendance', compact('sections', 'students'));
+        }
+
+        return view('admin.attendance.adminAttendance', compact('sections'));
     }
 }
