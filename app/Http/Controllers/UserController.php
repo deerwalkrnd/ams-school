@@ -29,6 +29,7 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
+        try{
         $data=$request->validated();
         $data['password'] = bcrypt($request->input('password'));
         $user = User::create($data);
@@ -36,9 +37,12 @@ class UserController extends Controller
         $roles = $request->input('role');
         $user->roles()->sync($roles);
 
-        // Mail::to($user->email)->send(new UserCredentialMail($user, [Role::select('role')->where('id', $request->role)->first()->role]));
+        Mail::to($user->email)->send(new UserCredentialMail($user, [Role::select('role')->where('id', $request->role)->first()->role]));
 
         return redirect(route('user.index'))->with('success', 'User Successfully Created');
+        }catch(\Exception $e){
+            return redirect(route('user.create'))->with('error', 'User Not Created');
+        }
     }
 
     public function edit($id)
@@ -50,6 +54,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        try{
         $users = User::find($id);
         $request->validate([
             'name' => 'required',
@@ -63,6 +68,9 @@ class UserController extends Controller
         $users->roles()->sync($roles);
 
         return redirect(route('user.index'))->with('success', 'User Successfully Updated');
+        }catch(\Exception $e){
+            return redirect(route('user.create'))->with('error', 'User Not Updated');
+        }
     }
 
     public function destroy($id)
