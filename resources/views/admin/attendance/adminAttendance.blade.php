@@ -1,64 +1,68 @@
-@extends('layouts.teacher.app')
-
-@section('title', 'Attendance Page')
+@extends('layouts.admin.app')
+@section('title')
+    Admin Attendance
+@endsection
 
 @section('content')
     <div class="below_header">
-        <!-- <h1>Attendance</h1> -->
-        {{-- {{auth()->user()}} --}}
-        <h1>Daily Attendance : Class {{ auth()->user()->section->grade->name }}
-            - Sec {{ auth()->user()->section->name }}</h1>
-
+        <h1 class="heading"> Admin Attendance </h1>
+        <div class="underline mx-auto hr_line"></div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        </ul>
     </div>
+    <form action="{{ route('attendance.takeAttendance') }}">
+        <div class="row">
+            <div class="col-md-8 row align-items-end">
+                <label for="grade" class=" col-sm-2 align-items-end">Grade</label>
+                <div class="col-sm-10">
+                    <select id="section" name="section" class="form-control form-select  form-select-sm">
+                        <option disabled selected>--Choose Grade--</option>
+                        @foreach ($sections as $section)
+                            <option value="{{ $section->id }}"
+                                {{ !empty(request('section')) && request('section') == $section->id ? 'selected' : '' }}>
+                                Grade {{ $section->grade->name }} - Section
+                                {{ $section->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4 d-flex justify-content-end align-content-end">
+                <div>
+                    <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <hr>
 
     <!-- table start -->
     <div class="table_container mt-5">
-        <form>
-            <table class="_table mx-auto">
-                <tr class="table_title">
-                    <th class="border-end">Roll</th>
-                    <th class="border-end">Name</th>
-                    <th colspan="{{ $attendanceDates->count() }}" class="text-center border-end">Status</th>
-                    @if (!$attendanceDates->has(now()->format('M/d')))
-                        <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
-                    @endif
-                    @if (!$attendanceDates->has(now()->format('M/d')))
-                        <th class="border-end">Absent Comment</th>
-                    @endif
-                </tr>
-                <tr class="table_date">
-                    <th colspan="2" class="border-end"></th>
-                    @foreach ($attendanceDates as $date => $attendanceDate)
-                        <th class="border-end"> {{ $date }}</th>
-                    @endforeach
 
-                    @if ($attendanceDates->isEmpty())
-                        <th colspan="1"></th>
-                    @endif
-                    <th colspan="1">
-                        @if (!$attendanceDates->has(now()->format('M/d')))
+        @if (isset($students))
+            <form method="POST" action= "{{ route('attendance.store') }}">
+                @csrf
+                <table class="_table mx-auto">
+                    <thead>
+                        <tr class="table_title">
+                            <th class="border-end">Roll</th>
+                            <th class="border-end">Name</th>
+                            <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
+                            <th class="border-end">Absent Comment</th>
+                        </tr>
+                    </thead>
+                    <tr class="table_date">
+                        <th class="border-end"></th>
+                        <th class="border-end"></th>
+                        <th class="border-end">
                             {{ date('M/d') }}
-                        @endif
-                    </th>
-                </tr>
-                @foreach (auth()->user()->students as $student)
-                    <tr>
-                        <td class="border-end roll_no">{{ $student->roll_no }}</td>
-                        <td class="border-end">{{ $student->name }}</td>
-                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(7), null, 6) as $dateOfAttendance)
-                            <td class="border-end">
-                                @if ($dateOfAttendance['present'] > 0)
-                                    <span class="attendanceSymbol presentSymbol">P</span>
-                                @endif
-                                @if ($dateOfAttendance['absent'] > 0)
-                                    <span class="attendanceSymbol absentSymbol" data-toogle="tooltip" title="{{$dateOfAttendance['comment']}}" date-placement="top">A</span>
-                                @endif
+                        </th>
+                        <th class="border-end"></th>
+                    </tr>
+                    @foreach ($students as $student)
+                        <tr>
+                            <td class="border-end roll_no">{{ $student->roll_no }}</td>
+                            <td class="border-end">{{ $student->name }}</td>
 
-                            </td>
-                        @empty
-                            <td class="text-center border-end"> Attendance has not been taken. </td>
-                        @endforelse
-                        @if (!$attendanceDates->has(now()->format('M/d')))
                             <td class="border-end student_attendance_status">
                                 <div onclick="toggleState(this)" class="attendance-state"
                                     id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
@@ -66,33 +70,37 @@
                                         id="r_{{ $student->roll_no }}">
                                 </div>
                             </td>
-                        @endif
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                        <td>
-                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
-                                disabled>
-                        </td>
-                        @endif
-                    </tr>
-                @endforeach
+                            <td>
+                                <input type="text" name="comment" id="comment{{ $student->roll_no }}"
+                                    placeholder="Reason:" required disabled>
+                            </td>
+                        </tr>
+                    @endforeach
+                </table>
 
-            </table>
-            <div class="row justify-content-center">
-                @if (!$attendanceDates->has(now()->format('M/d')))
-                    <div class="justify-content-center text-end my-3 me-5">
-                        <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
-                    </div>
-                @endif
+                {{-- @include('admin.attendance._form') --}}
+                <div class="justify-content-center text-end my-3 me-5">
+                    <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
+                </div>
+            </form>
+        @else
+            <div class="shadow py-3 px-1 text-center">
+                <h5>Please Select Grade First</h5>
             </div>
-        </form>
-
-        <!-- table end -->
+        @endif
     </div>
-    <!--Container Main end-->
 
+    <!-- table end -->
+    <!--Container Main end-->
 @endsection
 @section('scripts')
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type='text/javascript'>
+        $(document).ready(function() {
+            $('#section').select2();
+
+        });
+    </script>
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -161,10 +169,11 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "{{ route('attendance.store') }}",
+                        url: "{{ route('admin.attendance.store') }}",
                         data: {
                             "_token": "{{ csrf_token() }}",
                             "attendances": student,
+                            "teacher": "{{$section->user->id}}",
                         },
                         success: function(data) {
                             Toast.fire({
@@ -173,7 +182,7 @@
                             });
                             setTimeout(() => {
                                 window.location.replace(
-                                    "{{ route('attendance.create') }}");
+                                    "{{ route('attendance.index') }}");
                             }, 3000);
                             submit.prop('disabled', true);
                         },

@@ -33,6 +33,7 @@ class AttendanceRequest extends FormRequest
             'attendances.*.attendanceStatus'        => ['required'],
             'attendances.*.attendanceStatus.present'=> ['required', 'numeric'],
             'attendances.*.attendanceStatus.absent' => ['required', 'numeric'],
+            'teacher'                               => ['exists:users,id']
         ];
 
         return $rules;

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     public function index(){
-        $users = User::select('id','name','email')->get();
+        $users = User::select('id','name','email', 'last_login')->get();
         return view('admin.dashboard.index')->with(compact('users'));
     }
 }
