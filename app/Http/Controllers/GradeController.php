@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GradeRequest;
-use Illuminate\Http\Request;
 use App\Models\Grade;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GradeController extends Controller
 {
     public function index()
     {
-        $grades = Grade::all();
+        $grades = Grade::withTrashed()->get();
         return view('admin.grade.index')->with(compact('grades'));
     }
 
@@ -38,6 +38,38 @@ class GradeController extends Controller
         $data = $request->validated();
         $grades->update($data);
         return redirect(route('grade.index'))->with('success', "Grade updated successfully");
+    }
+
+    public function restore($id)
+    {
+        try {
+            $grade = Grade::withTrashed()->findOrFail($id);
+
+            if ($grade->trashed()) {
+                $grade->restore();
+                return redirect(route('grade.index'))->with('success', 'Grade restored successfully');
+            } else {
+                return redirect(route('grade.index'))->with('error', 'Grade is not soft-deleted');
+            }
+        } catch (ModelNotFoundException $exception) {
+            return redirect(route('grade.index'))->with('error', 'Grade not found');
+        }
+    }
+
+    public function forceDelete($id)
+    {
+        try {
+            $grade = Grade::withTrashed()->findOrFail($id);
+
+            if ($grade->trashed()) {
+                $grade->forceDelete();
+                return redirect(route('grade.index'))->with('success', 'Grade forcefully deleted successfully');
+            } else {
+                return redirect(route('grade.index'))->with('error', 'Grade is not soft-deleted');
+            }
+        } catch (ModelNotFoundException $exception) {
+            return redirect(route('grade.index'))->with('error', 'Grade not found');
+        }
     }
 
     public function delete($id)

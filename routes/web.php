@@ -41,7 +41,8 @@ Route::group(['middleware' => ['role:admin']], function(){
     Route::get('/grade/{id}/edit',[GradeController::class,'edit'])->name('grade.edit');
     Route::put('/grade/{id}/update',[GradeController::class,'update'])->name('grade.update');
     Route::get('/grade/{id}/delete',[GradeController::class,'delete'])->name('grade.delete');
-
+    Route::put('/grades/{id}/restore', [GradeController::class,'restore'])->name('grade.restore');
+    Route::delete('/grades/{id}/force-delete', [GradeController::class, 'forceDelete'])->name('grade.forceDelete');
 
     Route::get('/user',[UserController::class,'index'])->name('user.index');
     Route::get('/user/create/',[UserController::class,'create'])->name('user.create');
@@ -49,7 +50,6 @@ Route::group(['middleware' => ['role:admin']], function(){
     Route::get('/user/{id}/edit',[UserController::class,'edit'])->name('user.edit');
     Route::put('/user/{id}/update',[UserController::class,'update'])->name('user.update');
     Route::get('/user/{id}/delete',[UserController::class,'delete'])->name('user.delete');
-
 
     Route::get('/student',[StudentController::class,'index'])->name('student.index');
     Route::get('/student/create/',[StudentController::class,'create'])->name('student.create');
@@ -79,8 +79,6 @@ Route::group(['middleware' => ['role:admin']], function(){
     Route::get('/today-attendance/take-attendance', [AttendanceController::class, 'adminAttendanceIndex'])->name('attendance.takeAttendance');
     Route::get('/attendance/{user}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::put('/attendance/{user}', [AttendanceController::class, 'update'])->name('attendance.update');
-
-
 });
 
 

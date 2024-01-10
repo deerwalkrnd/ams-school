@@ -52,7 +52,6 @@
         <!-- navigation bar start -->
         @include('layouts.admin.navbar')
         <!-- navigation bar end -->
-
         @yield('content')
     </body>
     <script src="/assets/js/main.js"></script>
