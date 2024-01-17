@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->enum('role', ['admin','teacher']);
-            $table->timestamps();
-
+        Schema::table('attendances', function (Blueprint $table) {
+            $table->string('comment');
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::table('attendances', function (Blueprint $table) {
+            //
+        });
     }
 };

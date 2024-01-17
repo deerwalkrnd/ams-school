@@ -1,21 +1,22 @@
 <div>
-    <p>Dear {{ucfirst($name)}},</p>
+    <p>Dear {{ ucfirst($name) }},</p>
     <p>Your credentials for the Attendance Management System is:</p>
-    <p><strong>Email:</strong> {{$email}} <br>
-    <strong>Password:</strong>password2@23<br>
-    <strong>Role:</strong> @if(count($roles)>1) 
-            @foreach($roles as $role)
-                {{ucfirst($role)}}
-                @if($loop->iteration == 1)
-                ,
+    <p><strong>Email:</strong> {{ $email }} <br>
+        <strong>Password:</strong>password2@23<br>
+        <strong>Role:</strong>
+        @if (count($roles) > 1)
+            @foreach ($roles as $role)
+                {{ ucfirst($role) }}
+                @if ($loop->iteration == 1)
+                    ,
                 @endif
             @endforeach
-            @else
-                {{ucfirst($roles[0])}}
-            @endif
-        </p>
+        @else
+            {{ ucfirst($roles[0]) }}
+        @endif
+    </p>
     <p>
-        Please login using this link: <a href="https://attendance.deerwalk.edu.np">
+        Please login using this link: <a href="https://attendance-dss.deerwalk.edu.np/">
             attendance.deerwalk.edu.np
         </a>
     </p>
@@ -31,7 +32,8 @@
         <br>
         <p style="color:888888; font-family: ui-monospace;">
             DISCLAIMER:<br>
-            This is an automatically generated email - please do not reply to it. If you have any queries please contact Admistration.
+            This is an automatically generated email - please do not reply to it. If you have any queries please contact
+            Admistration.
         </p>
     </div>
 </div>
