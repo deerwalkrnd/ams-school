@@ -17,7 +17,7 @@
     </p>
     <p>
         Please login using this link: <a href="https://attendance-dss.deerwalk.edu.np/">
-            attendance.deerwalk.edu.np
+            attendance-dss.deerwalk.edu.np
         </a>
     </p>
     <p>Regards,</p>
