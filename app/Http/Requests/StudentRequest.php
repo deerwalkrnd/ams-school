@@ -28,7 +28,7 @@ class StudentRequest extends FormRequest
             'email' => 'required|email|',
             'section_id' => 'required',
 
-            'roll_no' => ['required','numeric','max:255',Rule::unique('students','roll_no')->ignore($this->route()->id),],
+            'roll_no' => ['required','numeric',Rule::unique('students','roll_no')->ignore($this->route()->id),],
 
         ];
     }
