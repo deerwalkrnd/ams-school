@@ -30,7 +30,7 @@ class GradeController extends Controller
     public function edit($id)
     {
         $grades = Grade::find($id);
-        return view('grade.edit')->with(compact('grades'));
+        return view('admin.grade.edit')->with(compact('grades'));
     }
     public function update(GradeRequest $request, $id)
     {
