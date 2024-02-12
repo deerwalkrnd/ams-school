@@ -39,7 +39,6 @@
     {{-- Data Table --}}
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
         crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
     <script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
 
     <title>@yield('title')</title>
