@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="takeAttendancebtn">
-                        <a class="btn btn-primary" href="{{route('attendance.create')}}"> </i> Take Attendance</a>
+                        <a class="btn btn-success" href="{{route('attendance.create')}}"> </i> Take Attendance</a>
 
                     </div>
 
