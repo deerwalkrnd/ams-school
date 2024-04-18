@@ -47,33 +47,43 @@
                         <td class="border-end">{{ $student->name }}</td>
                         @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(7), null, 6) as $dateOfAttendance)
                             <td class="border-end">
-                                @if ($dateOfAttendance['present'] > 0)
-                                    <span class="attendanceSymbol presentSymbol">P</span>
-                                @endif
-                                @if ($dateOfAttendance['absent'] > 0)
-                                    <span class="attendanceSymbol absentSymbol" data-toogle="tooltip" title="{{$dateOfAttendance['comment']}}" date-placement="top">A</span>
-                                @endif
-
-                            </td>
-                        @empty
-                            <td class="text-center border-end"> Attendance has not been taken. </td>
-                        @endforelse
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                            <td class="border-end student_attendance_status">
-                                <div onclick="toggleState(this)" class="attendance-state"
-                                    id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
-                                    <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
-                                        id="r_{{ $student->roll_no }}">
-                                </div>
-                            </td>
+                                @if ($student->status == 'active')
+                                    @if ($dateOfAttendance['present'] > 0)
+                                        <span class="attendanceSymbol presentSymbol">P</span>
+                                    @endif
+                                    @if ($dateOfAttendance['absent'] > 0)
+                                        <span class="attendanceSymbol absentSymbol" data-toogle="tooltip"
+                                            title="{{ $dateOfAttendance['comment'] }}" date-placement="top">A</span>
+                                    @endif
+                                @else
+                            <td class="text-secondary">N</td>
                         @endif
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                        <td>
-                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
-                                disabled>
                         </td>
+                    @empty
+                        <td class="text-center border-end"> Attendance has not been taken. </td>
+                @endforelse
+                @if (!$attendanceDates->has(now()->format('M/d')))
+                    @if ($student->status == 'active')
+                        <td class="border-end student_attendance_status">
+                            <div onclick="toggleState(this)" class="attendance-state"
+                                id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
+                                <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
+                                    id="r_{{ $student->roll_no }}">
+                            </div>
+                        </td>
+                    @else
+                        <td class="text-secondary">N</td>
+                    @endif
+                @endif
+                @if (!$attendanceDates->has(now()->format('M/d')))
+                    <td>
+                        @if ($student->status == 'active')
+                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:"
+                                required disabled>
                         @endif
-                    </tr>
+                    </td>
+                @endif
+                </tr>
                 @endforeach
 
             </table>

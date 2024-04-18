@@ -7,12 +7,11 @@ use App\Imports\StudentsImport;
 use App\Models\Grade;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Attendance;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -55,9 +54,16 @@ class StudentController extends Controller
 
     public function delete($id)
     {
-        $students = Student::find($id);
-        $students->delete();
-        return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
+        try {
+            $student = Student::findOrFail($id);
+            $student->status = 'dropped_out';
+            $student->save();
+            $student->delete();
+            return redirect(route('student.index'))->with('success', 'Student Dropped Successfully');
+        } catch (Exception $e) {
+
+            return redirect(route('student.index'))->with('error', 'Something went wrong.');
+        }
     }
 
     public function getBulkUpload()
@@ -67,18 +73,18 @@ class StudentController extends Controller
     public function bulkUpload(Request $request)
     {
         $request->validate([
-            'student_csv' => 'required|mimes:csv,xlsx,txt'
+            'student_csv' => 'required|mimes:csv,xlsx,txt',
         ]);
 
-        $extension =$request->file('student_csv')->extension();
-        $fileName=time().'.'.$extension;
-        $path=$request->file('student_csv')->storeAs('public/csv',$fileName);
+        $extension = $request->file('student_csv')->extension();
+        $fileName = time() . '.' . $extension;
+        $path = $request->file('student_csv')->storeAs('public/csv', $fileName);
 
         $studentImport = new StudentsImport;
 
         $studentImport->import($path);
 
-        if($studentImport->failures()->isNotEmpty()){
+        if ($studentImport->failures()->isNotEmpty()) {
             return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
         }
         Storage::delete($path);
@@ -86,8 +92,9 @@ class StudentController extends Controller
 
     }
 
-    public function bulkSample(){
-          $file = public_path('files/sample.xlsx');
-          return response()->download($file);
+    public function bulkSample()
+    {
+        $file = public_path('files/sample.xlsx');
+        return response()->download($file);
     }
 }

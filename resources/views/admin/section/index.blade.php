@@ -21,7 +21,11 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $section->name }}</td>
+                        @if($section->grade)
                         <td>{{ $section->grade->name }}</td>
+                        @else
+                        <td>N/A</td>
+                        @endif
                         <td>{{ $section->user->name }}</td>
                         <td class="">
                             <a href="{{ route('section.edit', ['id' => $section->id]) }}"

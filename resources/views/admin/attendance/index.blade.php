@@ -20,7 +20,14 @@
 
         <div class="col-sm-3">
             <div class="card-body">
+                @if(!$user->section->grade)
+                <h5 class="card-title"><b>Grade: </b></h5>
+                @else 
                 <h5 class="card-title"><b>Grade: {{ ucfirst($user->section->grade->name) }}</b></h5><br>
+               
+                
+                @endif
+
                 <h5 class="card-title"><b>Section: {{ ucfirst($user->section->name) }}</b></h5>
 
             </div>
