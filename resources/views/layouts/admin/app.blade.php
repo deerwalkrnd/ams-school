@@ -75,7 +75,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
 
 
-    @yield('scripts')
+    
     <!-- ckeditor -->
     <script src="https://cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <script type="text/javascript">
@@ -87,6 +87,7 @@
 
 </body>
 @include('sweetalert::alert')
+@yield('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Function to map header text to column index

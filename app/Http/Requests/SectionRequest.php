@@ -34,8 +34,7 @@ class SectionRequest extends FormRequest
 
             ],
 
-
-            'grade_id' => 'required',
+            'grade_id' => 'nullable',
             'user_id' => 'required',
         ];
     }

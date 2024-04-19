@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Database\QueryException;
 
 class UserController extends Controller
 {
@@ -33,7 +33,6 @@ class UserController extends Controller
                 'required',
                 'regex:/^[A-Za-z\s]+$/',
                 'max:255',
-                Rule::unique('users', 'name'),
             ],
             'email' => 'required|email|unique:users',
             'role' => 'required',
@@ -77,10 +76,18 @@ class UserController extends Controller
     }
 
     public function delete($id)
-    {
-        $users = User::find($id);
-        $users->roles()->detach();
-        $users->delete();
+{
+    try {
+        $user = User::findOrFail($id);
+        $user->roles()->detach();
+        $user->delete();
         return redirect(route('user.index'))->with('success', 'User Successfully Deleted');
+    } catch (QueryException $e) {
+        if ($e->errorInfo[1] === 1451) {
+            return redirect(route('user.index'))->with('error', 'Cannot delete user. There are related records in the database.');
+        } else {
+            return redirect(route('user.index'))->with('error', 'An error occurred while deleting the user.');
+        }
     }
+}
 }

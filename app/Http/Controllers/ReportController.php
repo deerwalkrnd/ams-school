@@ -57,16 +57,22 @@ class ReportController extends Controller
 
             return view('admin.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates', 'grades', 'teacher'));
         } catch (Exception $e) {
+
             return redirect()->back()->withErrors("Enter grade to view results.");
+
         }
     }
 
     public function gradeSearch(Request $request)
     {
-        $startDate = Section::where('id', $request->grade)->first()->grade->start_date;
-        $students = Student::where('section_id', $request->grade)->pluck('name', 'roll_no');
+        try {
+            $startDate = Section::where('id', $request->grade)->first()->grade->start_date;
+            $students = Student::where('section_id', $request->grade)->pluck('name', 'roll_no');
 
-        return response()->json(['students' => $students, 'start_date' => $startDate]);
+            return response()->json(['students' => $students, 'start_date' => $startDate]);
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Please enter valid data.');
+        }
     }
 
     public function adminReportDownload(Request $request)
@@ -102,33 +108,48 @@ class ReportController extends Controller
     public function teacherIndex()
     {
         $attendanceDates = Auth::user()->getAllAttendanceDates(null, null);
+        $allStudents = Auth::user()->students()->get()->sortBy('roll_no');
         $students = Auth::user()->students()->get()->sortBy('roll_no');
-        return view('teacher.report.index', compact('attendanceDates', 'students'));
+        return view('teacher.report.index', compact('attendanceDates', 'students', 'allStudents'));
     }
 
     public function teacherSearch(Request $request)
     {
-        $startDate = null;
-        $endDate = null;
-        $students = Student::where('section_id', Auth::user()->section->id);
-
-        if ($request->has('student')) {
-            $students = $students->where('roll_no', $request->student);
+        try{
+            $startDate = null;
+            $endDate = null;
+            $students = Student::where('section_id', Auth::user()->section->id);
+    
+            if ($request->has('student')) {
+                $students = $students->where('roll_no', $request->student);
+            }
+    
+            if ($request->has('start_date')) {
+                $startDate = $request->start_date;
+            }
+    
+            if ($request->has('end_date')) {
+                $endDate = $request->end_date;
+            }
+    
+            $allStudents = Auth::user()->students()->get()->sortBy('roll_no');
+            $students = $students->get()->sortBy('roll_no');
+    
+            $attendanceDates = Auth::user()->getAllAttendanceDates($startDate, $endDate);
+    
+            return view('teacher.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates', 'allStudents'));
+        }
+        catch(Exception $e){
+            return redirect()->back()->with('error', 'Please enter valid data.');
         }
 
-        if ($request->has('start_date')) {
-            $startDate = $request->start_date;
-        }
-
-        if ($request->has('end_date')) {
-            $endDate = $request->end_date;
-        }
 
         $students = $students->get()->sortBy('roll_no');
 
         $attendanceDates = Auth::user()->getAllAttendanceDates($startDate, $endDate);
 
         return view('teacher.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates'));
+
     }
 
     public function teacherReportDownload(Request $request)

@@ -73,6 +73,7 @@
         <thead>
             <tr class="table_title">
                 <th>Student's Name</th>
+                @if($attendanceDates)
                 @forelse ($attendanceDates as $date)
                     <th colspan="2" class="text-center border-end">
                         {{ $date }}
@@ -84,6 +85,7 @@
                         </h5>
                     </td>
                 @endforelse
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -94,12 +96,12 @@
                         <td class="border-end text-center ">
                             @if ($dateOfAttendance['present'] > 0)
                                 @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
-                                    <span class="attendanceSymbol presentSymbol">P</span>
+                                    <span class="attendanceSymbol presentSymbol text-success">P</span>
                                 @endfor
                             @endif
                             @if ($dateOfAttendance['absent'] > 0)
                                 @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                    <span class="attendanceSymbol absentSymbol">A</span>
+                                    <span class="attendanceSymbol absentSymbol text-danger">A</span>
                                 @endfor
                             @endif
 

@@ -9,13 +9,13 @@
         </div>
         <form action="{{ route('teacher-report.search') }}">
 
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col-md-6 mt-5">
                     <div class="align-items-center">
                         <label for="student" class=" col-md-4 form-label">Student</label>
                         <select id="student" name="student" class="col-md-4 form-control form-select  form-select-sm ">
                             <option disabled selected>--Choose Student--</option>
-                            @foreach ($students as $student)
+                            @foreach ($allStudents as $student)
                                 <option value="{{ $student->roll_no }}"> {{ $student->name }}
                                 </option>
                             @endforeach
@@ -25,14 +25,14 @@
 
                 <div class="col-md-3 mt-5">
                     <div class="row align-items-center">
-                        <label for="start_date" class="col-md-4 form-label"> Start Date</label>
+                        <label for="start_date" class="col form-label"> Start Date</label>
                         <input id="start_date" name="start_date" type="date" class="col-md-4 form-control"
                             onchange="evaluateDate()">
                     </div>
                 </div>
                 <div class="col-md-3 mt-5">
                     <div class="row align-items-center">
-                        <label for="end_date" class="col-md-4 form-label"> End Date</label>
+                        <label for="end_date" class="col form-label"> End Date</label>
                         <input id="end_date" name="end_date" type="date" class="col-md-4 form-control"
                             onchange="evaluateDate()">
                     </div>
@@ -78,12 +78,12 @@
                             <td class="border-end text-center">
                                 @if ($dateOfAttendance['present'] > 0)
                                     @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
-                                        <span class="attendanceSymbol presentSymbol">P</span>
+                                        <span class="attendanceSymbol presentSymbol text-success">P</span>
                                     @endfor
                                 @endif
                                 @if ($dateOfAttendance['absent'] > 0)
                                     @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                        <span class="attendanceSymbol absentSymbol">A</span>
+                                        <span class="attendanceSymbol absentSymbol text-danger">A</span>
                                     @endfor
                                 @endif
 

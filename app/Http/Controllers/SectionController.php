@@ -6,6 +6,9 @@ use App\Models\Section;
 use App\Models\Grade;
 use App\Models\User;
 use App\Http\Requests\SectionRequest;
+use Exception;
+
+use Illuminate\Validation\ValidationException;
 
 class SectionController extends Controller
 {
@@ -24,11 +27,16 @@ class SectionController extends Controller
         return view('admin.section.create')->with(compact('sections', 'grades', 'users'));
     }
     public function store(SectionRequest $request)
-    {
-        $data = $request->validated();
-        $section = Section::create($data);
-        return redirect(route('section.index'))->with('success', "Section Successfully Created");
+{
+    $data = $request->validated();
+
+    if (Section::where('user_id', $data['user_id'])->exists()) {
+        throw ValidationException::withMessages(['user_id' => 'The selected teacher is already assigned to a section.']);
     }
+
+    $section = Section::create($data);
+    return redirect(route('section.index'))->with('success', "Section Successfully Created");
+}
 
     public function edit($id)
     {
@@ -43,14 +51,26 @@ class SectionController extends Controller
 {
     $data = $request->validated();
     $section = Section::find($id);
+    
+    if ($section->user_id != $data['user_id']) {
+        if (Section::where('user_id', $data['user_id'])->exists()) {
+            throw ValidationException::withMessages(['user_id' => 'The selected teacher is already assigned to a section.']);
+        }
+    }
+    
     $section->update($data);
     return redirect(route('section.index'))->with('success', "Section Updated Successfully");
 }
 
-    public function delete($id)
-    {
-        $sections = Section::find($id);
-        $sections->delete();
+public function delete($id)
+{
+    try {
+        $section = Section::findOrFail($id);
+        $section->delete();
         return redirect(route('section.index'))->with('success', 'Deleted Successfully');
+    } catch (Exception $e) {
+        return redirect(route('section.index'))->with('error', 'Section has related data to students.');
     }
+}
+
 }

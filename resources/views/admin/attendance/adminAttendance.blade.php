@@ -18,10 +18,12 @@
                     <select id="section" name="section" class="form-control form-select  form-select-sm">
                         <option disabled selected>--Choose Grade--</option>
                         @foreach ($sections as $section)
+                        @if($section->grade)
                             <option value="{{ $section->id }}"
                                 {{ !empty(request('section')) && request('section') == $section->id ? 'selected' : '' }}>
                                 Grade {{ $section->grade->name }} - Section
                                 {{ $section->name }}</option>
+                                @endif
                         @endforeach
                     </select>
                 </div>
@@ -64,15 +66,21 @@
                             <td class="border-end">{{ $student->name }}</td>
 
                             <td class="border-end student_attendance_status">
+                                @if($student->status!='dropped_out')
                                 <div onclick="toggleState(this)" class="attendance-state"
                                     id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
                                     <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
                                         id="r_{{ $student->roll_no }}">
                                 </div>
+                                @else
+                                <p>N</p>
+                                @endif
                             </td>
                             <td>
+                                @if($student->status!='dropped_out')
                                 <input type="text" name="comment" id="comment{{ $student->roll_no }}"
                                     placeholder="Reason:" required disabled>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

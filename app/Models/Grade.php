@@ -11,8 +11,10 @@ class Grade extends Model
     protected $fillable=[
         'name',
         'start_date',
-        'end_date'
+        'end_date',
+
     ];
+    
 
     public function section(){
         return $this->hasMany(Section::class);
