@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Exports\UsusalAttendanceReportExport;
 use App\Models\Attendance;
 use App\Models\Grade;
-use Illuminate\Http\Request;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\User;
+use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
@@ -27,36 +28,37 @@ class ReportController extends Controller
 
     public function adminSearch(Request $request)
     {
-        $startDate = null;
-        $endDate = null;
+        try {
+            $startDate = null;
+            $endDate = null;
 
-        $teacher = Section::where('id', $request->grade)->first()->user;
-        $grades = Grade::all()->sortBy('name');
-        $students = Student::where('section_id',  $request->grade);
+            $teacher = Section::where('id', $request->grade)->first()->user;
+            $grades = Grade::all()->sortBy('name');
+            $students = Student::where('section_id', $request->grade);
 
+            if ($request->has('student')) {
+                $students = $students->where('roll_no', $request->student);
+            }
 
-        if ($request->has('student')) {
-            $students = $students->where('roll_no', $request->student);
+            if ($request->has('start_date')) {
+                $startDate = $request->start_date;
+            }
+
+            if ($request->has('end_date')) {
+                $endDate = $request->end_date;
+            }
+
+            $students = $students->get()
+                ->sortBy('roll_no');
+
+            $startDate = $startDate ?? $teacher->section->grade->start_date;
+
+            $attendanceDates = $teacher->getAllAttendanceDates($startDate, $endDate);
+
+            return view('admin.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates', 'grades', 'teacher'));
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors("Enter grade to view results.");
         }
-
-
-        if ($request->has('start_date')) {
-            $startDate = $request->start_date;
-        }
-
-        if ($request->has('end_date')) {
-            $endDate = $request->end_date;
-        }
-
-        $students = $students->get()
-            ->sortBy('roll_no');
-
-
-        $startDate = $startDate ?? $teacher->section->grade->start_date;
-
-        $attendanceDates = $teacher->getAllAttendanceDates($startDate, $endDate);
-
-        return view('admin.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates', 'grades', 'teacher'));
     }
 
     public function gradeSearch(Request $request)
@@ -67,31 +69,34 @@ class ReportController extends Controller
         return response()->json(['students' => $students, 'start_date' => $startDate]);
     }
 
-
     public function adminReportDownload(Request $request)
     {
-        $teacher = Section::where('id', $request->grade)->first()->user;
-        $students = Student::where('section_id', $request->grade);
-        $startDate = null;
-        $endDate = null;
+        try {
 
-        if ($request->student != "false") {
-            $students = $students->where('roll_no', $request->student);
+            $teacher = Section::where('id', $request->grade)->first()->user;
+            $students = Student::where('section_id', $request->grade);
+            $startDate = null;
+            $endDate = null;
+
+            if ($request->student != "false") {
+                $students = $students->where('roll_no', $request->student);
+            }
+
+            if ($request->start_date != null && $request->start_date != "false") {
+                $startDate = $request->start_date;
+            }
+
+            if ($request->end_date != null && $request->end_date != "false") {
+                $endDate = $request->end_date;
+            }
+
+            $students = $students->get()->sortBy('roll_no');
+            $startDate = $startDate ?? $teacher->section->grade->start_date;
+            $attendanceDates = $teacher->getAllAttendanceDates($startDate, $endDate);
+            return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate, $teacher))->download(time() . '.xlsx');
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors("Enter grade to download report.");
         }
-
-        if ($request->start_date != null && $request->start_date != "false") {
-            $startDate = $request->start_date;
-        }
-
-        if ($request->end_date != null && $request->end_date != "false") {
-            $endDate = $request->end_date;
-        }
-
-        $students = $students->get()->sortBy('roll_no');
-        $startDate = $startDate ?? $teacher->section->grade->start_date;
-        $attendanceDates = $teacher->getAllAttendanceDates($startDate, $endDate);
-        return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate, $teacher))->download(time() . '.xlsx');
-
     }
 
     public function teacherIndex()
@@ -119,7 +124,6 @@ class ReportController extends Controller
             $endDate = $request->end_date;
         }
 
-
         $students = $students->get()->sortBy('roll_no');
 
         $attendanceDates = Auth::user()->getAllAttendanceDates($startDate, $endDate);
@@ -129,25 +133,28 @@ class ReportController extends Controller
 
     public function teacherReportDownload(Request $request)
     {
+        try {
+            $students = Student::where('section_id', Auth::user()->section->id);
+            $startDate = null;
+            $endDate = null;
 
-        $students = Student::where('section_id', Auth::user()->section->id);
-        $startDate = null;
-        $endDate = null;
+            if ($request->student != "false") {
+                $students = $students->where('roll_no', $request->student);
+            }
 
-        if ($request->student != "false") {
-            $students = $students->where('roll_no', $request->student);
+            if ($request->start_date != null && $request->start_date != "false") {
+                $startDate = $request->start_date;
+            }
+
+            if ($request->end_date != null && $request->end_date != "false") {
+                $endDate = $request->end_date;
+            }
+
+            $students = $students->get()->sortBy('roll_no');
+            $attendanceDates = Auth::user()->getAllAttendanceDates($startDate, $endDate);
+            return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate))->download(time() . '.xlsx');
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors("Enter grade to download report.");
         }
-
-        if ($request->start_date != null && $request->start_date != "false") {
-            $startDate = $request->start_date;
-        }
-
-        if ($request->end_date != null && $request->end_date != "false") {
-            $endDate = $request->end_date;
-        }
-
-        $students = $students->get()->sortBy('roll_no');
-        $attendanceDates = Auth::user()->getAllAttendanceDates($startDate, $endDate);
-        return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate))->download(time() . '.xlsx');
     }
 }
