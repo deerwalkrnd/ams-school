@@ -12,7 +12,7 @@
         <!-- form start -->
         <section class="change_password_form_container mx-auto">
             <div class="row mx-auto">
-                <form class="main_form p-4" method="POST" action="/user/password">
+                <form class="main_form p-4" method="POST" action="{{route('user-password.update')}}">
                     @csrf
                     @method('PUT')
 
@@ -24,7 +24,7 @@
                                 <div class="input_container">
                                     <input type="password" style="width:100% !important;" class="form-control"
                                         id="current_password" placeholder="Enter Old Password" name="current_password">
-                                    <p class="text-danger">{{ $errors->updatePassword->first('current_password') }}</p>
+                                    <p class="text-danger">{{ $errors->first('current_password') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                                 <div class="input_container">
                                     <input type="password" style="width:100% !important;" class="form-control"
                                         id="password" placeholder="Enter New Password" name="password">
-                                    <p class="text-danger">{{ $errors->updatePassword->first('password') }}</p>
+                                    <p class="text-danger">{{ $errors->first('password') }}</p>
                                 </div>
                             </div>
                         </div>

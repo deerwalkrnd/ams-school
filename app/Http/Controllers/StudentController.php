@@ -34,7 +34,7 @@ class StudentController extends Controller
     {
         $data = $request->validated();
         $students = Student::create($data);
-        return redirect(route('student.index'))->with('success', "Student added Successfully Created");
+        return redirect(route('student.index'))->with('success', "Student Successfully Created");
     }
     public function edit($id)
     {

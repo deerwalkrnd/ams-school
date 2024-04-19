@@ -89,7 +89,30 @@
 @include('sweetalert::alert')
 @yield('scripts')
 <script>
-    let table = new DataTable('#amsTable');
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to map header text to column index
+    const getColumnIndexByName = (tableName, headerName) => {
+        const headers = document.querySelector(tableName + ' thead tr').children;
+        for (let i = 0; i < headers.length; i++) {
+            if (headers[i].textContent.trim() === headerName) {
+                return i;
+            }
+        }
+        return -1;
+    };
+    // Get indices for specific headers
+    const actionColIndex = getColumnIndexByName('#amsTable', 'Action');
+    const statusColIndex = getColumnIndexByName('#amsTable', 'Status');
+    // Initialize DataTable with specific configurations
+    let table = new DataTable('#amsTable', {
+        columnDefs: [
+            { orderable: false, targets: [actionColIndex , statusColIndex] }
+        ]
+    });
+});
+
+
+    // let table = new DataTable('#amsTable');
 </script>
 
 </html>
