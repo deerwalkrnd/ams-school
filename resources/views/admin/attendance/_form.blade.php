@@ -34,11 +34,15 @@
                     </div>
                 </td>
             @endif
+            @if($attendance->student->status!='dropped_out')
             <td>
+                
                 <input type="text" name="comment[{{ $attendance->student->roll_no }}]"
                     id="comment{{ $attendance->student->roll_no }}" placeholder="Reason:" {{$attendance->absent == 0 ? "disabled" : ''}}
                     value="{{$attendance->absent > 0 ? $attendance->comment ?? "" : ""}}">
+                    
             </td>
+            @endif
 
         </tr>
     @endforeach
