@@ -19,7 +19,7 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\Failure;
 use Throwable;
 
-class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, WithValidation, SkipsOnFailure, SkipsEmptyRows
+class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnFailure, SkipsEmptyRows
 {
     use Importable,SkipsErrors, SkipsFailures;
 
@@ -44,30 +44,25 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, With
 
             Validator::make($row->toArray(), [
                 'name' => ['required'],
-                'email' => ['required','email','unique:students,email'],
-                'roll_no' => ['required','unique:students,roll_no'],
+                'email' => ['required','email'],
+                'roll_no' => ['required'],
                 'section_id' => ['required', 'exists:sections,id'],
                 'grade_id' => ['required', 'exists:grades,id']
             ])->validate();
 
-            Student::updateorCreate([
-                'name' => $row['name'],
-                'roll_no' => $row['roll_no'],
-                'email' => $row['email'],
-                'section_id' => $row['section_id'],
-                'status' => 'active',
-            ]);
+            Student::updateOrCreate(
+                ['roll_no' => $row['roll_no']],
+                [
+                    'name' => $row['name'],
+                    'email' => $row['email'],
+                    'section_id' => $row['section_id'],
+                    'grade_id' => $row['grade_id'],
+                    'status' => 'active',
+                ]
+            );
 
 
         }
     }
-    public function rules(): array{
-        return [
-            '*.email' => ['email','unique:students,email'],
-            '*.roll_no' => ['unique:students,roll_no']
-        ];
-    }
-
-
 
 }
