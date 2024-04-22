@@ -20,7 +20,7 @@
                 <span class="nav_name">Feedback</span>
             </a>
 --}}
-            <a href="{{route('change-password')}}" class="nav_link">
+            <a href="{{route('change-password-teacher')}}" class="nav_link">
                 <i class="bx bx-key bx-sm" aria-hidden="true"></i>
                 <span class="nav_name">Change Password</span>
             </a>

@@ -21,15 +21,19 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-{
-    $user = Auth::user(); 
-    $roles = $user->roles;
-    dd($roles);
-    $role = $roles->first()->role;
+ 
 
-    return view('auth.password.index', compact('role'))->with('success', 'Student Edited Successfully');
-}
+    public function index()
+    {
+        $attendances = Attendance::where('date', date('Y-m-d'))
+            ->get()
+            ->groupBy('teacher_id');
+
+        $users = User::with('section')->whereIn('id', $attendances->keys())->get();
+
+        return view('admin.attendance.index', compact('users'));
+    }
+
 
     /**
      * Show the form for creating a new resource.

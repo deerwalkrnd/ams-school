@@ -100,4 +100,4 @@ Route::group(['middleware' => ['role:teacher', 'password.change', 'preventBackHi
 
 //password change
 Route::get('/change-password', [PasswordChangeController::class, 'index'])->name('change-password');
-Route::get('/change-password/teacher', [PasswordChangeController::class, 'teacherindex'])->name('change-password-teacher');
+Route::get('/change-password/teacher', [PasswordChangeController::class, 'index'])->name('change-password-teacher');
