@@ -8,7 +8,6 @@
 <div class="l-navbar" id="nav-bar">
     <nav class="leftnav">
         <div class="nav_list">
-
             <a href="{{route('teacher.dashboard')}}" class="nav_link">
                 <i class='bx bxs-dashboard bx-sm'></i> <span class="nav_name">Dashboard</span>
             </a>

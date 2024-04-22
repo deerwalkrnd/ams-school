@@ -57,8 +57,8 @@ class StudentController extends Controller
         try {
             $student = Student::findOrFail($id);
             $student->status = 'dropped_out';
+            $student->attendances()->delete();
             $student->save();
-            $student->delete();
             return redirect(route('student.index'))->with('success', 'Student Dropped Successfully');
         } catch (Exception $e) {
 

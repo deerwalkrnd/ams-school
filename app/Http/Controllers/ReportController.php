@@ -16,14 +16,19 @@ class ReportController extends Controller
 {
     public function adminIndex()
     {
-        //get latest attendance
-        $latestAttendance = Attendance::latest()->first();
-        $startDate = $latestAttendance->user->section->grade->start_date;
-        $attendanceDates = User::where('id', $latestAttendance->teacher_id)->first()->getAllAttendanceDates($startDate, null);
-        $students = Student::where('section_id', $latestAttendance->user->section->id)->get()->sortBy('roll_no');
-        $grades = Grade::all()->sortBy('name');
-        $teacher = $latestAttendance->user;
-        return view('admin.report.index', compact('attendanceDates', 'students', 'startDate', 'grades', 'teacher'));
+        try{
+            $latestAttendance = Attendance::latest()->first();
+            $startDate = $latestAttendance->user->section->grade->start_date;
+            $attendanceDates = User::where('id', $latestAttendance->teacher_id)->first()->getAllAttendanceDates($startDate, null);
+            $students = Student::where('section_id', $latestAttendance->user->section->id)->get()->sortBy('roll_no');
+            $grades = Grade::all()->sortBy('name');
+            $teacher = $latestAttendance->user;
+            return view('admin.report.index', compact('attendanceDates', 'students', 'startDate', 'grades', 'teacher'));
+        }
+        catch(Exception $e){
+            return redirect()->back();
+        }
+        
     }
 
     public function adminSearch(Request $request)
