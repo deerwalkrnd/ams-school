@@ -79,7 +79,6 @@ class UserController extends Controller
 {
     try {
         $user = User::findOrFail($id);
-        $user->roles()->detach();
         $user->delete();
         return redirect(route('user.index'))->with('success', 'User Successfully Deleted');
     } catch (QueryException $e) {

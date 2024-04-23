@@ -16,6 +16,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
      *
      * @param  array<string, string>  $input
      */
+
     public function update(User $user, array $input): void
     {
         Validator::make($input, [
@@ -34,3 +35,4 @@ class UpdateUserPassword implements UpdatesUserPasswords
         session()->flash('toast_success', 'Password Changed Successfully.');
     }
 }
+

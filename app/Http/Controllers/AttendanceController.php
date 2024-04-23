@@ -21,6 +21,8 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
+ 
+
     public function index()
     {
         $attendances = Attendance::where('date', date('Y-m-d'))
@@ -32,21 +34,30 @@ class AttendanceController extends Controller
         return view('admin.attendance.index', compact('users'));
     }
 
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
-            ->where('created_at', '>', Carbon::now()->subDays(6))
-            ->get()
-            ->groupBy(function ($query) {
-                return Carbon::parse($query->created_at)->format('M/d');
-            })
-            ->take(5);
+{
+    $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
+        ->where('created_at', '>', Carbon::now()->subDays(6))
+        ->get()
+        ->groupBy(function ($query) {
+            return Carbon::parse($query->created_at)->format('M/d');
+        })
+        ->take(5);
 
-        return view('teacher.attendance.index', compact("attendanceDates"));
-    }
+    $students = Student::where('status', 'active')->get();
+
+    // Filter attendance dates for active students
+    $attendanceDates = $attendanceDates->filter(function ($date) use ($students) {
+        return $students->contains('id', $date->first()->student_id);
+    });
+
+    return view('teacher.attendance.index', compact("attendanceDates"));
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -112,7 +123,10 @@ class AttendanceController extends Controller
         try {
             DB::beginTransaction();
             foreach ($input['attendances'] as $attendanceAndRoll) {
-                $student = Student::where('roll_no', $attendanceAndRoll['rollNo'])->first();
+                $student = Student::where('roll_no', $attendanceAndRoll['rollNo'])
+                ->where('status', 'active')
+                ->orderBy('name')
+                ->first();
                 $attendance = Attendance::where('teacher_id', $user->id)
                     ->where('student_id', $student->id)
                     ->where('date', date('Y-m-d'))
@@ -151,7 +165,9 @@ class AttendanceController extends Controller
         $sections = Section::with('grade')->get();
         if ($request->has('section')) {
 
-            $students = Student::where('section_id', $request->section)->get();
+            $students = Student::where('section_id', $request->section)
+            ->where('status', 'active')
+                ->orderBy('roll_no')->get();
             $checkIfTodayAttendanceExists =  Attendance::whereHas('student', function ($query) use ($request) {
                 return $query->where('students.section_id', $request->section);
             })
