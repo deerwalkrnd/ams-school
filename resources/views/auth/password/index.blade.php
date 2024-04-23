@@ -21,13 +21,13 @@
                         <div class="mb-4">
                             <label class="form-label" for="current_password">Current Password<span
                                     class="star">*</span></label>
-                            <div class="input_container">
+                            <div class="input_container d-flex align-items-center">
                                 <input type="password" style="width:100% !important;" class="form-control"
                                     id="current_password" placeholder="Enter Old Password" name="current_password">
-                                <p class="text-danger">{{ $errors->updatePassword->first('current_password') }}</p>
-
-
+                                    <i class="fas fa-eye-slash toggle-password"
+                                            onclick="togglePasswordVisibility('current_password')" style="position: absolute; right:8rem;"></i>
                             </div>
+                                <p class="text-danger">{{ $errors->updatePassword->first('current_password') }}</p>
                         </div>
                     </div>
                 </div>
@@ -36,12 +36,13 @@
                     <div class="col-md-12">
                         <div class="mb-4">
                             <label class="form-label" for="password">New Password<span class="star">*</span></label>
-                            <div class="input_container">
+                            <div class="input_container d-flex align-items-center">
                                 <input type="password" style="width:100% !important;" class="form-control"
                                     id="password" placeholder="Enter New Password" name="password">
+                                    <i class="fas fa-eye-slash toggle-password"
+                                            onclick="togglePasswordVisibility('password')" style="position: absolute; right:8rem;"></i>
+                                        </div>
                                 <p class="text-danger">{{ $errors->updatePassword->first('password') }}</p>
-
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -61,11 +62,10 @@
                                             onclick="togglePasswordVisibility('password_confirmation')" style="position: absolute; right:8rem;"></i>
                                     </div>
                                     <p class="text-danger">{{ $errors->first('password_confirmation') }}</p>
-                            </div>
                         </div>
                     </div>
                 </div>
-                <center><button type="submit" class="btn btn-success mt-2">Change</button></center>
+                <div><button type="submit" class="btn btn-success mt-2">Change</button></div>
             </form>
         </div>
     </section>
