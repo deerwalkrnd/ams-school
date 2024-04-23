@@ -28,9 +28,6 @@
                                             onclick="togglePasswordVisibility('current_password')" style="position: absolute; right:8rem;"></i>
                             </div>
                                 <p class="text-danger">{{ $errors->updatePassword->first('current_password') }}</p>
-
-
-                            
                         </div>
                     </div>
                 </div>
@@ -46,8 +43,6 @@
                                             onclick="togglePasswordVisibility('password')" style="position: absolute; right:8rem;"></i>
                                         </div>
                                 <p class="text-danger">{{ $errors->updatePassword->first('password') }}</p>
-
-                            
                         </div>
                     </div>
                 </div>
@@ -67,11 +62,10 @@
                                             onclick="togglePasswordVisibility('password_confirmation')" style="position: absolute; right:8rem;"></i>
                                     </div>
                                     <p class="text-danger">{{ $errors->first('password_confirmation') }}</p>
-                            
                         </div>
                     </div>
                 </div>
-                <center><button type="submit" class="btn btn-success mt-2">Change</button></center>
+                <div><button type="submit" class="btn btn-success mt-2">Change</button></div>
             </form>
         </div>
     </section>
