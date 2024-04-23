@@ -19,10 +19,10 @@ class PasswordChangeController extends Controller
         $userRoles = $user->roles()->pluck('role')->toArray();
         $userRole = $userRoles[0];
         if($userRole=='admin'){
-            return view('auth.password.index',compact('userRole'))->with('success', 'Student Edited Successfully');
+            return view('auth.password.index',compact('userRole'))->with('success', 'Password Changed Successfully');
         }
         else{
-            return view('auth.password.teacherindex', compact('userRole'))->with('success', 'Student Edited Successfully');
+            return view('auth.password.teacherindex', compact('userRole'))->with('success', 'Password Changed Successfully');
         }
     } else {
         return redirect()->route('login');
