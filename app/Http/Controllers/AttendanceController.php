@@ -30,7 +30,7 @@ class AttendanceController extends Controller
             ->groupBy('teacher_id');
 
         $users = User::with('section')->whereIn('id', $attendances->keys())->get();
-
+        dd($users); 
         return view('admin.attendance.index', compact('users'));
     }
 
@@ -86,6 +86,7 @@ class AttendanceController extends Controller
             DB::commit();
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!', 200]);
         } catch (Exception $e) {
+            dd($e);
             DB::rollBack();
             Log::error('Error occurred while uploading attendance.' .  $e);
             return response()->json(['msg' => 'Oops! Error Occured. Please Try Again Later.', 400]);
