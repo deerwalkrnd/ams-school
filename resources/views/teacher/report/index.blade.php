@@ -42,7 +42,7 @@
                 <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
             </div>
         </form>
-        <form action="{{route('teacher-report.download')}}" method="POST">
+        <form action="{{ route('teacher-report.download') }}" method="POST">
             @csrf
             <input type="hidden" id="studentDownload" name="student">
             <input type="hidden" id="startDateDownload" name="start_date">
@@ -72,26 +72,28 @@
             </thead>
             <tbody>
                 @foreach ($students as $student)
-                    <tr>
-                        <td class="border-end">{{ $student->name }}</td>
-                        @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
-                            <td class="border-end text-center">
-                                @if ($dateOfAttendance['present'] > 0)
-                                    @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
-                                        <span class="attendanceSymbol presentSymbol text-success">P</span>
-                                    @endfor
-                                @endif
-                                @if ($dateOfAttendance['absent'] > 0)
-                                    @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                        <span class="attendanceSymbol absentSymbol text-danger">A</span>
-                                    @endfor
-                                @endif
+                    @if ($student->status == 'active')
+                        <tr>
+                            <td class="border-end">{{ $student->name }}</td>
+                            @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
+                                <td class="border-end text-center">
+                                    @if ($dateOfAttendance['present'] > 0)
+                                        @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
+                                            <span class="attendanceSymbol presentSymbol text-success">P</span>
+                                        @endfor
+                                    @endif
+                                    @if ($dateOfAttendance['absent'] > 0)
+                                        @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
+                                            <span class="attendanceSymbol absentSymbol text-danger">A</span>
+                                        @endfor
+                                    @endif
 
-                            </td>
-                        @empty
-                            <td class="text-center border-end"> Attendance has not been taken. </td>
-                        @endforelse
-                    </tr>
+                                </td>
+                            @empty
+                                <td class="text-center border-end"> Attendance has not been taken. </td>
+                            @endforelse
+                        </tr>
+                    @endif
                 @endforeach
             </tbody>
             <tfoot>
@@ -172,8 +174,6 @@
             }
             return false;
         };
-
-
     </script>
     <script>
         const Toast = Swal.mixin({

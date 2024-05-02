@@ -30,6 +30,7 @@ class AttendanceController extends Controller
             ->groupBy('teacher_id');
 
         $users = User::with('section')->whereIn('id', $attendances->keys())->get();
+        
         return view('admin.attendance.index', compact('users'));
     }
 

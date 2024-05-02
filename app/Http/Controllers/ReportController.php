@@ -69,23 +69,26 @@ class ReportController extends Controller
     }
 
     public function gradeSearch(Request $request)
-    {
-        try {
-            $startDate = Section::where('id', $request->grade)->first()->grade->start_date;
-            $students = Student::where('section_id', $request->grade)->pluck('name', 'roll_no');
+{
+    try {
+        $startDate = Section::where('id', $request->grade)->first()->grade->start_date;
+        $students = Student::where('section_id', $request->grade)
+                    ->where('status', 'active') 
+                    ->pluck('name', 'roll_no');
 
-            return response()->json(['students' => $students, 'start_date' => $startDate]);
-        } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Please enter valid data.');
-        }
+        return response()->json(['students' => $students, 'start_date' => $startDate]);
+    } catch (Exception $e) {
+        return redirect()->back()->with('error', 'Please enter valid data.');
     }
+}
+
 
     public function adminReportDownload(Request $request)
     {
         try {
 
             $teacher = Section::where('id', $request->grade)->first()->user;
-            $students = Student::where('section_id', $request->grade);
+            $students = Student::where('section_id', $request->grade)->where('status', 'active');
             $startDate = null;
             $endDate = null;
 
@@ -114,7 +117,7 @@ class ReportController extends Controller
     {
         $attendanceDates = Auth::user()->getAllAttendanceDates(null, null);
         $allStudents = Auth::user()->students()->get()->sortBy('roll_no');
-        $students = Auth::user()->students()->get()->sortBy('roll_no');
+        $students = Auth::user()->students()->get()->sortBy('roll_no')->where('status', 'active');
         return view('teacher.report.index', compact('attendanceDates', 'students', 'allStudents'));
     }
 
@@ -123,7 +126,7 @@ class ReportController extends Controller
         try{
             $startDate = null;
             $endDate = null;
-            $students = Student::where('section_id', Auth::user()->section->id);
+            $students = Student::where('section_id', Auth::user()->section->id)->where('status', 'active');
     
             if ($request->has('student')) {
                 $students = $students->where('roll_no', $request->student);
@@ -160,7 +163,7 @@ class ReportController extends Controller
     public function teacherReportDownload(Request $request)
     {
         try {
-            $students = Student::where('section_id', Auth::user()->section->id);
+            $students = Student::where('section_id', Auth::user()->section->id)->where('status', 'active');
             $startDate = null;
             $endDate = null;
 

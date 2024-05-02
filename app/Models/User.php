@@ -62,6 +62,8 @@ class User extends Authenticatable
         return $this->hasManyThrough(Student::class, Section::class);
     }
 
+
+
     /**
      * Defines one-to-many relationship between teachers and attendance
      *
@@ -71,6 +73,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attendance::class, 'teacher_id', 'id');
     }
+
+
 
     /**
      * Check if user has a given role
