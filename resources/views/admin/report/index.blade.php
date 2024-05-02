@@ -90,7 +90,8 @@
         </thead>
         <tbody>
             @foreach ($students as $student)
-                <tr >
+            @if($student->status=='active')
+                <tr>
                     <td class="border-end">{{ $student->name }}</td>
                     @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
                         <td class="border-end text-center ">
@@ -110,6 +111,7 @@
                         <td class="text-center border-end"> Attendance has not been taken. </td>
                     @endforelse
                 </tr>
+                @endif
             @endforeach
         </tbody>
         <tfoot>

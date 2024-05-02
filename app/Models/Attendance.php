@@ -30,6 +30,11 @@ class Attendance extends Model
         return $this->belongsTo(Student::class, 'student_id', 'id');
     }
 
+    public function teacher()
+    {
+        return $this->belongsTo(User::class, "teacher_id");
+    }
+
     /**
      * Defines one-to-many relationship between teachers and  attendance
      *

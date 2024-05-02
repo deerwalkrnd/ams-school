@@ -42,7 +42,7 @@
                 <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
             </div>
         </form>
-        <form action="{{route('teacher-report.download')}}" method="POST">
+        <form action="{{ route('teacher-report.download') }}" method="POST">
             @csrf
             <input type="hidden" id="studentDownload" name="student">
             <input type="hidden" id="startDateDownload" name="start_date">
@@ -73,7 +73,9 @@
             <tbody>
                 @foreach ($students as $student)
                     <tr>
-                        <td class="border-end">{{ $student->name }}</td>
+                        @if ($student->status == 'active')
+                            <td class="border-end">{{ $student->name }}</td>
+                        @endif
                         @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
                             <td class="border-end text-center">
                                 @if ($dateOfAttendance['present'] > 0)
@@ -172,8 +174,6 @@
             }
             return false;
         };
-
-
     </script>
     <script>
         const Toast = Swal.mixin({
