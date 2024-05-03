@@ -195,7 +195,6 @@
                             submit.prop('disabled', true);
                         },
                         error: function() {
-                            // console.log("error");
                             Toast.fire({
                                 icon: 'error',
                                 title: "Sorry Attendance Could not be Submitted. Please Try Again."
