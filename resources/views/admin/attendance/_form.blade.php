@@ -7,9 +7,9 @@
 
     </tr>
     <tr>
-        <th colspan="2" class="border-end"></th>
+        <th class="border-end"></th>
         <th class="border-end text-center"> {{ date('M/d') }}</th>
-        <th colspan="1"></th>
+        <th></th>
     </tr>
     @foreach ($attendances as $attendance)
         <tr>

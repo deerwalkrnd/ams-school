@@ -76,6 +76,7 @@
                         <tr>
                             <td class="border-end">{{ $student->name }}</td>
                             @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
+                            
                                 <td class="border-end text-center">
                                     @if ($dateOfAttendance['present'] > 0)
                                         @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)

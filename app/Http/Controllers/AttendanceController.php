@@ -24,13 +24,23 @@ class AttendanceController extends Controller
  
     public function index()
     {
-        
         $attendances = Attendance::where('date', date('Y-m-d'))
-            ->get()
-            ->groupBy('teacher_id');
-        
-        $users = User::with('section')->whereIn('id', $attendances->keys())->get();
-    
+        ->get()
+        ->groupBy('teacher_id');
+
+    $userIds = $attendances->keys();
+
+    $users = User::with(['section.grade'])
+        ->whereIn('id', $userIds)
+        ->get();
+
+        $users = $users->sortBy(function ($user) {
+            if ($user->section && $user->section->grade) {
+                return $user->section->grade->name;
+            } else {
+                return null;
+            }
+        });
         return view('admin.attendance.index', compact('users'));
     }
 
@@ -52,7 +62,6 @@ class AttendanceController extends Controller
     $attendanceDates = $attendanceDates->filter(function ($date) use ($students) {
         return $students->contains('id', $date->first()->student_id);
     });
-
     return view('teacher.attendance.index', compact("attendanceDates"));
 }
 
