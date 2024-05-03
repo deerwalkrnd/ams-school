@@ -22,15 +22,15 @@ class AttendanceController extends Controller
      * Display a listing of the resource.
      */
  
-
     public function index()
     {
+        
         $attendances = Attendance::where('date', date('Y-m-d'))
             ->get()
             ->groupBy('teacher_id');
-
-        $users = User::with('section')->whereIn('id', $attendances->keys())->get();
         
+        $users = User::with('section')->whereIn('id', $attendances->keys())->get();
+    
         return view('admin.attendance.index', compact('users'));
     }
 
@@ -49,8 +49,6 @@ class AttendanceController extends Controller
         ->take(5);
 
     $students = Student::where('status', 'active')->get();
-
-    // Filter attendance dates for active students
     $attendanceDates = $attendanceDates->filter(function ($date) use ($students) {
         return $students->contains('id', $date->first()->student_id);
     });
@@ -64,15 +62,25 @@ class AttendanceController extends Controller
      */
     public function store(AttendanceRequest $request)
     {
+        
         $input = $request->validated();
+        
         try {
             DB::beginTransaction();
-
+            $user = Auth::user();
             foreach ($input['attendances'] as $attendanceAndRoll) {
                 $student = Student::where('roll_no', $attendanceAndRoll['rollNo'])->first();
                 $attendance = new Attendance();
                 $attendance->student_id = $student->id;
-                $attendance->teacher_id = $request->teacher ?? Auth::user()->id;
+                // if ($user->id == 1) {
+                //     $section = $student->section;
+                //     $teacher = $section->user;
+                //     $attendance->teacher_id = $teacher->id;
+                // }
+                // else{
+                //     $attendance->teacher_id =Auth::user()->id;
+                // }
+                $attendance->teacher_id =$student->section->user->id??Auth::user()->id;
                 $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
                 // Handle comments for absent students
@@ -83,7 +91,9 @@ class AttendanceController extends Controller
                 $attendance->date = date('Y-m-d');
                 $attendance->save();
             }
+            
             DB::commit();
+            
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!', 200]);
         } catch (Exception $e) {
             dd($e);
