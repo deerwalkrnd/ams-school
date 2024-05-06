@@ -55,8 +55,9 @@ class StudentController extends Controller
 
     public function delete($id)
     {
-        $students = Student::find($id);
-        $students->delete();
+        $student = Student::find($id);
+        $student->update(["status" => "dropped_out"]);
+        // $students->delete();
         return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
     }
 
