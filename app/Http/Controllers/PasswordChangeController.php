@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 class PasswordChangeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    {try{
         return view('auth.password.index')->with('success', 'Student Edited Successfully');
+    }catch(Exception $e) {
+        Log::error($e->getMessage());  
+        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+    }
     }
 
     /**
