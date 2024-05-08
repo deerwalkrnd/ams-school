@@ -42,6 +42,7 @@
                     </th>
                 </tr>
                 @foreach (auth()->user()->students as $student)
+                @if($student->status == 'active')
                     <tr>
                         <td class="border-end roll_no">{{ $student->roll_no }}</td>
                         <td class="border-end">{{ $student->name }}</td>
@@ -74,6 +75,7 @@
                         </td>
                         @endif
                     </tr>
+                    @endif
                 @endforeach
 
             </table>

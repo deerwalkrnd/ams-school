@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\UsusalAttendanceReportExport;
 use App\Models\Attendance;
 use App\Models\Grade;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Section;
 use App\Models\Student;
@@ -19,9 +20,11 @@ class ReportController extends Controller
         $latestAttendance = Attendance::latest()->first();
         $startDate = $latestAttendance->user->section->grade->start_date;
         $attendanceDates = User::where('id', $latestAttendance->teacher_id)->first()->getAllAttendanceDates($startDate, null);
-        $students = Student::where('section_id', $latestAttendance->user->section->id)->get()->sortBy('roll_no');
+        $students = Student::where('status', 'active')->where('section_id', $latestAttendance->user->section->id)->get()->sortBy('roll_no');
+        // dd($students);
         $grades = Grade::all()->sortBy('name');
         $teacher = $latestAttendance->user;
+        
         return view('admin.report.index', compact('attendanceDates', 'students', 'startDate', 'grades', 'teacher'));
     }
 
@@ -96,9 +99,11 @@ class ReportController extends Controller
 
     public function teacherIndex()
     {
-        $attendanceDates = Auth::user()->getAllAttendanceDates(null, null);
+       try{ $attendanceDates = Auth::user()->getAllAttendanceDates(null, null);
         $students = Auth::user()->students()->get()->sortBy('roll_no');
-        return view('teacher.report.index', compact('attendanceDates', 'students'));
+        return view('teacher.report.index', compact('attendanceDates', 'students'));}catch(Exception $e){
+            return redirect()->back()->with('error', "Teacher not assigned yet");
+        }
     }
 
     public function teacherSearch(Request $request)
