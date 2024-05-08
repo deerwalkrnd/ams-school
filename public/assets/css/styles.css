@@ -872,3 +872,24 @@ option {
 .form_container{
     margin-left: 8rem;
 }
+.attendanceSymbol {
+    color: white;
+    width: 150px;
+    padding: 0 5px;
+    font-family: monospace;
+    font-size: 1.25rem;
+    border-radius: 3px;
+}
+
+.absentSymbol {
+    background-color: red;
+}
+
+.presentSymbol {
+    background-color: #48c65f;
+    /* background-color:rgb(6, 185, 6); */
+}
+
+.leaveSymbol {
+    background-color: #f78a02;
+}
