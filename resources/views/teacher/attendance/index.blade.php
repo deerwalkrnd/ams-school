@@ -18,10 +18,7 @@
                 <tr class="table_title">
                     <th class="border-end">Roll</th>
                     <th class="border-end">Name</th>
-                    <th colspan="{{ $attendanceDates->count() }}" class="text-center border-end">Status</th>
-                    @if (!$attendanceDates->has(now()->format('M/d')))
-                        <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
-                    @endif
+                    <th colspan="{{ $attendanceDates->count() }}" class="text-center border-end">Status<i class='bx bxs-down-arrow text-primary'></i></th>
                     @if (!$attendanceDates->has(now()->format('M/d')))
                         <th class="border-end">Absent Comment</th>
                     @endif
@@ -47,15 +44,6 @@
                         <td class="border-end roll_no">{{ $student->roll_no }}</td>
                         <td class="border-end">{{ $student->name }}</td>
                         @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(7), null, 6) as $dateOfAttendance)
-                            <td class="border-end">
-                                @if ($dateOfAttendance['present'] > 0)
-                                    <span class="attendanceSymbol presentSymbol">P</span>
-                                @endif
-                                @if ($dateOfAttendance['absent'] > 0)
-                                    <span class="attendanceSymbol absentSymbol" data-toogle="tooltip" title="{{$dateOfAttendance['comment']}}" date-placement="top">A</span>
-                                @endif
-
-                            </td>
                         @empty
                             <td class="text-center border-end"> Attendance has not been taken. </td>
                         @endforelse
@@ -175,7 +163,7 @@
                             });
                             setTimeout(() => {
                                 window.location.replace(
-                                    "{{ route('attendance.create') }}");
+                                    "{{ route('teacher.dashboard') }}");
                             }, 3000);
                             submit.prop('disabled', true);
                         },
