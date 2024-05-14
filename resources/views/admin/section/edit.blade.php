@@ -16,22 +16,29 @@
                 <input type="text" name="name" value="{{ $sections->name }}" required>
             </div>
         </div>
-        <label for="">Grade<span class="star">*</span></label>
-        <div class="input_container">
-            <select name="grade_id">
-                @foreach ($grades as $grade)
-                    <option value="{{ $grade->id }}">{{ $grade->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <label for="">Teacher<span class="star">*</span></label>
-        <div class="input_container">
-            <select name="user_id">
-                @foreach ($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                @endforeach
-            </select>
-        </div>
+        
+        <label for="grade_id">Grade<span class="star">*</span></label>
+<div class="input_container">
+    <select name="grade_id" id="grade_id">
+        <option value="" disabled>Select a Grade</option>
+        @foreach ($grades as $grade)
+            <option value="{{ $grade->id }}" {{ $grade->id == $sections->grade_id ? 'selected' : '' }}>{{ $grade->name }}</option>
+        @endforeach
+    </select>
+</div>
+
+        
+<label for="user_id">Teacher<span class="star">*</span></label>
+<div class="input_container">
+    <select name="user_id" id="user_id">
+        <option value="" disabled>Select a Teacher</option>
+        @foreach ($users as $user)
+            <option value="{{ $user->id }}" {{ $user->id == $sections->user_id ? 'selected' : '' }}>{{ $user->name }}</option>
+        @endforeach
+    </select>
+</div>
+
+        
         <br>
         <button class="btn btn-success" type="submit">Update</button>
 

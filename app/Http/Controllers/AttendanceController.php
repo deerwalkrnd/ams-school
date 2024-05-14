@@ -54,21 +54,18 @@ class AttendanceController extends Controller
     public function create(Request $request)
     {
     
-       try{ $students = Student::where('section_id', '2')->where('status', 'active')->orderBy('roll_no')->get();
-
-        $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
+       try{ $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
         ->where('created_at', '>', Carbon::now()->subDays(6))
         ->get()
         ->groupBy(function ($query) {
             return Carbon::parse($query->created_at)->format('M/d');
         })
         ->take(5);
-        // dd($attendanceDates);
 
-        // dd($students);
-        $attendanceDates = $attendanceDates->filter(function ($date) use ($students) {
-            return $students->contains('id', $date->first()->student_id);
-        });
+    $students = Student::where('status', 'active')->get();
+    $attendanceDates = $attendanceDates->filter(function ($date) use ($students) {
+        return $students->contains('id', $date->first()->student_id);
+    });
     return view('teacher.attendance.index', compact("attendanceDates"));
         }catch(Exception $e) {
         Log::error($e->getMessage());  
@@ -185,7 +182,6 @@ class AttendanceController extends Controller
     {
         // dd($request->all());
         try{$sections = Section::with('grade')->get();
-        // dd($sections);
         if ($request->has('section')) {
 
             $students = Student::where('section_id', $request->section)

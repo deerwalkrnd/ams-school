@@ -22,7 +22,7 @@ class SectionController extends Controller
     public function create()
     {
         try{$sections = Section::all();
-        $grades = Grade::all();
+        $grades = Grade::all()->sortBy('name');
         $users = User::whereHas('roles', function ($query) {
             $query->where('role', 'teacher');
         })->get();
@@ -46,7 +46,7 @@ class SectionController extends Controller
     public function edit($id)
     {
         try{$sections = Section::find($id);
-        $grades = Grade::all();
+        $grades = Grade::all()->sortBy('name');
         $users = User::whereHas('roles', function ($query) {
             $query->where('role', 'teacher');
         })->get();

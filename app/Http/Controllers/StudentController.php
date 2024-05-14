@@ -98,7 +98,7 @@ class StudentController extends Controller
     public function bulkUpload(Request $request)
     {
         try{$request->validate([
-            'student_csv' => 'required|mimes:csv,xlsx,txt'
+            'student_csv' => 'required|mimes:csv,xlsx,txt',
         ]);
 
         $extension =$request->file('student_csv')->extension();
