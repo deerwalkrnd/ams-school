@@ -59,7 +59,8 @@ class Student extends Model
      */
     public function getAttendances($startDate, $endDate, $limit=50)
     {
-        $startDate = $startDate ?? Auth::user()->section->grade->start_date;
+        // dd($this->section->grade->start_date);
+        $startDate = $startDate ?? $this->section->grade->start_date;
         $endDate = $endDate ?? Carbon::today()->addDay()->format("Y-m-d");
   
         $attendance = $this->attendances

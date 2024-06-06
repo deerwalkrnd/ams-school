@@ -76,7 +76,7 @@
                 @if($attendanceDates)
                 @forelse ($attendanceDates as $date)
                     <th colspan="2" class="text-center border-end">
-                        {{ $date }}
+                        {{ $date->date }}
                     </th>
                 @empty
                     <td colspan="3" class="text-center">
@@ -118,7 +118,7 @@
             <tr class="total_class fw-bolder">
                 <td class="border-end "> Total Classes</td>
                 <td colspan="{{ $attendanceDates->count() }}" class="border-end text-center fw-bolder">
-                    {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+                    {{ $section->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
             </tr>
         </tfoot>
     </table>

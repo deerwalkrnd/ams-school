@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -63,5 +64,71 @@ class Section extends Model
                 ->count();
         }
         return $count;
+    }
+    public function getAllAttendanceDates($startDate, $endDate, $limit=50)
+    {
+        // $startDate = $startDate ?? Auth::user()->section->grade->start_date;
+       
+        $startDate=$startDate ?? $this->grade->start_date;
+        $endDate = $endDate ?? date('Y-m-d');
+        // dd($startDate,$endDate);
+        $sectionId= $this->id;
+        
+        // $attendance = $this->attendances
+        //                     ->whereBetween('date', [$startDate, $endDate])
+        //                     ->groupBy(function ($query) {
+        //                         return Carbon::parse($query->date)->format('m/d');
+        //                     })
+        //                     ->take($limit);
+
+        // $attendances = $this->student()
+        // ->with('attendances')
+        // ->whereHas('attendances', function ($query) use ($startDate, $endDate) {
+        //     $query->when($startDate, function ($query) use ($startDate) {
+        //         $query->whereDate('date', '>=', $startDate);
+        //     });
+        //     $query->when($endDate, function ($query) use ($endDate) {
+        //         $query->whereDate('date', '<=', $endDate);
+        //     });
+           
+        // })
+        // ->get()
+        // ->pluck('attendances')
+        // ->collapse()
+        // ->unique('date')
+        // ->values()
+        // ->sortBy('date')
+        // ->take($limit);
+        // ;
+
+$student= $this->student()->first();
+$attendances=$student->attendances;
+// $attendances=$attendances->where('date', '>=', $startDate)->where('date', '<=' , $endDate);
+$attendances=$attendances->whereBetween('date', [$startDate, $endDate]);
+// dd($attendances);
+// dd($attendances);
+
+        // $attendances=$this->student()->with('attendances')->whereHas('attendances', function ($query) use ($startDate, $endDate) {
+        //     return $query->whereBetween('date', [$startDate, $endDate]);
+        // });
+        // dd($attendances);
+        
+    return $attendances;
+            // dd($this->student->whereHas('student', function ($query) use ($sectionId){
+            //     return $query->where('section_id', $sectionId);
+            // }));
+        
+
+        // return $attendance->keys();
+    }
+    public function getTotalClasses($startDate, $endDate)
+    {
+$student= $this->student()->first();
+// dd($student);
+$attendances=$student->attendances;
+// dd($attendances);
+        $startDate = $startDate ?? $this->grade->start_date;
+        $endDate = $endDate ?? date('Y-m-d');
+        return $attendances->whereBetween('date', [$startDate, $endDate])->count() ?? "-";
     }
 }
