@@ -40,11 +40,11 @@ class Student extends Model
 
     public function getAbsentDays($id)
     {
-        $attendances =  Attendance::where('student_id',$this->id)
-                            ->where('attendances.teacher_id',$id)
-                            ->where('created_at','>', Carbon::now()->subDays(6))
-                            ->sum('absent');
-                           
+        $attendances = Attendance::where('student_id', $this->id)
+            ->where('attendances.teacher_id', $id)
+            ->where('created_at', '>', Carbon::now()->subDays(6))
+            ->sum('absent');
+
         return $attendances;
     }
 
@@ -57,25 +57,37 @@ class Student extends Model
      * @param date $endDate
      * @return mixed
      */
-    public function getAttendances($startDate, $endDate, $limit=50)
+    public function getAttendances($startDate, $endDate, $limit = 50)
     {
-        $startDate = $startDate ?? Auth::user()->section->grade->start_date;
-        $endDate = $endDate ?? Carbon::today()->addDay()->format("Y-m-d");
-  
+        $startDate = $startDate ?? $this->section->grade->start_date;
+        $endDate = $endDate ?? Carbon::today()->format("Y-m-d");
         $attendance = $this->attendances
-                            ->whereBetween('date', [$startDate, $endDate])
-                            ->groupBy(function($query){
-                                return Carbon::parse($query->date)->format('d');
-                            })
-                            ->map(function($attendance){
-                                $temp['present'] = $attendance->first()->present;
-                                $temp['absent'] = $attendance->first()->absent;
-                                $temp['comment'] = $attendance->first()->comment;
-                                return $temp;
-                            })
-                            ->take($limit);
-
+            ->whereBetween('date', [$startDate, $endDate])
+            ->groupBy(function ($query) {
+                return Carbon::parse($query->date)->format('Y-m-d');
+            })
+            ->map(function ($attendance) {
+                $temp['present'] = $attendance->first()->present;
+                $temp['absent'] = $attendance->first()->absent;
+                $temp['comment'] = $attendance->first()->comment;
+                return $temp;
+            })
+            ->take($limit);
         return $attendance;
     }
+    public function getAttendanceDates($startDate, $endDate, $limit = 50)
+    {
+        $startDate = $startDate ?? $this->section->grade->start_date;
+        $endDate = $endDate ?? Carbon::today()->addDay()->format("Y-m-d");
 
+        $getAttendanceDates = $this->attendances
+            ->whereBetween('date', [$startDate, $endDate])
+            ->pluck('date')
+            ->unique()
+            ->sortBy('date')
+            ->take($limit)
+            ->values();
+
+        return $getAttendanceDates;
+    }
 }

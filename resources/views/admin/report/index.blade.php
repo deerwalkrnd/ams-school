@@ -71,30 +71,35 @@
     </form>
     <table class="_table mx-auto mb-5">
         <thead>
-            <tr class="table_title">
-                <th>Student's Name</th>
-                @if($attendanceDates)
-                @forelse ($attendanceDates as $date)
+            @php
+            $firstStudent = $students->first();
+            $attendanceDates = $firstStudent->getAttendanceDates($startDate, $endDate ?? Date::now());
+            @endphp
+        
+        <tr class="table_title">
+            <th>Student's Name</th>
+            @if($attendanceDates->isNotEmpty())
+                @foreach ($attendanceDates as $date)
                     <th colspan="2" class="text-center border-end">
                         {{ $date }}
                     </th>
-                @empty
-                    <td colspan="3" class="text-center">
-                        <h5>
-                            No Attendance Taken
-                        </h5>
-                    </td>
-                @endforelse
-                @endif
-            </tr>
+                @endforeach
+            @else
+                <td colspan="3" class="text-center">
+                    <h5>No Attendance Taken</h5>
+                </td>
+            @endif
+        </tr>
+        
         </thead>
         <tbody>
             @foreach ($students as $student)
             @if($student->status=='active')
                 <tr>
                     <td class="border-end">{{ $student->name }}</td>
-                    @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
-                        <td class="border-end text-center ">
+                    @forelse ($student->getAttendances($startDate, $endDate??Date::now()) as $dateOfAttendance)
+                    {{-- {{dd($dateOfAttendance)}} --}}
+                        <td class="border-end text-center " colspan="2">
                             @if ($dateOfAttendance['present'] > 0)
                                 @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
                                     <span class="attendanceSymbol presentSymbol ">P</span>
@@ -105,7 +110,6 @@
                                     <span class="attendanceSymbol absentSymbol">A</span>
                                 @endfor
                             @endif
-
                         </td>
                     @empty
                         <td class="text-center border-end"> Attendance has not been taken. </td>
@@ -117,8 +121,9 @@
         <tfoot>
             <tr class="total_class fw-bolder">
                 <td class="border-end "> Total Classes</td>
-                <td colspan="{{ $attendanceDates->count() }}" class="border-end text-center fw-bolder">
-                    {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+                {{-- @dd($attendanceDates); --}}
+                <td colspan="{{ $attendanceDates->count()*2}}" class="border-end text-center fw-bolder">
+                    {{ $attendanceDates->count()}}</td>
             </tr>
         </tfoot>
     </table>

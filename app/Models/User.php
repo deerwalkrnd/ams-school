@@ -97,17 +97,17 @@ class User extends Authenticatable
      * 
      * @return mixed
      */
-    public function getAllAttendanceDates($startDate, $endDate, $limit=50)
+    public function getAllAttendanceDates($startDate, $endDate, $limit = 50)
     {
         $startDate = $startDate ?? Auth::user()->section->grade->start_date;
         $endDate = $endDate ?? date('Y-m-d');
 
         $attendance = $this->attendances
-                            ->whereBetween('date', [$startDate, $endDate])
-                            ->groupBy(function ($query) {
-                                return Carbon::parse($query->date)->format('m/d');
-                            })
-                            ->take($limit);
+            ->whereBetween('date', [$startDate, $endDate])
+            ->groupBy(function ($query) {
+                return Carbon::parse($query->date)->format('m/d');
+            })
+            ->take($limit);
 
         return $attendance->keys();
     }
