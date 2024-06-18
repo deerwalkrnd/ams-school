@@ -126,9 +126,11 @@ class ReportController extends Controller
         $attendanceDates = 
         Section::where('grade_id',$latestAttendance->student->section->grade->id)
     ->first()->getAllAttendanceDates($startDate, null);
+
     $section= Section::where('id', Auth::user()->section->id)->first();
         $students = Auth::user()->students()->get()->sortBy('roll_no');
-        return view('teacher.report.index', compact('attendanceDates', 'students','section'));}
+        
+        return view('teacher.report.index', compact('attendanceDates', 'students','section', 'startDate'));}
         catch(Exception $e){
             return redirect()->back()->with('error', "Teacher not assigned yet");
         }

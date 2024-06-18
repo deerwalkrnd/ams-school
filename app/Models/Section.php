@@ -104,7 +104,7 @@ $student= $this->student()->where('status', 'active')->first();
 // dd($student);
 $attendances=$student->attendances;
 // $attendances=$attendances->where('date', '>=', $startDate)->where('date', '<=' , $endDate);
-$attendances=$attendances->whereBetween('date', [$startDate, $endDate]);
+$attendances=$attendances->where('date', '>=', $startDate)->where('date', '<=' , $endDate);
 // dd($attendances);
 // dd($attendances);
 

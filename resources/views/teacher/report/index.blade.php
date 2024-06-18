@@ -55,19 +55,25 @@
         </form>
         <table class="_table mx-auto mb-5">
             <thead>
+                @php
+                $firstStudent = $students->first();
+                $attendanceDates = $firstStudent->getAttendanceDates($startDate, $endDate ?? Date::now());   
+                @endphp
                 <tr class="table_title">
                     <th class="border-end fw-bolder">Student's Name</th>
-                    @forelse ($attendanceDates as $date)
+                    @if($attendanceDates->isNotEmpty())
+                        @foreach ($attendanceDates as $date)
                         <th class="text-center border-end">
-                            {{ $date->date }}
+                            {{ $date }}
                         </th>
-                    @empty
+                        @endforeach
+                        @else
                         <td colspan="3" class="text-center">
                             <h5>
                                 No Attendance Taken
                             </h5>
                         </td>
-                    @endforelse
+                        @endif
                 </tr>
             </thead>
             <tbody>
@@ -100,8 +106,8 @@
                 <tr class="total_class">
                     <td class="border-end fw-bolder "> Total Classes</td>
                     {{-- @foreach($section as $sec) --}}
-                    <td class="border-end fw-bolder text-center" colspan="{{ $attendanceDates->count() }}">
-                        {{ $section->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+                    <td class="border-end fw-bolder text-center" colspan="{{ $attendanceDates->count()*2 }}">
+                        {{ $attendanceDates->count() }}</td>
                         {{-- @endforeach --}}
                 </tr>
             </tfoot>
