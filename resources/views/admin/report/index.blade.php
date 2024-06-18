@@ -105,7 +105,9 @@
                                     <span class="attendanceSymbol absentSymbol">A</span>
                                 @endfor
                             @endif
-
+                            {{-- @if($dateOfAttendance['present'] === 0 && $dateOfAttendance['absent']===0)
+                            <span class="attendanceSymbol absentSymbol">dasfk</span>
+                            @endif --}}
                         </td>
                     @empty
                         <td class="text-center border-end"> Attendance has not been taken. </td>

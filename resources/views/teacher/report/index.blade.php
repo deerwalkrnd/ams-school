@@ -59,7 +59,7 @@
                     <th class="border-end fw-bolder">Student's Name</th>
                     @forelse ($attendanceDates as $date)
                         <th class="text-center border-end">
-                            {{ $date }}
+                            {{ $date->date }}
                         </th>
                     @empty
                         <td colspan="3" class="text-center">
@@ -99,8 +99,10 @@
             <tfoot>
                 <tr class="total_class">
                     <td class="border-end fw-bolder "> Total Classes</td>
+                    {{-- @foreach($section as $sec) --}}
                     <td class="border-end fw-bolder text-center" colspan="{{ $attendanceDates->count() }}">
-                        {{ auth()->user()->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+                        {{ $section->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+                        {{-- @endforeach --}}
                 </tr>
             </tfoot>
         </table>

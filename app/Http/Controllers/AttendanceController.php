@@ -58,7 +58,7 @@ class AttendanceController extends Controller
         ->where('created_at', '>', Carbon::now()->subDays(6))
         ->get()
         ->groupBy(function ($query) {
-            return Carbon::parse($query->created_at)->format('M/d');
+            return Carbon::parse($query->created_at)->format('Y-m-d');
         })
         ->take(5);
 

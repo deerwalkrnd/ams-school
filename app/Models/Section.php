@@ -68,11 +68,10 @@ class Section extends Model
     public function getAllAttendanceDates($startDate, $endDate, $limit=50)
     {
         // $startDate = $startDate ?? Auth::user()->section->grade->start_date;
-       
+    //    dd($startDate);
         $startDate=$startDate ?? $this->grade->start_date;
         $endDate = $endDate ?? date('Y-m-d');
         // dd($startDate,$endDate);
-        $sectionId= $this->id;
         
         // $attendance = $this->attendances
         //                     ->whereBetween('date', [$startDate, $endDate])
@@ -101,7 +100,8 @@ class Section extends Model
         // ->take($limit);
         // ;
 
-$student= $this->student()->first();
+$student= $this->student()->where('status', 'active')->first();
+// dd($student);
 $attendances=$student->attendances;
 // $attendances=$attendances->where('date', '>=', $startDate)->where('date', '<=' , $endDate);
 $attendances=$attendances->whereBetween('date', [$startDate, $endDate]);
@@ -111,7 +111,7 @@ $attendances=$attendances->whereBetween('date', [$startDate, $endDate]);
         // $attendances=$this->student()->with('attendances')->whereHas('attendances', function ($query) use ($startDate, $endDate) {
         //     return $query->whereBetween('date', [$startDate, $endDate]);
         // });
-        // dd($attendances);
+        // dd($attendances->pluck('date'));
         
     return $attendances;
             // dd($this->student->whereHas('student', function ($query) use ($sectionId){
@@ -123,12 +123,25 @@ $attendances=$attendances->whereBetween('date', [$startDate, $endDate]);
     }
     public function getTotalClasses($startDate, $endDate)
     {
-$student= $this->student()->first();
-// dd($student);
-$attendances=$student->attendances;
-// dd($attendances);
         $startDate = $startDate ?? $this->grade->start_date;
         $endDate = $endDate ?? date('Y-m-d');
+        // dd($endDate);
+        // dd($startDate,$endDate);
+$student= $this->student()->where('status', 'active')->first();
+$attendances=$student->attendances;
+// dd($student);
+// $attendances = $student->attendances->map(function ($attendance) {
+//     $attendance->date = Carbon::parse($attendance->date);
+//     return $attendance;
+// });
+
+// dd($attendances);
+
+// dd($attendances->date);
+$attendances->whereBetween('date', [$startDate, $endDate]);
+// dd($attendances);
+
+        
         return $attendances->whereBetween('date', [$startDate, $endDate])->count() ?? "-";
     }
 }
