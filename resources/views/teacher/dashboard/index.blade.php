@@ -23,7 +23,12 @@
                 </div>
                 <div class="col-sm-2">
                     <div class="takeAttendancebtn">
-                        <a class="btn btn-success" href="{{route('attendance.create')}}"> </i> Take Attendance</a>
+                        @if (auth()->user()->section->getPresentCount(auth()->user()) > 0 || auth()->user()->section->getAbsentCount(auth()->user()) > 0 )
+                            
+                        @else
+                        <a class="btn btn-primary" href="{{route('attendance.create')}}"> Take Attendance</a>
+                        @endif
+                       
 
                     </div>
 

@@ -2,32 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Log;
 class PasswordChangeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
-{
-    $user = auth()->user();
+    {$user = auth()->user();
 
-    if ($user && $user->roles()->exists()) {
-        $userRoles = $user->roles()->pluck('role')->toArray();
-        $userRole = $userRoles[0];
-        if($userRole=='admin'){
-            return view('auth.password.index',compact('userRole'))->with('success', 'Password Changed Successfully');
+        if ($user && $user->roles()->exists()) {
+            $userRoles = $user->roles()->pluck('role')->toArray();
+            $userRole = $userRoles[0];
+            if($userRole=='admin'){
+                return view('auth.password.index',compact('userRole'))->with('success', 'Password Changed Successfully');
+            }
+            else{
+                return view('auth.password.index', compact('userRole'))->with('success', 'Password Changed Successfully');
+            }
+        } else {
+            return redirect()->route('login');
         }
-        else{
-            return view('auth.password.teacherindex', compact('userRole'))->with('success', 'Password Changed Successfully');
-        }
-    } else {
-        return redirect()->route('login');
     }
-}
 
     /**
      * Show the form for creating a new resource.

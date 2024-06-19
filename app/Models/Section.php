@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -46,22 +47,39 @@ class Section extends Model
 
     public function getTodayAttendanceStatusCount(User $user, string $status)
     {
-        $count = Attendance::whereHas('student', function($query) use($user){
-                        return $query->where('students.section_id', $user->section->id);
-                            })
-                            ->whereDate("created_at", date('Y-m-d'))
-                            ->where('teacher_id', $user->id);
+        $count = Attendance::whereHas('student', function ($query) use ($user) {
+            return $query->where('students.section_id', $user->section->id);
+        })
+            ->whereDate("created_at", date('Y-m-d'))
+            ->where('teacher_id', $user->id);
 
         if ($status == 'present') {
             $count = $count->where('absent', '0')
                 ->get()
                 ->count();
-        }
-        elseif ($status == 'absent') {
+        } elseif ($status == 'absent') {
             $count = $count->where('absent', '!=', '0')
                 ->get()
                 ->count();
         }
         return $count;
+    }
+    public function getAllAttendanceDates($startDate, $endDate, $limit = 50)
+    {
+        $startDate = $startDate ?? $this->grade->start_date;
+        $endDate = $endDate ?? date('Y-m-d');
+        $student = $this->student()->where('status', 'active')->first();
+        $attendances = $student->attendances;
+        $attendances = $attendances->where('date', '>=', $startDate)->where('date', '<=', $endDate);
+        return $attendances;
+    }
+    public function getTotalClasses($startDate, $endDate)
+    {
+        $startDate = $startDate ?? $this->grade->start_date;
+        $endDate = $endDate ?? date('Y-m-d');
+        $student = $this->student()->where('status', 'active')->first();
+        $attendances = $student->attendances;
+        $attendances->whereBetween('date', [$startDate, $endDate]);
+        return $attendances->whereBetween('date', [$startDate, $endDate])->count() ?? "-";
     }
 }

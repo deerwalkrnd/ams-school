@@ -8,31 +8,41 @@ use Illuminate\Http\Request;
 use App\models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        try{$users = User::all();
         return view('admin.user.index')->with(compact('users'));
+    }catch(Exception $e) {
+        Log::error($e->getMessage());  
+        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+    }
     }
 
 
     public function create()
     {
-        $users = User::all();
+        try{$users = User::all();
         $roles = Role::all();
         return view('admin.user.create')->with(compact('users', 'roles'));
+    }catch(Exception $e) {
+        Log::error($e->getMessage());  
+        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+    }
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        try{$request->validate([
             'name' => [
                 'required',
                 'regex:/^[A-Za-z\s]+$/',
                 'max:255',
+                Rule::unique('users', 'name'),
             ],
             'email' => 'required|email|unique:users',
             'role' => 'required',
@@ -49,18 +59,26 @@ class UserController extends Controller
         Mail::to($user->email)->send(new UserCredentialMail($user, [Role::select('role')->where('id', $request->role)->first()->role]));
 
         return redirect(route('user.index'))->with('success', 'User Successfully Created');
+    }catch(Exception $e) {
+        Log::error($e->getMessage());  
+        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+    }
     }
 
     public function edit($id)
     {
-        $users = User::find($id);
+        try{$users = User::find($id);
         $roles = Role::all();
         return view('admin.user.edit', compact('users', 'roles'));
+    }catch(Exception $e) {
+        Log::error($e->getMessage());  
+        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+    }
     }
 
     public function update(Request $request, $id)
     {
-        $users = User::find($id);
+       try{ $users = User::find($id);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $users->id,
@@ -73,20 +91,21 @@ class UserController extends Controller
         $users->roles()->sync($roles);
 
         return redirect(route('user.index'))->with('success', 'User Successfully Updated');
+    }catch(Exception $e) {
+        Log::error($e->getMessage());  
+        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+    }
     }
 
     public function delete($id)
-{
-    try {
-        $user = User::findOrFail($id);
-        $user->delete();
+    {
+        try{$users = User::find($id);
+        $users->roles()->detach();
+        $users->delete();
         return redirect(route('user.index'))->with('success', 'User Successfully Deleted');
-    } catch (QueryException $e) {
-        if ($e->errorInfo[1] === 1451) {
-            return redirect(route('user.index'))->with('error', 'Cannot delete user. There are related records in the database.');
-        } else {
-            return redirect(route('user.index'))->with('error', 'An error occurred while deleting the user.');
-        }
+    }catch(Exception $e) {
+        Log::error($e->getMessage());  
+        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
     }
-}
+    }
 }

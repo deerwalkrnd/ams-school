@@ -9,13 +9,13 @@
         </div>
         <form action="{{ route('teacher-report.search') }}">
 
-            <div class="row align-items-center">
+            <div class="row">
                 <div class="col-md-6 mt-5">
                     <div class="align-items-center">
                         <label for="student" class=" col-md-4 form-label">Student</label>
                         <select id="student" name="student" class="col-md-4 form-control form-select  form-select-sm ">
                             <option disabled selected>--Choose Student--</option>
-                            @foreach ($allStudents as $student)
+                            @foreach ($students as $student)
                                 <option value="{{ $student->roll_no }}"> {{ $student->name }}
                                 </option>
                             @endforeach
@@ -25,14 +25,14 @@
 
                 <div class="col-md-3 mt-5">
                     <div class="row align-items-center">
-                        <label for="start_date" class="col form-label"> Start Date</label>
+                        <label for="start_date" class="col-md-4 form-label"> Start Date</label>
                         <input id="start_date" name="start_date" type="date" class="col-md-4 form-control"
                             onchange="evaluateDate()">
                     </div>
                 </div>
                 <div class="col-md-3 mt-5">
                     <div class="row align-items-center">
-                        <label for="end_date" class="col form-label"> End Date</label>
+                        <label for="end_date" class="col-md-4 form-label"> End Date</label>
                         <input id="end_date" name="end_date" type="date" class="col-md-4 form-control"
                             onchange="evaluateDate()">
                     </div>
@@ -42,7 +42,7 @@
                 <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
             </div>
         </form>
-        <form action="{{ route('teacher-report.download') }}" method="POST">
+        <form action="{{route('teacher-report.download')}}" method="POST">
             @csrf
             <input type="hidden" id="studentDownload" name="student">
             <input type="hidden" id="startDateDownload" name="start_date">
@@ -55,52 +55,60 @@
         </form>
         <table class="_table mx-auto mb-5">
             <thead>
+                @php
+                $firstStudent = $students->first();
+                $attendanceDates = $firstStudent->getAttendanceDates($startDate, $endDate ?? Date::now());   
+                @endphp
                 <tr class="table_title">
                     <th class="border-end fw-bolder">Student's Name</th>
-                    @forelse ($attendanceDates as $date)
+                    @if($attendanceDates->isNotEmpty())
+                        @foreach ($attendanceDates as $date)
                         <th class="text-center border-end">
                             {{ $date }}
                         </th>
-                    @empty
+                        @endforeach
+                        @else
                         <td colspan="3" class="text-center">
                             <h5>
                                 No Attendance Taken
                             </h5>
                         </td>
-                    @endforelse
+                        @endif
                 </tr>
             </thead>
             <tbody>
                 @foreach ($students as $student)
-                    @if ($student->status == 'active')
-                        <tr>
-                            <td class="border-end">{{ $student->name }}</td>
-                            @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
-                                <td class="border-end text-center">
-                                    @if ($dateOfAttendance['present'] > 0)
-                                        @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
-                                            <span class="attendanceSymbol presentSymbol text-success">P</span>
-                                        @endfor
-                                    @endif
-                                    @if ($dateOfAttendance['absent'] > 0)
-                                        @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                            <span class="attendanceSymbol absentSymbol text-danger">A</span>
-                                        @endfor
-                                    @endif
+                @if($student->status=='active')
+                    <tr>
+                        <td class="border-end">{{ $student->name }}</td>
+                        @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
+                            <td class="border-end text-center">
+                                @if ($dateOfAttendance['present'] > 0)
+                                    @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
+                                        <span class="attendanceSymbol presentSymbol">P</span>
+                                    @endfor
+                                @endif
+                                @if ($dateOfAttendance['absent'] > 0)
+                                    @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
+                                        <span class="attendanceSymbol absentSymbol">A</span>
+                                    @endfor
+                                @endif
 
-                                </td>
-                            @empty
-                                <td class="text-center border-end"> Attendance has not been taken. </td>
-                            @endforelse
-                        </tr>
+                            </td>
+                        @empty
+                            <td class="text-center border-end"> Attendance has not been taken. </td>
+                        @endforelse
+                    </tr>
                     @endif
                 @endforeach
             </tbody>
             <tfoot>
                 <tr class="total_class">
                     <td class="border-end fw-bolder "> Total Classes</td>
-                    <td class="border-end fw-bolder text-center" colspan="{{ $attendanceDates->count() }}">
-                        {{ auth()->user()->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+                    {{-- @foreach($section as $sec) --}}
+                    <td class="border-end fw-bolder text-center" colspan="{{ $attendanceDates->count()*2 }}">
+                        {{ $attendanceDates->count() }}</td>
+                        {{-- @endforeach --}}
                 </tr>
             </tfoot>
         </table>
@@ -174,6 +182,8 @@
             }
             return false;
         };
+
+
     </script>
     <script>
         const Toast = Swal.mixin({

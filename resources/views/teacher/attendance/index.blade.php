@@ -18,11 +18,8 @@
                 <tr class="table_title">
                     <th class="border-end">Roll</th>
                     <th class="border-end">Name</th>
-                    <th colspan="{{ $attendanceDates->count() }}" class="text-center border-end">Status</th>
-                    @if (!$attendanceDates->has(now()->format('M/d')))
-                        <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
-                    @endif
-                    @if (!$attendanceDates->has(now()->format('M/d')))
+                    <th colspan="{{ $attendanceDates->count()+2 }}" class="text-center border-end">Status</th>
+                    @if (!$attendanceDates->has(now()->format('Y-m-d')))
                         <th class="border-end">Absent Comment</th>
                     @endif
                 </tr>
@@ -36,8 +33,8 @@
                         <th colspan="1"></th>
                     @endif
                     <th colspan="1">
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                            {{ date('M/d') }}
+                        @if (!$attendanceDates->has(now()->format('Y-m-d')))
+                            {{ date('Y-m-d') }}
                         @endif
                     </th>
                 </tr>
@@ -47,7 +44,7 @@
                         
                         <td class="border-end roll_no">{{ $student->roll_no }}</td>
                         <td class="border-end">{{ $student->name }}</td>
-                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(7), null, 6) as $dateOfAttendance)
+                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(6), null,5) as $dateOfAttendance)
                             <td class="border-end">
                                 @if ($student->status == 'active')
                                     @if ($dateOfAttendance['present'] > 0)
@@ -64,7 +61,7 @@
                     @empty
                         <td class="text-center border-end"> Attendance has not been taken. </td>
                 @endforelse
-                @if (!$attendanceDates->has(now()->format('M/d')))
+                @if (!$attendanceDates->has(now()->format('Y-m-d')))
                     @if ($student->status == 'active')
                         <td class="border-end student_attendance_status">
                             <div onclick="toggleState(this)" class="attendance-state"
@@ -77,7 +74,7 @@
                         <td class="text-secondary">N</td>
                     @endif
                 @endif
-                @if (!$attendanceDates->has(now()->format('M/d')))
+                @if (!$attendanceDates->has(now()->format('Y-m-d')))
                     <td>
                         @if ($student->status == 'active')
                             <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:"
@@ -92,7 +89,7 @@
 
             </table>
             <div class="row justify-content-center">
-                @if (!$attendanceDates->has(now()->format('M/d')))
+                @if (!$attendanceDates->has(now()->format('Y-m-d')))
                     <div class="justify-content-center text-end my-3 me-5">
                         <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
                     </div>
