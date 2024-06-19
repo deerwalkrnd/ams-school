@@ -44,7 +44,7 @@
                         
                         <td class="border-end roll_no">{{ $student->roll_no }}</td>
                         <td class="border-end">{{ $student->name }}</td>
-                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(2), null,2) as $dateOfAttendance)
+                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(6), null,5) as $dateOfAttendance)
                             <td class="border-end">
                                 @if ($student->status == 'active')
                                     @if ($dateOfAttendance['present'] > 0)
