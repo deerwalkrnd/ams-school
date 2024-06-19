@@ -23,28 +23,29 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        
-       try{ $attendances = Attendance::where('date', date('Y-m-d'))
-        ->get()
-        ->groupBy('teacher_id');
 
-    $userIds = $attendances->keys();
+        try {
+            $attendances = Attendance::where('date', date('Y-m-d'))
+                ->get()
+                ->groupBy('teacher_id');
 
-    $users = User::with(['section.grade'])
-        ->whereIn('id', $userIds)
-        ->get();
+            $userIds = $attendances->keys();
 
-        $users = $users->sortBy(function ($user) {
-            if ($user->section && $user->section->grade) {
-                return $user->section->grade->name;
-            } else {
-                return null;
-            }
-        });
-        return view('admin.attendance.index', compact('users'));}
-        catch(Exception $e) {
-            Log::error($e->getMessage());  
-            return redirect()->back()->withErrors('error','Failed to get attendance');
+            $users = User::with(['section.grade'])
+                ->whereIn('id', $userIds)
+                ->get();
+
+            $users = $users->sortBy(function ($user) {
+                if ($user->section && $user->section->grade) {
+                    return $user->section->grade->name;
+                } else {
+                    return null;
+                }
+            });
+            return view('admin.attendance.index', compact('users'));
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors('error', 'Failed to get attendance');
         }
     }
 
@@ -53,24 +54,35 @@ class AttendanceController extends Controller
      */
     public function create(Request $request)
     {
-    
-       try{ $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
-        ->where('created_at', '>', Carbon::now()->subDays(5))
-        ->get()
-        ->groupBy(function ($query) {
-            return Carbon::parse($query->created_at)->format('Y-m-d');
-        })
-        ->take(5);
 
-    $students = Student::where('status', 'active')->get();
-    $attendanceDates = $attendanceDates->filter(function ($date) use ($students) {
-        return $students->contains('id', $date->first()->student_id);
-    });
-    return view('teacher.attendance.index', compact("attendanceDates"));
-        }catch(Exception $e) {
-        Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
-    }
+           try{
+        $user = Auth::user();
+        $section = Section::where('user_id', $user->id)->first();
+        $section = $section->id;
+        // dd($section);
+        // $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
+        // ->where('created_at', '>', Carbon::now()->subDays(5))
+        // ->get()
+        // ->groupBy(function ($query) {
+        //     return Carbon::parse($query->created_at)->format('Y-m-d');
+        // })
+        // ->take(5);
+        $attendanceDates = Attendance::whereHas('student', function ($query) use ($section) {
+            return $query->where('section_id', $section);
+        })->where('created_at', '>', Carbon::now()->subDays(5))->get()
+            ->groupBy(function ($query) {
+                return Carbon::parse($query->created_at)->format('Y-m-d');
+            })->take(5);
+        $students = Student::where('status', 'active')->get();
+        $attendanceDates = $attendanceDates->filter(function ($date) use ($students) {
+            return $students->contains('id', $date->first()->student_id);
+        });
+        // dd($attendanceDates);
+        return view('teacher.attendance.index', compact("attendanceDates"));
+            }catch(Exception $e) {
+            Log::error($e->getMessage());  
+            return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        }
     }
 
     /**
@@ -78,7 +90,7 @@ class AttendanceController extends Controller
      */
     public function store(AttendanceRequest $request)
     {
-        $input = $request->validated();       
+        $input = $request->validated();
         try {
             DB::beginTransaction();
             $user = Auth::user();
@@ -86,7 +98,7 @@ class AttendanceController extends Controller
                 $student = Student::where('roll_no', $attendanceAndRoll['rollNo'])->first();
                 $attendance = new Attendance();
                 $attendance->student_id = $student->id;
-                $attendance->teacher_id =$student->section->user->id??Auth::user()->id;
+                $attendance->teacher_id = $student->section->user->id ?? Auth::user()->id;
                 $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
                 // Handle comments for absent students
@@ -96,12 +108,12 @@ class AttendanceController extends Controller
                 }
                 $attendance->date = date('Y-m-d');
                 $attendance->save();
-            }  
-            DB::commit();            
+            }
+            DB::commit();
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!', 200]);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occurred while uploading attendance.' .  $e);
+            Log::error('Error occurred while uploading attendance.' . $e);
             return response()->json(['msg' => 'Oops! Error Occured. Please Try Again Later.', 400]);
         }
     }
@@ -119,16 +131,17 @@ class AttendanceController extends Controller
      */
     public function edit(User $user)
     {
-        try{$attendances = Attendance::with('student')
-            ->where('teacher_id', $user->id)
-            ->where('date', date('Y-m-d'))
-            ->get()
-            ->sortBy('student.roll_no');
+        try {
+            $attendances = Attendance::with('student')
+                ->where('teacher_id', $user->id)
+                ->where('date', date('Y-m-d'))
+                ->get()
+                ->sortBy('student.roll_no');
 
-        return view('admin.attendance.edit', compact('attendances', 'user'));
-    }catch(Exception $e) {
-            Log::error($e->getMessage());  
-            return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+            return view('admin.attendance.edit', compact('attendances', 'user'));
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
         }
     }
 
@@ -142,9 +155,9 @@ class AttendanceController extends Controller
             DB::beginTransaction();
             foreach ($input['attendances'] as $attendanceAndRoll) {
                 $student = Student::where('roll_no', $attendanceAndRoll['rollNo'])
-                ->where('status', 'active')
-                ->orderBy('name')
-                ->first();
+                    ->where('status', 'active')
+                    ->orderBy('name')
+                    ->first();
                 $attendance = Attendance::where('teacher_id', $user->id)
                     ->where('student_id', $student->id)
                     ->where('date', date('Y-m-d'))
@@ -165,7 +178,7 @@ class AttendanceController extends Controller
             return response()->json(['msg' => 'Attendance Has Been Updated Successfully!'], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occured while updating attendance.' .  $e);
+            Log::error('Error occured while updating attendance.' . $e);
             return response()->json(['msg' => 'Oops! Error Occured. Please Try Again Later.'], 400);
         }
     }
@@ -181,29 +194,30 @@ class AttendanceController extends Controller
     public function adminAttendanceIndex(Request $request)
     {
         // dd($request->all());
-        try{$sections = Section::with('grade')->get();
-        if ($request->has('section')) {
+        try {
+            $sections = Section::with('grade')->get();
+            if ($request->has('section')) {
 
-            $students = Student::where('section_id', $request->section)
-            ->where('status', 'active')
-                ->orderBy('roll_no')->get();
-            $checkIfTodayAttendanceExists =  Attendance::whereHas('student', function ($query) use ($request) {
-                return $query->where('students.section_id', $request->section);
-            })
-                ->whereDate("created_at", date('Y-m-d'))
-                ->count();
+                $students = Student::where('section_id', $request->section)
+                    ->where('status', 'active')
+                    ->orderBy('roll_no')->get();
+                $checkIfTodayAttendanceExists = Attendance::whereHas('student', function ($query) use ($request) {
+                    return $query->where('students.section_id', $request->section);
+                })
+                    ->whereDate("created_at", date('Y-m-d'))
+                    ->count();
 
-            if ($checkIfTodayAttendanceExists) {
-                return redirect()->route('attendance.takeAttendance')->with('error', "Attendance for the grade on today's date already exist");
+                if ($checkIfTodayAttendanceExists) {
+                    return redirect()->route('attendance.takeAttendance')->with('error', "Attendance for the grade on today's date already exist");
+                }
+
+                return view('admin.attendance.adminAttendance', compact('sections', 'students'));
             }
 
-            return view('admin.attendance.adminAttendance', compact('sections', 'students'));
+            return view('admin.attendance.adminAttendance', compact('sections'));
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
         }
-
-        return view('admin.attendance.adminAttendance', compact('sections'));
-    }catch(Exception $e) {
-        Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
-    }
     }
 }
