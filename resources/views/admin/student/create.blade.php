@@ -33,8 +33,11 @@
                 <div class="input_container">
                     <select name="section_id" class="select_container">
                         @foreach ($sections as $section)
+                        @if($section->grade)
                             <option value="{{ $section->id }}">
+                               
                                 Grade: {{ $section->grade->name }}-Section: {{ $section->name }}</option>
+                                @endif
                         @endforeach
                     </select>
                 </div>

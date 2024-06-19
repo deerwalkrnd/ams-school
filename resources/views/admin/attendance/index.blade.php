@@ -8,7 +8,7 @@
 </div>
 <div class="col-sm-2">
     <div class="takeAttendancebtn">
-        <a class="btn btn-primary" href="{{route('attendance.takeAttendance')}}"> </i> Take  Attendance</a>
+        <a class="btn btn-success" href="{{route('attendance.takeAttendance')}}"> </i> Take  Attendance</a>
     </div>
 </div>
 @forelse ($users as $user)
@@ -20,14 +20,21 @@
 
         <div class="col-sm-3">
             <div class="card-body">
-                <h5 class="card-title"><b>Grade: {{ ucfirst($user->section->grade->name) }}</b></h5><br>
-                <h5 class="card-title"><b>Section: {{ ucfirst($user->section->name) }}</b></h5>
+                @if(!$user->section->grade)
+                <h5 class="card-title"><b>Grade: </b></h5>
+                @else 
+                <h5 class="card-title"><b>Grade: {{ ($user->section->grade->name) }}</b></h5><br>
+               
+                
+                @endif
+
+                <h5 class="card-title"><b>Section: {{ ($user->section->name) }}</b></h5>
 
             </div>
         </div>
         <div class="col-sm-2">
             <div class="takeAttendancebtn">
-                <a class="btn btn-primary" href="{{route('attendance.edit', $user->id)}}"> </i> Edit Attendance</a>
+                <a class="btn btn-success" href="{{route('attendance.edit', $user->id)}}"> </i> Edit Attendance</a>
 
             </div>
 

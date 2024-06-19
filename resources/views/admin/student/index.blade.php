@@ -27,7 +27,11 @@
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->roll_no }}</td>
                         <td>{{ $student->email }}</td>
+                        @if($student->section)
                         <td>{{ $student->section->grade->name }}-{{ $student->section->name }}</td>
+                        @else
+                        <td>N/A</td>
+                        @endif
                         <td>{{ $student->status }}</td>
                         <td class="">
                             <a href="{{ route('student.edit', ['id' => $student->id]) }}" class="btn btn-success">Edit</a>

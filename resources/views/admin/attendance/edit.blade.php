@@ -5,8 +5,13 @@
 @section('content')
     <div class="below_header">
         <!-- <h1>Attendance</h1> -->
+        @if($user->section->grade)
         <h1>Daily Attendance : Class {{ $user->section->grade->name }}
             - Sec {{ $user->section->name }}</h1>
+            {{-- @else
+            <h1>Daily Attendance : Class N/A
+                - Sec {{ $user->section->name }}</h1> --}}
+            @endif
     </div>
 
     <div class="table_container mt-5">

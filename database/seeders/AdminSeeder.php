@@ -26,6 +26,5 @@ class AdminSeeder extends Seeder
         $teacher->password = bcrypt("teacher");
         $teacher->save();
         $teacher->roles()->attach('2');
-
     }
 }

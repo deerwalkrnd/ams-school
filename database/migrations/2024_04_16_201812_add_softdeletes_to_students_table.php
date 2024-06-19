@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
-            $table->string('comment')->nullable();
+        Schema::table('students', function (Blueprint $table) {
+            //
+            $table->softDeletes();
         });
     }
 
@@ -21,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        Schema::table('students', function (Blueprint $table) {
             //
         });
     }
