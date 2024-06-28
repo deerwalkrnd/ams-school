@@ -32,7 +32,7 @@ class ReportController extends Controller
         return view('admin.report.index', compact('attendanceDates', 'students', 'startDate', 'grades', 'teacher', 'section'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -46,6 +46,7 @@ class ReportController extends Controller
         $grades = Grade::all()->sortBy('name');
         $students = Student::where('section_id',  $request->grade);
         $section=Section::where('id', $request->grade)->first();
+
         // dd($section);
         if ($request->has('student')) {
             $students = $students->where('roll_no', $request->student);
@@ -62,15 +63,19 @@ class ReportController extends Controller
         $students = $students->get()
             ->sortBy('roll_no');
 
-        // dd($section);
+        // dd($grades);
+
         $startDate = $startDate ?? $section->grade->start_date;
+        if(!$section){
+            return redirect()->back()->withErrors("Please select a section");
+        }
         $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate);
         
         // dd($attendanceDates);
         return view('admin.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates', 'grades', ));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -83,7 +88,7 @@ class ReportController extends Controller
         return response()->json(['students' => $students, 'start_date' => $startDate]);
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -94,7 +99,7 @@ class ReportController extends Controller
         $students = Student::where('section_id', $request->grade);
         $startDate = null;
         $endDate = null;
-
+        $section=Section::where('id', $request->grade)->first();
         if ($request->student != "false") {
             $students = $students->where('roll_no', $request->student);
         }
@@ -109,11 +114,12 @@ class ReportController extends Controller
 
         $students = $students->get()->sortBy('roll_no');
         $startDate = $startDate ?? $teacher->section->grade->start_date;
-        $attendanceDates = $teacher->getAllAttendanceDates($startDate, $endDate);
+        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate);
+        // dd($attendanceDates);
         return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate, $teacher))->download(time() . '.xlsx');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
 
     }
@@ -165,7 +171,7 @@ class ReportController extends Controller
         return view('teacher.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates',  'section'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -175,7 +181,7 @@ class ReportController extends Controller
         $students = Student::where('section_id', Auth::user()->section->id);
         $startDate = null;
         $endDate = null;
-
+        $section=  Section::where('id', Auth::user()->section->id)->first();
         if ($request->student != "false") {
             $students = $students->where('roll_no', $request->student);
         }
@@ -187,13 +193,13 @@ class ReportController extends Controller
         if ($request->end_date != null && $request->end_date != "false") {
             $endDate = $request->end_date;
         }
-
+        // dd($section);
         $students = $students->get()->sortBy('roll_no');
-        $attendanceDates = Auth::user()->getAllAttendanceDates($startDate, $endDate);
+        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate);
         return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate))->download(time() . '.xlsx');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 }

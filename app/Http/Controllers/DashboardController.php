@@ -14,7 +14,7 @@ class DashboardController extends Controller
         return view('admin.dashboard.index')->with(compact('users'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 }

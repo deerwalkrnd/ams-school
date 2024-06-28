@@ -25,7 +25,7 @@ class StudentController extends Controller
         return view('admin.student.index')->with(compact('students', 'sections', 'grades'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -37,7 +37,7 @@ class StudentController extends Controller
         return view('admin.student.create')->with(compact('grades', 'sections', 'students'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
     public function store(StudentRequest $request)
@@ -47,7 +47,7 @@ class StudentController extends Controller
         return redirect(route('student.index'))->with('success', "Student added Successfully Created");
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
     public function edit($id)
@@ -59,7 +59,7 @@ class StudentController extends Controller
         return view('admin.student.edit')->with(compact('students', 'grades', 'sections'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
     public function update(StudentRequest $request, $id)
@@ -70,7 +70,7 @@ class StudentController extends Controller
         return redirect(route('student.index'))->with('success', 'Student Edited Successfully');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -82,7 +82,7 @@ class StudentController extends Controller
         return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -92,7 +92,7 @@ class StudentController extends Controller
             return view('admin.student.bulkUpload');
         }catch(Exception $e) {
             Log::error($e->getMessage());  
-            return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+            return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
         }
     }
     public function bulkUpload(Request $request)
@@ -116,7 +116,7 @@ class StudentController extends Controller
         return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
 
     }
@@ -126,7 +126,7 @@ class StudentController extends Controller
           return response()->download($file);
         }catch(Exception $e) {
             Log::error($e->getMessage());  
-            return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+            return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
         }
     }
 }

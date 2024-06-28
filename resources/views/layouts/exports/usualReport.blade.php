@@ -3,8 +3,8 @@
         <tr class="table_title">
             <th>Student's Name</th>
             @forelse ($attendanceDates as $date)
-                <th colspan="2" class="text-center border-end">
-                    {{ $date }}
+                <th colspan="1" class="text-center border-end">
+                    {{ $date->date }}
                 </th>
             @empty
                 <td colspan="3" class="text-center">
@@ -19,7 +19,7 @@
         @foreach ($students as $student)
             <tr>
                 <td class="border-end">{{ $student->name }}</td>
-                @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
+                @forelse ($student->getAttendances($startDate??null, $endDate??Date::now()) as $dateOfAttendance)
                     <td class="border-end">
                         @if ($dateOfAttendance['present'] > 0)
                             @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
@@ -43,7 +43,7 @@
         <tr>
             <td class="border-end"> Total Classes</td>
             <td colspan="{{ $attendanceDates->count() }}">
-                {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
+                {{ $attendanceDates->count() }}</td>
         </tr>
     </tfoot>
 </table>
