@@ -16,7 +16,7 @@ class SectionController extends Controller
         return view('admin.section.index')->with(compact('sections'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
     public function create()
@@ -29,7 +29,7 @@ class SectionController extends Controller
         return view('admin.section.create')->with(compact('sections', 'grades', 'users'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
     public function store(SectionRequest $request)
@@ -39,7 +39,7 @@ class SectionController extends Controller
         return redirect(route('section.index'))->with('success', "Section Successfully Created");
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -53,7 +53,7 @@ class SectionController extends Controller
         return view('admin.section.edit')->with(compact('sections', 'grades', 'users'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
     public function update(SectionRequest $request, $id)
@@ -64,7 +64,7 @@ class SectionController extends Controller
     return redirect(route('section.index'))->with('success', "Section Updated Successfully");
 }catch(Exception $e) {
     Log::error($e->getMessage());  
-    return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+    return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
 }
 }
 
@@ -75,7 +75,7 @@ class SectionController extends Controller
         return redirect(route('section.index'))->with('success', 'Deleted Successfully');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 }

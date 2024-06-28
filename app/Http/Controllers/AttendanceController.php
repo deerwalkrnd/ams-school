@@ -45,7 +45,7 @@ class AttendanceController extends Controller
             return view('admin.attendance.index', compact('users'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Failed to get attendance');
+            return redirect()->back()->withErrors('Failed to get attendance');
         }
     }
 
@@ -81,7 +81,7 @@ class AttendanceController extends Controller
         return view('teacher.attendance.index', compact("attendanceDates"));
             }catch(Exception $e) {
             Log::error($e->getMessage());  
-            return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+            return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
         }
     }
 
@@ -141,7 +141,7 @@ class AttendanceController extends Controller
             return view('admin.attendance.edit', compact('attendances', 'user'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
+            return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');
         }
     }
 
@@ -217,7 +217,7 @@ class AttendanceController extends Controller
             return view('admin.attendance.adminAttendance', compact('sections'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
+            return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');
         }
     }
 }

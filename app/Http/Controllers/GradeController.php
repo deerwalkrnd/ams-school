@@ -23,7 +23,7 @@ class GradeController extends Controller
             return view('admin.grade.index')->with(compact('grades'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
+            return redirect()->back()->withErrors( 'Oops! Error Occured. Please Try Again Later.');
         }
     }
 
@@ -34,7 +34,7 @@ class GradeController extends Controller
             return view('admin.grade.create')->with(compact('grades'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
+            return redirect()->back()->withErrors( 'Oops! Error Occured. Please Try Again Later.');
         }
     }
 
@@ -46,7 +46,7 @@ class GradeController extends Controller
             return redirect(route('grade.index'))->with('success', "Grade stored successfully");
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
+            return redirect()->back()->withErrors( 'Oops! Error Occured. Please Try Again Later.');
         }
     }
 
@@ -57,7 +57,7 @@ class GradeController extends Controller
             return view('admin.grade.edit')->with(compact('grades'));
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
+            return redirect()->back()->withErrors( 'Oops! Error Occured. Please Try Again Later.');
         }
     }
     public function update(GradeRequest $request, $id)
@@ -69,7 +69,7 @@ class GradeController extends Controller
             return redirect(route('grade.index'))->with('success', "Grade updated successfully");
         } catch (Exception $e) {
             Log::error($e->getMessage());
-            return redirect()->back()->withErrors('error', 'Oops! Error Occured. Please Try Again Later.');
+            return redirect()->back()->withErrors( 'Oops! Error Occured. Please Try Again Later.');
         }
     }
 
@@ -117,7 +117,7 @@ class GradeController extends Controller
         }catch(Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());  
-            return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+            return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
         }
     }
 }

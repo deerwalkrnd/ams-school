@@ -19,7 +19,7 @@ class UserController extends Controller
         return view('admin.user.index')->with(compact('users'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -31,7 +31,7 @@ class UserController extends Controller
         return view('admin.user.create')->with(compact('users', 'roles'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -61,7 +61,7 @@ class UserController extends Controller
         return redirect(route('user.index'))->with('success', 'User Successfully Created');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -72,7 +72,7 @@ class UserController extends Controller
         return view('admin.user.edit', compact('users', 'roles'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -93,7 +93,7 @@ class UserController extends Controller
         return redirect(route('user.index'))->with('success', 'User Successfully Updated');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 
@@ -105,7 +105,7 @@ class UserController extends Controller
         return redirect(route('user.index'))->with('success', 'User Successfully Deleted');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 }

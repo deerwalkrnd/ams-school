@@ -14,7 +14,7 @@ class TeacherDashboardController extends Controller
         return view('teacher.dashboard.index', compact('section'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
-        return redirect()->back()->withErrors('error','Oops! Error Occured. Please Try Again Later.');   
+        return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
     }
     }
 }
