@@ -162,6 +162,7 @@
             }).then((result) => {
                 // console.log(result.isConfirmed);
                 if (result.isConfirmed) {
+                    submit.disabled = true;
                     let student = prepareData();
                     // console.log(student);
                     $.ajaxSetup({
