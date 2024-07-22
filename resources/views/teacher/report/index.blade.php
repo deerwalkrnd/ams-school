@@ -90,7 +90,7 @@
                                 @endif
                                 @if ($dateOfAttendance['absent'] > 0)
                                     @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                        <span class="attendanceSymbol absentSymbol">A</span>
+                                        <span class="attendanceSymbol absentSymbol" title="{{ $dateOfAttendance['comment'] }}">A</span>
                                     @endfor
                                 @endif
 
