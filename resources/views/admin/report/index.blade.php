@@ -73,7 +73,7 @@
         <thead>
             @php
             $firstStudent = $students->first();
-            $attendanceDates = $firstStudent->getAttendanceDates($startDate, $endDate ?? Date::now());
+            // $attendanceDates = $firstStudent->getAttendanceDates($startDate, $endDate ?? Date::now());
             @endphp
         
         <tr class="table_title">
@@ -81,7 +81,7 @@
             @if($attendanceDates->isNotEmpty())
                 @foreach ($attendanceDates as $date)
                     <th colspan="2" class="text-center border-end">
-                        {{ $date }}
+                        {{ $date -> date}}
                     </th>
                 @endforeach
             @else
@@ -97,7 +97,7 @@
             @if($student->status=='active')
                 <tr>
                     <td class="border-end">{{ $student->name }}</td>
-                    @forelse ($student->getAttendances($startDate, $endDate??Date::now()) as $dateOfAttendance)
+                    @forelse ($student->getAttendances($startDate, $endDate??Date::now(),$limit??30) as $dateOfAttendance)
                     {{-- {{dd($dateOfAttendance)}} --}}
                         <td class="border-end text-center " colspan="2">
                             @if ($dateOfAttendance['present'] > 0)

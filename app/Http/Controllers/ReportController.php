@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\UsusalAttendanceReportExport;
 use App\Models\Attendance;
 use App\Models\Grade;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\Section;
@@ -18,7 +19,8 @@ class ReportController extends Controller
     {
        try{
         $latestAttendance = Attendance::latest()->first();
-        $startDate = $latestAttendance->student->section->grade->start_date;
+        $startDate=Carbon::now()->subDays(30);
+        
         $attendanceDates = 
             Section::where('grade_id',$latestAttendance->student->section->grade->id)
         ->first()->getAllAttendanceDates($startDate, null);
@@ -41,6 +43,7 @@ class ReportController extends Controller
         try{
         $startDate = null;
         $endDate = null;
+        $limit=30;
             // dd($request->all());
         // $teacher = Section::where('id', $request->grade)->first()->user;
         $grades = Grade::all()->sortBy('name');
@@ -62,17 +65,16 @@ class ReportController extends Controller
 
         $students = $students->get()
             ->sortBy('roll_no');
-
-        // dd($grades);
-
-        $startDate = $startDate ?? $section->grade->start_date;
+            if($startDate!=null||$endDate!=null){
+                $limit=365;
+            }
         if(!$section){
             return redirect()->back()->withErrors("Please select a section");
         }
-        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate);
+        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate,$limit);
         
-        // dd($attendanceDates);
-        return view('admin.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates', 'grades', ));
+        // dd($attendanceDates->pluck('date'));
+        return view('admin.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates', 'grades', 'limit'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
         return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
@@ -100,6 +102,7 @@ class ReportController extends Controller
         $startDate = null;
         $endDate = null;
         $section=Section::where('id', $request->grade)->first();
+        $limit=30;
         if ($request->student != "false") {
             $students = $students->where('roll_no', $request->student);
         }
@@ -111,10 +114,12 @@ class ReportController extends Controller
         if ($request->end_date != null && $request->end_date != "false") {
             $endDate = $request->end_date;
         }
-
+        if($startDate!=null||$endDate!=null){
+            $limit=365;
+        }
         $students = $students->get()->sortBy('roll_no');
-        $startDate = $startDate ?? $teacher->section->grade->start_date;
-        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate);
+        $startDate = $startDate ?? Carbon::now()->subDays(30);
+        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate,$limit);
         // dd($attendanceDates);
         return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate, $teacher))->download(time() . '.xlsx');
     }catch(Exception $e) {
@@ -128,7 +133,7 @@ class ReportController extends Controller
     {
        try{  $latestAttendance = Attendance::where('teacher_id',Auth::user()->id)->latest()->first();
         // dd($latestAttendance);
-        $startDate = $latestAttendance->student->section->grade->start_date;
+        $startDate =Carbon::now()->subDays(30);
         $attendanceDates = 
         Section::where('grade_id',$latestAttendance->student->section->grade->id)
     ->first()->getAllAttendanceDates($startDate, null);
@@ -148,6 +153,7 @@ class ReportController extends Controller
             $startDate = null;
         $endDate = null;
         $students = Student::where('section_id', Auth::user()->section->id);
+        $limit=30;
         // dd($students);
             $section= Section::where('id', Auth::user()->section->id)->first();
             // dd($section);
@@ -162,13 +168,16 @@ class ReportController extends Controller
         if ($request->has('end_date')) {
             $endDate = $request->end_date;
         }
-
-
+        if($startDate!=null||$endDate!=null){
+            // dd("here");
+            $limit=365;
+        }
+        
         // dd($students->get());
         $students = $students->get()->sortBy('roll_no');
-        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate);
-
-        return view('teacher.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates',  'section'));
+        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate,$limit);
+        // dd($attendanceDates);
+        return view('teacher.report.index', compact('students', 'startDate', 'endDate', 'attendanceDates',  'section','limit'));
     }catch(Exception $e) {
         Log::error($e->getMessage());  
         return redirect()->back()->withErrors('Oops! Error Occured. Please Try Again Later.');   
@@ -182,6 +191,7 @@ class ReportController extends Controller
         $startDate = null;
         $endDate = null;
         $section=  Section::where('id', Auth::user()->section->id)->first();
+        $limit=30;
         if ($request->student != "false") {
             $students = $students->where('roll_no', $request->student);
         }
@@ -194,8 +204,12 @@ class ReportController extends Controller
             $endDate = $request->end_date;
         }
         // dd($section);
+        if($startDate!=null||$endDate!=null){
+            $limit=365;
+        }
+        $startDate = $startDate ?? Carbon::now()->subDays(30);
         $students = $students->get()->sortBy('roll_no');
-        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate);
+        $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate,$limit);
         return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate))->download(time() . '.xlsx');
     }catch(Exception $e) {
         Log::error($e->getMessage());  

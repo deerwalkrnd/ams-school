@@ -57,12 +57,15 @@ class Student extends Model
      * @param date $endDate
      * @return mixed
      */
-    public function getAttendances($startDate, $endDate, $limit = 50)
+    public function getAttendances($startDate, $endDate, $limit = 30)
     {
-        $startDate = $startDate ?? $this->section->grade->start_date;
-        $endDate = $endDate ?? Carbon::today()->format("Y-m-d");
+        $endDate = $endDate ? Carbon::parse($endDate) : Carbon::today();
+        $startDate = $startDate ? Carbon::parse($startDate) : $endDate->copy()->subDays($limit);
+        // dd($startDate,$endDate);
+        // dd($limit);
         $attendance = $this->attendances
-            ->whereBetween('date', [$startDate, $endDate])
+        ->where('date', '>=', $startDate)
+        ->where('date', '<=', $endDate)
             ->groupBy(function ($query) {
                 return Carbon::parse($query->date)->format('Y-m-d');
             })
@@ -73,9 +76,10 @@ class Student extends Model
                 return $temp;
             })
             ->take($limit);
+            // dd($attendance);
         return $attendance;
     }
-    public function getAttendanceDates($startDate, $endDate, $limit = 50)
+    public function getAttendanceDates($startDate, $endDate, $limit = 30)
     {
         $startDate = $startDate ?? $this->section->grade->start_date;
         $endDate = $endDate ?? Carbon::today()->addDay()->format("Y-m-d");

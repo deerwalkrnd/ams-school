@@ -325,7 +325,7 @@ a {
 
 .teacher_table td,
 .teacher_table th {
-    padding-left: 1%;
+    /* padding-left: 1%; */
 }
 
 .teacher_table tr:nth-child(odd) {
@@ -627,7 +627,7 @@ option:hover {
 
 ._table td,
 ._table th {
-    padding-left: 1%;
+    /* padding-left: 1%; */
 }
 
 ._table tr:nth-child(odd) {

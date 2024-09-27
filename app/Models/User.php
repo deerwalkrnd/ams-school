@@ -97,7 +97,7 @@ class User extends Authenticatable
      * 
      * @return mixed
      */
-    public function getAllAttendanceDates($startDate, $endDate, $limit = 50)
+    public function getAllAttendanceDates($startDate, $endDate, $limit = 30)
     {
         $startDate = $startDate ?? Auth::user()->section->grade->start_date;
         $endDate = $endDate ?? date('Y-m-d');

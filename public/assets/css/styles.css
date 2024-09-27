@@ -342,7 +342,7 @@ a {
 
 ._table td,
 ._table th {
-    padding-left: 1%;
+    /* padding-left: 1%; */
 }
 
 ._table tr:nth-child(odd) {
@@ -708,7 +708,7 @@ div {
 
 ._table td,
 ._table th {
-    padding-left: 1%;
+    /* padding-left: 1%; */
 }
 
 ._table tr:nth-child(odd) {
