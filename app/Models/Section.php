@@ -64,15 +64,26 @@ class Section extends Model
         }
         return $count;
     }
-    public function getAllAttendanceDates($startDate, $endDate, $limit = 50)
-    {
-        $startDate = $startDate ?? $this->grade->start_date;
-        $endDate = $endDate ?? date('Y-m-d');
-        $student = $this->student()->where('status', 'active')->first();
-        $attendances = $student->attendances;
-        $attendances = $attendances->where('date', '>=', $startDate)->where('date', '<=', $endDate);
-        return $attendances;
+    public function getAllAttendanceDates($startDate, $endDate, $limit = 30)
+{
+
+    $endDate = $endDate ? Carbon::parse($endDate) : Carbon::now();
+    $startDate = $startDate ? Carbon::parse($startDate) : $endDate->copy()->subDays($limit);
+    // dd($startDate,$endDate);
+    $student = $this->student()->where('status', 'active')->first();
+
+    if (!$student) {
+        return collect(); 
     }
+
+    $attendances = $student->attendances()
+        ->where('date', '>=', $startDate)
+        ->where('date', '<=', $endDate)
+        ->take($limit)
+        ->get();
+// dd($attendances);
+    return $attendances;
+}
     public function getTotalClasses($startDate, $endDate)
     {
         $startDate = $startDate ?? $this->grade->start_date;

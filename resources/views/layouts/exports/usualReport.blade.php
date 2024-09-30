@@ -19,7 +19,7 @@
         @foreach ($students as $student)
             <tr>
                 <td class="border-end">{{ $student->name }}</td>
-                @forelse ($student->getAttendances($startDate??null, $endDate??Date::now()) as $dateOfAttendance)
+                @forelse ($student->getAttendances($startDate??null, $endDate??Date::now(),365) as $dateOfAttendance)
                     <td class="border-end">
                         @if ($dateOfAttendance['present'] > 0)
                             @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
@@ -28,7 +28,7 @@
                         @endif
                         @if ($dateOfAttendance['absent'] > 0)
                             @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                <span class="attendanceSymbol absentSymbol">A</span>
+                                <span class="attendanceSymbol absentSymbol">A({{$dateOfAttendance['comment']}})</span>
                             @endfor
                         @endif
 
