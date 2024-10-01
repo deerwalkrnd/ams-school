@@ -58,27 +58,47 @@ class Student extends Model
      * @return mixed
      */
     public function getAttendances($startDate, $endDate, $limit = 30)
-    {
-        $endDate = $endDate ? Carbon::parse($endDate) : Carbon::today();
-        $startDate = $startDate ? Carbon::parse($startDate) : $endDate->copy()->subDays($limit);
-        // dd($startDate,$endDate);
-        // dd($limit);
-        $attendance = $this->attendances
-        ->where('date', '>=', $startDate)
+{
+    $endDate = $endDate ? Carbon::parse($endDate) : Carbon::now();
+    $startDate = $startDate ? Carbon::parse($startDate) : $endDate->copy()->subDays(60);
+
+    $sectionDates = $this->section->getAllAttendanceDates($startDate, $endDate, $limit)->pluck('date');
+// dd($sectionDates);
+    $attendanceRecords = $this->attendances
+        ->where('date', '>=', $startDate->subDay(1))
         ->where('date', '<=', $endDate)
-            ->groupBy(function ($query) {
-                return Carbon::parse($query->date)->format('Y-m-d');
-            })
-            ->map(function ($attendance) {
-                $temp['present'] = $attendance->first()->present;
-                $temp['absent'] = $attendance->first()->absent;
-                $temp['comment'] = $attendance->first()->comment;
-                return $temp;
-            })
-            ->take($limit);
-            // dd($attendance);
-        return $attendance;
-    }
+        ->sortByDesc('date')
+        ->groupBy(function ($query) {
+            return Carbon::parse($query->date)->format('Y-m-d');
+        });
+// dd($attendanceRecords);
+    $attendance = $sectionDates->mapWithKeys(function ($date) use ($attendanceRecords) {
+        if ($attendanceRecords->has($date)) {
+            $attendanceForDate = $attendanceRecords->get($date)->first();
+            
+            return [
+                $date => [
+                    'present' => $attendanceForDate->present,
+                    'absent' => $attendanceForDate->absent,
+                    'comment' => !empty($attendanceForDate->comment) ? $attendanceForDate->comment : 'No Comments',
+                ],
+            ];
+        } else {
+            return [
+                $date => [
+                    'present' => 0,
+                    'absent' => 0,
+                    'comment' => '',
+                ],
+            ];
+        }
+    })
+    ->take($limit)
+    ->sortKeys();
+    // dd($attendance);
+    return $attendance;
+}
+
     public function getAttendanceDates($startDate, $endDate, $limit = 30)
     {
         $startDate = $startDate ?? $this->section->grade->start_date;
