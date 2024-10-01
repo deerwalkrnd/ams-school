@@ -19,11 +19,11 @@ class ReportController extends Controller
     {
        try{
         $latestAttendance = Attendance::latest()->first();
-        $startDate=Carbon::now()->subDays(30);
-        
+           $endDate= Carbon::now();
+        $startDate=$endDate->copy()->subDays(60);
         $attendanceDates = 
-            Section::where('grade_id',$latestAttendance->student->section->grade->id)
-        ->first()->getAllAttendanceDates($startDate, null);
+            Section::where('id',$latestAttendance->student->section->id)
+        ->first()->getAllAttendanceDates($startDate, $endDate,30);
         // dd($attendanceDates);
         $students = Student::where('status', 'active')->where('section_id', $latestAttendance->student->section->id)->get()->sortBy('roll_no');
         // dd($students);
@@ -65,9 +65,9 @@ class ReportController extends Controller
 
         $students = $students->get()
             ->sortBy('roll_no');
-            if($startDate!=null||$endDate!=null){
-                $limit=365;
-            }
+        if($startDate!=null||$endDate!=null){
+            $limit=365;
+        }
         if(!$section){
             return redirect()->back()->withErrors("Please select a section");
         }
@@ -102,7 +102,7 @@ class ReportController extends Controller
         $startDate = null;
         $endDate = null;
         $section=Section::where('id', $request->grade)->first();
-        $limit=30;
+        $limit=365;
         if ($request->student != "false") {
             $students = $students->where('roll_no', $request->student);
         }
@@ -114,13 +114,13 @@ class ReportController extends Controller
         if ($request->end_date != null && $request->end_date != "false") {
             $endDate = $request->end_date;
         }
-        if($startDate!=null||$endDate!=null){
-            $limit=365;
-        }
+        
         $students = $students->get()->sortBy('roll_no');
-        $startDate = $startDate ?? Carbon::now()->subDays(30);
+        $startDate = $startDate ?? Carbon::now()->subDays(60);
+        // dd($startDate,$endDate);
+        // dd($limit);
         $attendanceDates = $section->getAllAttendanceDates($startDate, $endDate,$limit);
-        // dd($attendanceDates);
+        // dd($attendanceDates->pluck('date'));
         return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate, $teacher))->download(time() . '.xlsx');
     }catch(Exception $e) {
         Log::error($e->getMessage());  
@@ -133,10 +133,11 @@ class ReportController extends Controller
     {
        try{  $latestAttendance = Attendance::where('teacher_id',Auth::user()->id)->latest()->first();
         // dd($latestAttendance);
-        $startDate =Carbon::now()->subDays(30);
+        $endDate= Carbon::now();
+        $startDate=$endDate->copy()->subDays(60);
         $attendanceDates = 
-        Section::where('grade_id',$latestAttendance->student->section->grade->id)
-    ->first()->getAllAttendanceDates($startDate, null);
+        Section::where('id',$latestAttendance->student->section->id)
+    ->first()->getAllAttendanceDates($startDate, null,30);
 
     $section= Section::where('id', Auth::user()->section->id)->first();
         $students = Auth::user()->students()->get()->sortBy('roll_no');

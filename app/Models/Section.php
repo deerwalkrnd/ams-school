@@ -68,20 +68,22 @@ class Section extends Model
 {
 
     $endDate = $endDate ? Carbon::parse($endDate) : Carbon::now();
-    $startDate = $startDate ? Carbon::parse($startDate) : $endDate->copy()->subDays($limit);
-    // dd($startDate,$endDate);
+    $startDate = $startDate ? Carbon::parse($startDate) : $endDate->copy()->subDays(60);
     $student = $this->student()->where('status', 'active')->first();
-
+    // dd($this);
+    // dd($startDate,$endDate);
     if (!$student) {
         return collect(); 
     }
-
+// dd($student);
     $attendances = $student->attendances()
-        ->where('date', '>=', $startDate)
-        ->where('date', '<=', $endDate)
-        ->take($limit)
-        ->get();
-// dd($attendances);
+    ->where('date', '>=', $startDate)
+    ->where('date', '<=', $endDate)
+    ->orderBy('date', 'desc') 
+    ->take($limit)
+    ->get()
+    ->sortBy('date'); 
+    // dump($attendances->pluck('date'));
     return $attendances;
 }
     public function getTotalClasses($startDate, $endDate)
