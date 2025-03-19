@@ -71,6 +71,8 @@ class ReportController extends Controller
     public function adminReportDownload(Request $request)
     {
         $teacher = Section::where('id', $request->grade)->first()->user;
+        $section_name = Section::where('id', $request->grade)->first()->name;
+        $grade_name = Section::where('id', $request->grade)->first()->grade->name;
         $students = Student::where('section_id', $request->grade);
         $startDate = null;
         $endDate = null;
@@ -90,8 +92,9 @@ class ReportController extends Controller
         $students = $students->get()->sortBy('roll_no');
         $startDate = $startDate ?? $teacher->section->grade->start_date;
         $attendanceDates = $teacher->getAllAttendanceDates($startDate, $endDate);
-        return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate, $teacher))->download(time() . '.xlsx');
-
+        // dd($attendanceDates, $students, $startDate, $endDate, $teacher);
+        return (new UsusalAttendanceReportExport($students, $attendanceDates, $startDate, $endDate, $teacher))->download($grade_name . '_' . $section_name . '_' . time() . '.xlsx');
+    
     }
 
     public function teacherIndex()

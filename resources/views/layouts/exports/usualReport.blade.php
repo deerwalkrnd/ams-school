@@ -3,7 +3,7 @@
         <tr class="table_title">
             <th>Student's Name</th>
             @forelse ($attendanceDates as $date)
-                <th colspan="2" class="text-center border-end">
+                <th class="text-center border-end">
                     {{ $date }}
                 </th>
             @empty

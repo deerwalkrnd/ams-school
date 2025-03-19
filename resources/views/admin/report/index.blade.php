@@ -1,7 +1,62 @@
 @extends('layouts.admin.app')
 
 @section('title', 'Attendance Report')
+<style>
+    .attendanceSymbol {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin: 0 3px;
+        font-weight: bold;
+    }
 
+    .presentSymbol {
+        background-color: #10B981;
+        color: white;
+    }
+
+    .absentSymbol {
+        background-color: #EF4444;
+        color: white;
+    }
+
+    table {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        max-width: 1000px;
+        background-color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    th,
+    td {
+        border: 1px solid #E5E7EB;
+        padding: 12px 16px;
+    }
+
+    thead tr {
+        background-color: #d46b02;
+        color: white;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #F9FAFB;
+    }
+
+    tbody tr:hover {
+        background-color: #F3F4F6;
+    }
+
+    tfoot tr {
+        background-color: #F3F4F6;
+    }
+</style>
 @section('content')
     <div class="below_header">
         <h1 class="heading">Attendance Report</h1>
@@ -69,17 +124,17 @@
             </button>
         </div>
     </form>
-    <table class="_table mx-auto mb-5">
+    <table class="mx-auto mb-5 shadow-lg rounded-lg overflow-hidden border-collapse">
         <thead>
-            <tr class="table_title">
-                <th>Student's Name</th>
+            <tr class="bg-blue-600 text-white">
+                <th class="py-4 px-6 font-semibold border-r">Student's Name</th>
                 @forelse ($attendanceDates as $date)
-                    <th colspan="2" class="text-center border-end">
-                        {{ $date }}
+                    <th class="py-4 px-6 text-center border-r">
+                        {{ \Carbon\Carbon::parse($date)->format('M d') }}
                     </th>
                 @empty
-                    <td colspan="3" class="text-center">
-                        <h5>
+                    <td colspan="3" class="py-4 px-6 text-center">
+                        <h5 class="font-semibold">
                             No Attendance Taken
                         </h5>
                     </td>
@@ -88,32 +143,34 @@
         </thead>
         <tbody>
             @foreach ($students as $student)
-                <tr >
-                    <td class="border-end">{{ $student->name }}</td>
+                <tr class="hover:bg-gray-100 transition-colors duration-200">
+                    <td class="py-3 px-6 border-r font-medium">{{ $student->name }}</td>
                     @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
-                        <td class="border-end text-center ">
+                        <td class="py-3 px-6 border-r text-center">
                             @if ($dateOfAttendance['present'] > 0)
                                 @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
-                                    <span class="attendanceSymbol presentSymbol">P</span>
+                                    <span
+                                        class="attendanceSymbol presentSymbol inline-block w-8 h-8 rounded-full bg-green-500 text-white font-bold flex items-center justify-center mx-1">P</span>
                                 @endfor
                             @endif
                             @if ($dateOfAttendance['absent'] > 0)
                                 @for ($j = 1; $j <= $dateOfAttendance['absent']; $j++)
-                                    <span class="attendanceSymbol absentSymbol">A</span>
+                                    <span
+                                        class="attendanceSymbol absentSymbol inline-block w-8 h-8 rounded-full bg-red-500 text-white font-bold flex items-center justify-center mx-1">A</span>
                                 @endfor
                             @endif
-
                         </td>
                     @empty
-                        <td class="text-center border-end"> Attendance has not been taken. </td>
+                        <td class="py-3 px-6 text-center border-r text-gray-500 italic"> Attendance has not been taken.
+                        </td>
                     @endforelse
                 </tr>
             @endforeach
         </tbody>
         <tfoot>
-            <tr class="total_class fw-bolder">
-                <td class="border-end "> Total Classes</td>
-                <td colspan="{{ $attendanceDates->count() }}" class="border-end text-center fw-bolder">
+            <tr class="bg-gray-100 font-bold">
+                <td class="py-4 px-6 border-r"> Total Classes</td>
+                <td colspan="{{ $attendanceDates->count() }}" class="py-4 px-6 border-r text-center">
                     {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
             </tr>
         </tfoot>
