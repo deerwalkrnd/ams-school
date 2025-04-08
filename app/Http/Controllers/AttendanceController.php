@@ -37,6 +37,7 @@ class AttendanceController extends Controller
      */
     public function create()
     {
+        Log::info('Attendance create method called at ' . Carbon::now());
         $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
             ->where('created_at', '>', Carbon::now()->subDays(6))
             ->get()
@@ -44,8 +45,11 @@ class AttendanceController extends Controller
                 return Carbon::parse($query->created_at)->format('M/d');
             })
             ->take(5);
-
-        return view('teacher.attendance.index', compact("attendanceDates"));
+        $minDate = $attendanceDates->keys()->get(0);
+        $maxDate = $attendanceDates->keys()->get(count($attendanceDates->keys()) - 1);
+        $minDate = Carbon::createFromFormat('M/d', $minDate)->format('Y-m-d');
+        $maxDate = Carbon::createFromFormat('M/d', $maxDate)->format('Y-m-d');
+        return view('teacher.attendance.index', compact("attendanceDates","minDate","maxDate"));
     }
 
     /**

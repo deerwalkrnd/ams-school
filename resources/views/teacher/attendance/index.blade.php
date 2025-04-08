@@ -45,7 +45,7 @@
                     <tr>
                         <td class="border-end roll_no">{{ $student->roll_no }}</td>
                         <td class="border-end">{{ $student->name }}</td>
-                        @forelse ($student->getAttendances(\Carbon\Carbon::now()->subDays(7), null, 6) as $dateOfAttendance)
+                        @forelse ($student->getAttendances($minDate, $maxDate) as $dateOfAttendance)
                             <td class="border-end">
                                 @if ($dateOfAttendance['present'] > 0)
                                     <span class="attendanceSymbol presentSymbol">P</span>
