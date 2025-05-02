@@ -20,7 +20,8 @@
         <div class="input_container">
             <select name="grade_id">
                 @foreach ($grades as $grade)
-                    <option value="{{ $grade->id }}">{{ $grade->name }}</option>
+                    <option value="{{ $grade->id }}" {{ $sections->grade_id == $grade->id ? 'selected' : '' }}>
+                        {{ $grade->name }}</option>
                 @endforeach
             </select>
         </div>
@@ -28,7 +29,8 @@
         <div class="input_container">
             <select name="user_id">
                 @foreach ($users as $user)
-                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    <option value="{{ $user->id }}" {{ $sections->user_id == $user->id ? 'selected' : '' }}>
+                        {{ $user->name }}</option>
                 @endforeach
             </select>
         </div>

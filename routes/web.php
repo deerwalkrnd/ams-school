@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArchiveController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeController;
@@ -79,6 +80,13 @@ Route::group(['middleware' => ['role:admin', 'preventBackHistory']], function ()
     Route::get('/today-attendance/take-attendance', [AttendanceController::class, 'adminAttendanceIndex'])->name('attendance.takeAttendance');
     Route::get('/attendance/{user}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::put('/attendance/{user}', [AttendanceController::class, 'update'])->name('attendance.update');
+
+
+    Route::get('/grade/archive/{id}', [ArchiveController::class, 'archive'])->name('archive-grade');
+    Route::get('/archive', [ArchiveController::class, 'show_all_archive'])->name('show-archive');
+    
+    Route::get("/archive/search", [ArchiveController::class, 'search'])->name('archive.search');
+
 });
 
 

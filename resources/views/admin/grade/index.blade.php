@@ -26,6 +26,8 @@
                         <td class="">
                             <a href="{{ route('grade.edit', $grade->id) }}" class="btn btn-success">Edit</a>
                             <a href="{{ route('grade.delete', $grade->id) }}" class="btn btn-danger">Delete</a>
+                            <a href="{{ route('archive-grade', $grade->id) }}"
+                                class="btn btn-warning text-white">Archive</a>
                         </td>
                     </tr>
                 @empty

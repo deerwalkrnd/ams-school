@@ -26,7 +26,8 @@
             <div class="input_container">
             <select name="section_id" class="select_container" >
                 @foreach ($sections as $section)
-                    <option value="{{ $section->id }}">Grade:{{$section->grade->name}}-Section:{{ $section->name }}</option>
+                    <option value="{{ $section->id }}" {{ $students->section_id == $section->id ? 'selected' : '' }}>
+                        Grade:{{$section->grade->name}} - Section:{{ $section->name }}</option>
                 @endforeach
             </select>
             </div>

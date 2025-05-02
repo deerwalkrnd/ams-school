@@ -7,6 +7,7 @@ use App\Imports\StudentsImport;
 use App\Models\Grade;
 use App\Models\Section;
 use App\Models\Student;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
@@ -66,28 +67,37 @@ class StudentController extends Controller
     }
     public function bulkUpload(Request $request)
     {
-        $request->validate([
-            'student_csv' => 'required|mimes:csv,xlsx,txt'
-        ]);
+        try {
+            $request->validate([
+                'student_csv' => 'required|mimes:csv,xlsx,txt'
+            ]);
 
-        $extension =$request->file('student_csv')->extension();
-        $fileName=time().'.'.$extension;
-        $path=$request->file('student_csv')->storeAs('public/csv',$fileName);
+            $extension = $request->file('student_csv')->extension();
+            $fileName = time() . '.' . $extension;
+            $path = $request->file('student_csv')->storeAs('public/csv', $fileName);
 
-        $studentImport = new StudentsImport;
+            $studentImport = new StudentsImport;
 
-        $studentImport->import($path);
+            $studentImport->import($path);
 
-        if($studentImport->failures()->isNotEmpty()){
-            return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
+            if ($studentImport->failures()->isNotEmpty()) {
+                return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
+            }
+            Storage::delete($path);
+            return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully');
+        } catch (Exception $e) {
+            return redirect(route('student.getBulkUpload'))->with('error', 'Something went wrong');
         }
-        Storage::delete($path);
-        return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully');
-
     }
 
-    public function bulkSample(){
-          $file = public_path('files/sample.xlsx');
-          return response()->download($file);
+    public function bulkSample()
+    {
+        $file = public_path('files/sample.xlsx');
+        $file_name = "student_bilk_upload_sample.xlsx";
+        if (File::exists($file)) {
+            return response()->download($file, $file_name);
+        } else {
+            return redirect(route('student.getBulkUpload'))->with('error', 'File not found');
+        }
     }
 }
