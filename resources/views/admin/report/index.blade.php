@@ -167,13 +167,6 @@
                 </tr>
             @endforeach
         </tbody>
-        <tfoot>
-            <tr class="bg-gray-100 font-bold">
-                <td class="py-4 px-6 border-r"> Total Classes</td>
-                <td colspan="{{ $attendanceDates->count() }}" class="py-4 px-6 border-r text-center">
-                    {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
-            </tr>
-        </tfoot>
     </table>
 
 @endsection
