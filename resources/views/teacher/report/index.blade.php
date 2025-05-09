@@ -94,13 +94,6 @@
                     </tr>
                 @endforeach
             </tbody>
-            <tfoot>
-                <tr class="total_class">
-                    <td class="border-end fw-bolder "> Total Classes</td>
-                    <td class="border-end fw-bolder text-center" colspan="{{ $attendanceDates->count() }}">
-                        {{ auth()->user()->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
-                </tr>
-            </tfoot>
         </table>
     @endsection
 @else

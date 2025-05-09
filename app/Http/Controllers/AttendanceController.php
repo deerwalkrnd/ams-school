@@ -29,6 +29,8 @@ class AttendanceController extends Controller
                 ->groupBy('teacher_id');
 
             $users = User::with('section')->whereIn('id', $attendances->keys())->get();
+            $users = $users->sortBy("section.grade.name");
+
 
             return view('admin.attendance.index', compact('users'));
         } catch (Exception $e) {
