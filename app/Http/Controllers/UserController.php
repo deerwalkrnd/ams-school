@@ -4,25 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Mail\UserCredentialMail;
 use App\Models\Role;
-use Illuminate\Http\Request;
 use App\models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
-
 
 class UserController extends Controller
 {
     public function index()
     {
         $users = User::all();
+
         return view('admin.user.index')->with(compact('users'));
     }
-
 
     public function create()
     {
         $users = User::all();
         $roles = Role::all();
+
         return view('admin.user.create')->with(compact('users', 'roles'));
     }
 
@@ -56,6 +56,7 @@ class UserController extends Controller
     {
         $users = User::find($id);
         $roles = Role::all();
+
         return view('admin.user.edit', compact('users', 'roles'));
     }
 
@@ -64,7 +65,7 @@ class UserController extends Controller
         $users = User::find($id);
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $users->id,
+            'email' => 'required|email|unique:users,email,'.$users->id,
             'role' => 'required',
         ]);
         $users->name = trim($request->input('name'));
@@ -81,6 +82,7 @@ class UserController extends Controller
         $users = User::find($id);
         $users->roles()->detach();
         $users->delete();
+
         return redirect(route('user.index'))->with('success', 'User Successfully Deleted');
     }
 }

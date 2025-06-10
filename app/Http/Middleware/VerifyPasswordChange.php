@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class VerifyPasswordChange
 {
@@ -16,13 +16,14 @@ class VerifyPasswordChange
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check())
-            if (Auth::user()->last_password_change_datetime == NULL || date('m', strtotime(Auth::user()->last_password_change_datetime)) == date('m') - 3)
+        if (Auth::check()) {
+            if (Auth::user()->last_password_change_datetime == null || date('m', strtotime(Auth::user()->last_password_change_datetime)) == date('m') - 3) {
                 return redirect()->route('change-password');
-            else
+            } else {
                 return $next($request);
-
-        else
+            }
+        } else {
             return $next($request);
+        }
     }
 }

@@ -6,20 +6,18 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Http\Responses\LoginResponse;
+use App\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Laravel\Fortify\Fortify;
-use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Responses\LoginResponse;
 use Illuminate\Validation\ValidationException;
-
-
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
+use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -42,7 +40,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
 
         RateLimiter::for('login', function (Request $request) {
-            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())) . '|' . $request->ip());
+            $throttleKey = Str::transliterate(Str::lower($request->input(Fortify::username())).'|'.$request->ip());
 
             return Limit::perMinute(5)->by($throttleKey);
         });
@@ -58,6 +56,7 @@ class FortifyServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 return redirect('/home');
             }
+
             return view('auth.login');
         });
 
@@ -68,16 +67,17 @@ class FortifyServiceProvider extends ServiceProvider
                 Hash::check($request->password, $user->password)
             ) {
                 $user['last_login'] = date('Y-m-d H:i:s');
-                    $user->update();
+                $user->update();
+
                 return $user;
-            }else{
+            } else {
                 throw ValidationException::withMessages([
-                    "role" => "Incorrect Email or Password.",
+                    'role' => 'Incorrect Email or Password.',
                 ]);
             }
         });
 
-        Fortify::requestPasswordResetLinkView(function(){
+        Fortify::requestPasswordResetLinkView(function () {
             return view('auth.password.email');
         });
 

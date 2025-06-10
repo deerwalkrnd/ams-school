@@ -9,11 +9,8 @@ use App\Models\Section;
 use App\Models\Student;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\File;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -22,6 +19,7 @@ class StudentController extends Controller
         $students = Student::all();
         $sections = Section::all();
         $grades = Grade::all();
+
         return view('admin.student.index')->with(compact('students', 'sections', 'grades'));
     }
 
@@ -30,14 +28,18 @@ class StudentController extends Controller
         $grades = Grade::all();
         $sections = Section::all();
         $students = Student::all();
+
         return view('admin.student.create')->with(compact('grades', 'sections', 'students'));
     }
+
     public function store(StudentRequest $request)
     {
         $data = $request->validated();
         $students = Student::create($data);
-        return redirect(route('student.index'))->with('success', "Student added Successfully Created");
+
+        return redirect(route('student.index'))->with('success', 'Student added Successfully Created');
     }
+
     public function edit($id)
     {
         $students = Student::find($id);
@@ -46,11 +48,13 @@ class StudentController extends Controller
 
         return view('admin.student.edit')->with(compact('students', 'grades', 'sections'));
     }
+
     public function update(StudentRequest $request, $id)
     {
         $data = $request->validated();
         $student = Student::find($id);
         $student->update($data);
+
         return redirect(route('student.index'))->with('success', 'Student Edited Successfully');
     }
 
@@ -58,6 +62,7 @@ class StudentController extends Controller
     {
         $students = Student::find($id);
         $students->delete();
+
         return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
     }
 
@@ -65,15 +70,16 @@ class StudentController extends Controller
     {
         return view('admin.student.bulkUpload');
     }
+
     public function bulkUpload(Request $request)
     {
         try {
             $request->validate([
-                'student_csv' => 'required|mimes:csv,xlsx,txt'
+                'student_csv' => 'required|mimes:csv,xlsx,txt',
             ]);
 
             $extension = $request->file('student_csv')->extension();
-            $fileName = time() . '.' . $extension;
+            $fileName = time().'.'.$extension;
             $path = $request->file('student_csv')->storeAs('public/csv', $fileName);
 
             $studentImport = new StudentsImport;
@@ -84,6 +90,7 @@ class StudentController extends Controller
                 return redirect(route('student.getBulkUpload'))->withFailures($studentImport->failures());
             }
             Storage::delete($path);
+
             return redirect(route('student.index'))->with('success', 'Student Uploaded Successfully');
         } catch (Exception $e) {
             return redirect(route('student.getBulkUpload'))->with('error', 'Something went wrong');
@@ -93,7 +100,7 @@ class StudentController extends Controller
     public function bulkSample()
     {
         $file = public_path('files/sample.xlsx');
-        $file_name = "student_bilk_upload_sample.xlsx";
+        $file_name = 'student_bilk_upload_sample.xlsx';
         if (File::exists($file)) {
             return response()->download($file, $file_name);
         } else {

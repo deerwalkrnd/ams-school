@@ -16,20 +16,18 @@ class EnsureUserHasRole
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        //first we check if the user is authenticated or not
-        //if not authenticated then we redirect to the
-        //login route
+        // first we check if the user is authenticated or not
+        // if not authenticated then we redirect to the
+        // login route
 
-        if(!Auth::check()){
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
+        if (! is_null(auth()->user())) {
 
-        if(!is_null(auth()->user()))
-        {
-
-            $home = $role == "admin"? "/dashboard":"/home";
-            if (!$request->user()->hasRole($role)) {
+            $home = $role == 'admin' ? '/dashboard' : '/home';
+            if (! $request->user()->hasRole($role)) {
                 return redirect($home);
             }
         }

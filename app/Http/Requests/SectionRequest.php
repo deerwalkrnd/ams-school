@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
-
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class SectionRequest extends FormRequest
 {
@@ -25,6 +24,7 @@ class SectionRequest extends FormRequest
     public function rules(): array
     {
         $sectionId = $this->route('id');
+
         return [
             'name' => [
                 'string',
@@ -33,7 +33,6 @@ class SectionRequest extends FormRequest
                 Rule::unique('sections', 'name')->ignore($this->route()->id),
 
             ],
-
 
             'grade_id' => 'required',
             'user_id' => 'required',
