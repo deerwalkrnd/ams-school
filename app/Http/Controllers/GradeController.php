@@ -5,45 +5,77 @@ namespace App\Http\Controllers;
 use App\Http\Requests\GradeRequest;
 use Illuminate\Http\Request;
 use App\Models\Grade;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class GradeController extends Controller
 {
     public function index()
     {
-        $grades = Grade::all();
-        return view('admin.grade.index')->with(compact('grades'));
+        try {
+            $grades = Grade::all();
+            return view('admin.grade.index')->with(compact('grades'));
+        } catch (Exception $e) {
+            Log::error('Error occurred while fetching grades: ' . $e->getMessage());
+            return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
+        }
     }
 
     public function create()
     {
-        $grades = Grade::all();
-        return view('admin.grade.create')->with(compact('grades'));
+        try {
+            $grades = Grade::all();
+            return view('admin.grade.create')->with(compact('grades'));
+        } catch (Exception $e) {
+            Log::error('Error occurred while fetching grades for creation: ' . $e->getMessage());
+            return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
+        }
     }
 
     public function store(GradeRequest $request)
     {
-        $data = $request->validated();
-        $newTask = Grade::create($data);
-        return redirect(route('grade.index'))->with('success', "Grade stored successfully");
+        try {
+            $data = $request->validated();
+            $newTask = Grade::create($data);
+            return redirect(route('grade.index'))->with('success', "Grade stored successfully");
+        } catch (Exception $e) {
+            Log::error('Error occurred while storing grade: ' . $e->getMessage());
+            return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
+        }
     }
 
     public function edit($id)
     {
-        $grades = Grade::find($id);
-        return view('admin.grade.edit')->with(compact('grades'));
+        try {
+            $grades = Grade::find($id);
+            return view('admin.grade.edit')->with(compact('grades'));
+        } catch (Exception $e) {
+            Log::error('Error occurred while fetching grade for edit: ' . $e->getMessage());
+            return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
+        }
     }
     public function update(GradeRequest $request, $id)
     {
-        $grades = Grade::find($id);
-        $data = $request->validated();
-        $grades->update($data);
-        return redirect(route('grade.index'))->with('success', "Grade updated successfully");
+        try {
+            $grades = Grade::find($id);
+            $data = $request->validated();
+            $grades->update($data);
+            return redirect(route('grade.index'))->with('success', "Grade updated successfully");
+        } catch (Exception $e) {
+            Log::error('Error occurred while updating grade: ' . $e->getMessage());
+            return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
+        }
     }
 
     public function delete($id)
     {
-        $grades = Grade::find($id);
-        $grades->delete();
-        return redirect(route('grade.index'))->with('success', 'Grade deleted Successfully');
+        try {
+            $grades = Grade::find($id);
+            $grades->delete();
+            return redirect(route('grade.index'))->with('success', 'Grade deleted Successfully');
+        } catch (Exception $e) {
+            Log::error('Error occurred while deleting grade: ' . $e->getMessage());
+            return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
+        }
     }
 }
