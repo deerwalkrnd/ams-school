@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Role;
+use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
@@ -13,9 +12,9 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles = ['admin','teacher'];
-        foreach($roles as $role){
-            $newRole =  new Role();
+        $roles = ['admin', 'teacher'];
+        foreach ($roles as $role) {
+            $newRole = new Role();
             $newRole->role = $role;
             $newRole->save();
         }

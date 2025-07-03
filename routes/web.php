@@ -6,12 +6,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\PasswordChangeController;
 use App\Http\Controllers\ReportController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherDashboardController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,14 +24,13 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect('/home');
     }
+
     return view('auth.login');
 });
-
 
 Route::group(['middleware' => ['role:admin', 'preventBackHistory']], function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('admin.index');
@@ -43,14 +42,12 @@ Route::group(['middleware' => ['role:admin', 'preventBackHistory']], function ()
     Route::put('/grade/{id}/update', [GradeController::class, 'update'])->name('grade.update');
     Route::get('/grade/{id}/delete', [GradeController::class, 'delete'])->name('grade.delete');
 
-
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::get('/user/create/', [UserController::class, 'create'])->name('user.create');
     Route::post('/user/store/', [UserController::class, 'store'])->name('user.store');
     Route::get('/user/{id}/edit', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{id}/update', [UserController::class, 'update'])->name('user.update');
     Route::get('/user/{id}/delete', [UserController::class, 'delete'])->name('user.delete');
-
 
     Route::get('/student', [StudentController::class, 'index'])->name('student.index');
     Route::get('/student/create/', [StudentController::class, 'create'])->name('student.create');
@@ -81,15 +78,12 @@ Route::group(['middleware' => ['role:admin', 'preventBackHistory']], function ()
     Route::get('/attendance/{user}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::put('/attendance/{user}', [AttendanceController::class, 'update'])->name('attendance.update');
 
-
     Route::get('/grade/archive/{id}', [ArchiveController::class, 'archive'])->name('archive-grade');
     Route::get('/archive', [ArchiveController::class, 'show_all_archive'])->name('show-archive');
-    
-    Route::get("/archive/search", [ArchiveController::class, 'search'])->name('archive.search');
+
+    Route::get('/archive/search', [ArchiveController::class, 'search'])->name('archive.search');
 
 });
-
-
 
 Route::group(['middleware' => ['role:teacher', 'password.change', 'preventBackHistory']], function () {
     //dashboard
@@ -102,9 +96,6 @@ Route::group(['middleware' => ['role:teacher', 'password.change', 'preventBackHi
     Route::get('/teacher-report/search', [ReportController::class, 'teacherSearch'])->name('teacher-report.search');
     Route::post('/teacher-report/download', [ReportController::class, 'teacherReportDownload'])->name('teacher-report.download');
 });
-
-
-
 
 //password change
 Route::get('/change-password', [PasswordChangeController::class, 'index'])->name('change-password');

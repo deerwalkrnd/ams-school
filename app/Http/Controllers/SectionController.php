@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Section;
-use App\Models\Grade;
-use App\Models\User;
 use App\Http\Requests\SectionRequest;
+use App\Models\Grade;
+use App\Models\Section;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Log;
 
@@ -15,12 +15,15 @@ class SectionController extends Controller
     {
         try {
             $sections = Section::all();
+
             return view('admin.section.index')->with(compact('sections'));
         } catch (Exception $e) {
-            Log::error('Error occurred while fetching sections: ' . $e->getMessage());
+            Log::error('Error occurred while fetching sections: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
+
     public function create()
     {
         try {
@@ -29,20 +32,25 @@ class SectionController extends Controller
             $users = User::whereHas('roles', function ($query) {
                 $query->where('role', 'teacher');
             })->get();
+
             return view('admin.section.create')->with(compact('sections', 'grades', 'users'));
         } catch (Exception $e) {
-            Log::error('Error occurred while fetching grades and users: ' . $e->getMessage());
+            Log::error('Error occurred while fetching grades and users: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
+
     public function store(SectionRequest $request)
     {
         try {
             $data = $request->validated();
             $section = Section::create($data);
-            return redirect(route('section.index'))->with('success', "Section Successfully Created");
+
+            return redirect(route('section.index'))->with('success', 'Section Successfully Created');
         } catch (Exception $e) {
-            Log::error('Error occurred while storing section: ' . $e->getMessage());
+            Log::error('Error occurred while storing section: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
@@ -55,21 +63,26 @@ class SectionController extends Controller
             $users = User::whereHas('roles', function ($query) {
                 $query->where('role', 'teacher');
             })->get();
+
             return view('admin.section.edit')->with(compact('sections', 'grades', 'users'));
         } catch (Exception $e) {
-            Log::error('Error occurred while fetching section for edit: ' . $e->getMessage());
+            Log::error('Error occurred while fetching section for edit: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
+
     public function update(SectionRequest $request, $id)
     {
         try {
             $data = $request->validated();
             $section = Section::find($id);
             $section->update($data);
-            return redirect(route('section.index'))->with('success', "Section Updated Successfully");
+
+            return redirect(route('section.index'))->with('success', 'Section Updated Successfully');
         } catch (Exception $e) {
-            Log::error('Error occurred while updating section: ' . $e->getMessage());
+            Log::error('Error occurred while updating section: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
@@ -79,9 +92,11 @@ class SectionController extends Controller
         try {
             $sections = Section::find($id);
             $sections->delete();
+
             return redirect(route('section.index'))->with('success', 'Deleted Successfully');
         } catch (Exception $e) {
-            Log::error('Error occurred while deleting section: ' . $e->getMessage());
+            Log::error('Error occurred while deleting section: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }

@@ -10,7 +10,6 @@ use App\Models\Grade;
 use App\Models\Student;
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ArchiveController extends Controller
@@ -66,12 +65,15 @@ class ArchiveController extends Controller
             $grade->delete();
 
             DB::commit();
+
             return redirect()->back()->with('success', 'Grade and all related data archived successfully.');
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Archiving failed: ' . $e->getMessage());
+
+            return redirect()->back()->with('error', 'Archiving failed: '.$e->getMessage());
         }
     }
+
     public function show_all_archive()
     {
         try {
@@ -88,7 +90,7 @@ class ArchiveController extends Controller
 
             return view('admin.archive.index', compact('attendances', 'grades', 'sections', 'teachers'));
         } catch (Exception $e) {
-            return redirect()->back()->with('error', 'Failed to fetch archived data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to fetch archived data: '.$e->getMessage());
         }
     }
 }

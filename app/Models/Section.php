@@ -12,6 +12,7 @@ class Section extends Model
     protected $hidden = [
         'id',
     ];
+
     protected $fillable = [
         'name',
         'grade_id',
@@ -35,33 +36,33 @@ class Section extends Model
 
     public function getAbsentCount(User $user)
     {
-        return $this->getTodayAttendanceStatusCount($user, "absent");
+        return $this->getTodayAttendanceStatusCount($user, 'absent');
     }
 
     public function getPresentCount(User $user)
     {
-        return $this->getTodayAttendanceStatusCount($user, "present");
+        return $this->getTodayAttendanceStatusCount($user, 'present');
 
     }
 
     public function getTodayAttendanceStatusCount(User $user, string $status)
     {
-        $count = Attendance::whereHas('student', function($query) use($user){
-                        return $query->where('students.section_id', $user->section->id);
-                            })
-                            ->whereDate("created_at", date('Y-m-d'))
-                            ->where('teacher_id', $user->id);
+        $count = Attendance::whereHas('student', function ($query) use ($user) {
+            return $query->where('students.section_id', $user->section->id);
+        })
+            ->whereDate('created_at', date('Y-m-d'))
+            ->where('teacher_id', $user->id);
 
         if ($status == 'present') {
             $count = $count->where('absent', '0')
                 ->get()
                 ->count();
-        }
-        elseif ($status == 'absent') {
+        } elseif ($status == 'absent') {
             $count = $count->where('absent', '!=', '0')
                 ->get()
                 ->count();
         }
+
         return $count;
     }
 }

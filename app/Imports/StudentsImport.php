@@ -18,11 +18,8 @@ use Maatwebsite\Excel\Concerns\SkipsOnError;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Validators\Failure;
-use Throwable;
 
-class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, SkipsOnFailure, SkipsEmptyRows
+class StudentsImport implements SkipsEmptyRows, SkipsOnError, SkipsOnFailure, ToCollection, WithHeadingRow
 {
     use Importable, SkipsErrors, SkipsFailures;
 
@@ -41,13 +38,13 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, Skip
                 $missing_columns = [];
 
                 foreach ($expected_headers as $header) {
-                    if (!isset($rowArray[$header]) || $rowArray[$header] === null || trim($rowArray[$header]) === '') {
+                    if (! isset($rowArray[$header]) || $rowArray[$header] === null || trim($rowArray[$header]) === '') {
                         $missing_columns[] = $header;
                     }
                 }
 
-                if (!empty($missing_columns)) {
-                    return redirect()->back()->with('error', 'Missing values for columns: ' . implode(', ', $missing_columns) . ' at Excel row index: ' . ($index + 2));
+                if (! empty($missing_columns)) {
+                    return redirect()->back()->with('error', 'Missing values for columns: '.implode(', ', $missing_columns).' at Excel row index: '.($index + 2));
                 }
 
                 $grade = Grade::where('name', $row['grade'])->first();
@@ -55,14 +52,12 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, Skip
 
                 // Check if the grade and section exist
 
-
-                if (!$grade) {
-                    return redirect()->back()->with('error', 'Grade not found at row index: ' . ($index + 2));
+                if (! $grade) {
+                    return redirect()->back()->with('error', 'Grade not found at row index: '.($index + 2));
                 }
-                if (!$section) {
-                    return redirect()->back()->with('error', 'Section not found at row index: ' . ($index + 2));
+                if (! $section) {
+                    return redirect()->back()->with('error', 'Section not found at row index: '.($index + 2));
                 }
-
 
                 $validator = Validator::make($rowArray, [
                     'roll_no' => 'required|unique:students,roll_no',
@@ -73,7 +68,7 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, Skip
                 ]);
 
                 if ($validator->fails()) {
-                    return redirect()->back()->with('error', 'Validation failed at Excel row index: ' . ($index + 2) . ' - ' . implode(', ', $validator->errors()->all()));
+                    return redirect()->back()->with('error', 'Validation failed at Excel row index: '.($index + 2).' - '.implode(', ', $validator->errors()->all()));
                 }
 
                 if ($grade && $section) {
@@ -84,14 +79,14 @@ class StudentsImport implements ToCollection, WithHeadingRow, SkipsOnError, Skip
                     $student->section_id = $section->id;
                     $student->save();
                 } else {
-                    Log::error('Grade or Section not found at row index: ' . ($index + 2));
+                    Log::error('Grade or Section not found at row index: '.($index + 2));
                 }
             }
 
             DB::commit();
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error importing students: ' . $e->getMessage());
+            Log::error('Error importing students: '.$e->getMessage());
         }
     }
 }

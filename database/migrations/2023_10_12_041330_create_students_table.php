@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('roll_no')->unique();
             $table->string('name');
             $table->string('email');
-            $table->enum('status', ['active','dropped_out']);
+            $table->enum('status', ['active', 'dropped_out']);
             $table->unsignedBigInteger('section_id');
             $table->timestamps();
             $table->foreign('section_id')->references('id')->on('sections')->cascadeOnUpdate()->restrictOnDelete();

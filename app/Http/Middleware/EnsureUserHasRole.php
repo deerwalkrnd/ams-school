@@ -20,16 +20,14 @@ class EnsureUserHasRole
         //if not authenticated then we redirect to the
         //login route
 
-        if(!Auth::check()){
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
+        if (! is_null(auth()->user())) {
 
-        if(!is_null(auth()->user()))
-        {
-
-            $home = $role == "admin"? "/dashboard":"/home";
-            if (!$request->user()->hasRole($role)) {
+            $home = $role == 'admin' ? '/dashboard' : '/home';
+            if (! $request->user()->hasRole($role)) {
                 return redirect($home);
             }
         }

@@ -23,12 +23,13 @@ class StudentRequest extends FormRequest
     public function rules(): array
     {
         $userId = $this->route('id');
+
         return [
             'name' => 'required|regex:/^[A-Za-z\s]+$/|max:255',
             'email' => 'required|email|',
             'section_id' => 'required',
 
-            'roll_no' => ['required','numeric',Rule::unique('students','roll_no')->ignore($this->route()->id),],
+            'roll_no' => ['required', 'numeric', Rule::unique('students', 'roll_no')->ignore($this->route()->id)],
 
         ];
     }
