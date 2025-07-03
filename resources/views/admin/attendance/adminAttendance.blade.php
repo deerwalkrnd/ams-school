@@ -1,108 +1,112 @@
 @extends('layouts.admin.app')
 @section('title')
-    Admin Attendance
+Admin Attendance
 @endsection
 
 @section('content')
-    <div class="below_header">
-        <h1 class="heading"> Admin Attendance </h1>
-        <div class="underline mx-auto hr_line"></div>
-        <ul class="nav nav-tabs" id="myTab" role="tablist">
-        </ul>
-    </div>
-    <form action="{{ route('attendance.takeAttendance') }}">
-        <div class="row">
-            <div class="col-md-8 row align-items-end">
-                <label for="grade" class=" col-sm-2 align-items-end">Grade</label>
-                <div class="col-sm-10">
-                    <select id="section" name="section" class="form-control form-select  form-select-sm">
-                        <option disabled selected>--Choose Grade--</option>
-                        @foreach ($sections as $section)
-                            <option value="{{ $section->id }}"
-                                {{ !empty(request('section')) && request('section') == $section->id ? 'selected' : '' }}>
-                                Grade {{ $section->grade->name }} - Section
-                                {{ $section->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-4 d-flex justify-content-end align-content-end">
-                <div>
-                    <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
-                </div>
+<div class="below_header">
+    <h1 class="heading"> Admin Attendance </h1>
+    <div class="underline mx-auto hr_line"></div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    </ul>
+</div>
+<form action="{{ route('attendance.takeAttendance') }}">
+    <div class="row">
+        <div class="col-md-8 row align-items-end">
+            <label for="grade" class=" col-sm-2 align-items-end">Grade</label>
+            <div class="col-sm-10">
+                <select id="section" name="section" class="form-control form-select  form-select-sm">
+                    <option disabled selected>--Choose Grade--</option>
+                    @foreach ($sections as $section)
+                    <option value="{{ $section->id }}" {{ !empty(request('section')) && request('section')==$section->id
+                        ? 'selected' : '' }}>
+                        Grade {{ $section->grade->name }} - Section
+                        {{ $section->name }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
-    </form>
-    <hr>
-
-    <!-- table start -->
-    <div class="table_container mt-5">
-
-        @if (isset($students))
-            <form method="POST" action= "{{ route('attendance.store') }}">
-                @csrf
-                <table class="_table mx-auto">
-                    <thead>
-                        <tr class="table_title">
-                            <th class="border-end">Roll</th>
-                            <th class="border-end">Name</th>
-                            <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
-                            <th class="border-end">Absent Comment</th>
-                        </tr>
-                    </thead>
-                    <tr class="table_date">
-                        <th class="border-end"></th>
-                        <th class="border-end"></th>
-                        <th class="border-end">
-                            {{ date('M/d') }}
-                        </th>
-                        <th class="border-end"></th>
-                    </tr>
-                    @foreach ($students as $student)
-                        <tr>
-                            <td class="border-end roll_no">{{ $student->roll_no }}</td>
-                            <td class="border-end">{{ $student->name }}</td>
-
-                            <td class="border-end student_attendance_status">
-                                <div onclick="toggleState(this)" class="attendance-state"
-                                    id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
-                                    <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
-                                        id="r_{{ $student->roll_no }}">
-                                </div>
-                            </td>
-                            <td>
-                                <input type="text" name="comment" id="comment{{ $student->roll_no }}"
-                                    placeholder="Reason:" required disabled>
-                            </td>
-                        </tr>
-                    @endforeach
-                </table>
-
-                {{-- @include('admin.attendance._form') --}}
-                <div class="justify-content-center text-end my-3 me-5">
-                    <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
-                </div>
-            </form>
-        @else
-            <div class="shadow py-3 px-1 text-center">
-                <h5>Please Select Grade First</h5>
+        <div class="col-md-4 d-flex justify-content-end align-content-end">
+            <div>
+                <button class="btn btn-success px-3 py-2" id="search_submit">Search</button>
             </div>
-        @endif
+        </div>
     </div>
+</form>
+<hr>
 
-    <!-- table end -->
-    <!--Container Main end-->
+<!-- table start -->
+<div class="table_container mt-5">
+
+    @if(isset($students) && $students->isNotEmpty())
+    <div id="teacherInfo" data-teacher-id="{{ $students->first()->section->user->id }}"></div>
+    @endif
+
+    @if (isset($students))
+    <form method="POST" action="{{ route('attendance.store') }}">
+        @csrf
+        <table class="_table mx-auto">
+            <thead>
+                <tr class="table_title">
+                    <th class="border-end">Roll</th>
+                    <th class="border-end">Name</th>
+                    <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
+                    <th class="border-end">Absent Comment</th>
+                </tr>
+            </thead>
+            <tr class="table_date">
+                <th class="border-end"></th>
+                <th class="border-end"></th>
+                <th class="border-end">
+                    {{ date('M/d') }}
+                </th>
+                <th class="border-end"></th>
+            </tr>
+            @foreach ($students as $student)
+            <tr>
+                <td class="border-end roll_no">{{ $student->roll_no }}</td>
+                <td class="border-end">{{ $student->name }}</td>
+
+                <td class="border-end student_attendance_status">
+                    <div onclick="toggleState(this)" class="attendance-state" id="attendance_{{ $student->roll_no }}"
+                        data-attendance-state="1">
+                        <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
+                            id="r_{{ $student->roll_no }}">
+                    </div>
+                </td>
+                <td>
+                    <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
+                        disabled>
+                </td>
+            </tr>
+            @endforeach
+        </table>
+
+        {{-- @include('admin.attendance._form') --}}
+        <div class="justify-content-center text-end my-3 me-5">
+            <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
+        </div>
+    </form>
+    @else
+    <div class="shadow py-3 px-1 text-center">
+        <h5>Please Select Grade First</h5>
+    </div>
+    @endif
+</div>
+
+<!-- table end -->
+<!--Container Main end-->
 @endsection
 @section('scripts')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type='text/javascript'>
-        $(document).ready(function() {
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type='text/javascript'>
+    $(document).ready(function() {
             $('#section').select2();
 
         });
-    </script>
-    <script>
-        const Toast = Swal.mixin({
+</script>
+<script>
+    const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
@@ -145,6 +149,8 @@
 
         // Submit Attendance
         let submit = document.getElementById("attendance_submit");
+        let teacherId = document.getElementById('teacherInfo')?.getAttribute('data-teacher-id') ?? null;
+
         submit.addEventListener("click", function(event) {
             event.preventDefault();
 
@@ -173,8 +179,8 @@
                         data: {
                             "_token": "{{ csrf_token() }}",
                             "attendances": student,
-                            "teacher": "{{$section->user->id}}",
-                        },
+                            "teacher": teacherId,
+                            },
                         success: function(data) {
                             Toast.fire({
                                 icon: 'success',
@@ -244,5 +250,5 @@
 
             return student;
         }
-    </script>
+</script>
 @endsection

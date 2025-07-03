@@ -15,6 +15,7 @@ class Student extends Model
         'id',
 
     ];
+
     protected $fillable = [
         'roll_no',
         'name',
@@ -40,7 +41,7 @@ class Student extends Model
 
     public function getAbsentDays($id)
     {
-        $attendances =  Attendance::where('student_id', $this->id)
+        $attendances = Attendance::where('student_id', $this->id)
             ->where('attendances.teacher_id', $id)
             ->where('created_at', '>', Carbon::now()->subDays(6))
             ->sum('absent');
@@ -50,17 +51,18 @@ class Student extends Model
 
     /**
      * Get the attendances of a studemt
-     * 
+     *
      * Set a limit to the number of attendances to get
-     * @param integer $limit
-     * @param date $startDate
-     * @param date $endDate
+     *
+     * @param  int  $limit
+     * @param  date  $startDate
+     * @param  date  $endDate
      * @return mixed
      */
     public function getAttendances($startDate, $endDate)
     {
         $startDate = $startDate ?? Auth::user()->section->grade->start_date;
-        $endDate = $endDate ?? Carbon::today()->addDay()->format("Y-m-d");
+        $endDate = $endDate ?? Carbon::today()->addDay()->format('Y-m-d');
 
         $attendance = $this->attendances
             ->whereBetween('date', [$startDate, $endDate])
@@ -71,9 +73,10 @@ class Student extends Model
                 $temp['present'] = $attendance->first()->present;
                 $temp['absent'] = $attendance->first()->absent;
                 $temp['comment'] = $attendance->first()->comment;
+
                 return $temp;
             });
-            // ->toArray();
+        // ->toArray();
         // dd($attendance);
 
         return $attendance;

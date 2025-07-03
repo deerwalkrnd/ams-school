@@ -8,13 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Grade extends Model
 {
     use HasFactory;
-    protected $fillable=[
+
+    protected $fillable = [
         'name',
         'start_date',
-        'end_date'
+        'end_date',
     ];
 
-    public function section(){
+    public function section()
+    {
         return $this->hasMany(Section::class);
     }
 }

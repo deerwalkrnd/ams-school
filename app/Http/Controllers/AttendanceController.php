@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
-use Carbon\Carbon;
-
-use App\Models\Student;
-use App\Models\Attendance;
 use App\Http\Requests\AttendanceRequest;
-use App\Models\Grade;
+use App\Models\Attendance;
 use App\Models\Section;
+use App\Models\Student;
 use App\Models\User;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,12 +27,12 @@ class AttendanceController extends Controller
                 ->groupBy('teacher_id');
 
             $users = User::with('section')->whereIn('id', $attendances->keys())->get();
-            $users = $users->sortBy("section.grade.name");
-
+            $users = $users->sortBy('section.grade.name');
 
             return view('admin.attendance.index', compact('users'));
         } catch (Exception $e) {
-            Log::error('Error occurred while fetching attendance index: ' . $e->getMessage());
+            Log::error('Error occurred while fetching attendance index: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
@@ -45,7 +43,7 @@ class AttendanceController extends Controller
     public function create()
     {
         try {
-            Log::info('Attendance create method called at ' . Carbon::now());
+            Log::info('Attendance create method called at '.Carbon::now());
 
             $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
                 ->where('created_at', '>', Carbon::now()->subDays(6))
@@ -71,13 +69,13 @@ class AttendanceController extends Controller
 
             // dd($attendanceDates, $minDateKey, $minDate, $maxDateKey, $maxDate);
 
-            return view('teacher.attendance.index', compact("attendanceDates", "minDate", "maxDate"));
+            return view('teacher.attendance.index', compact('attendanceDates', 'minDate', 'maxDate'));
         } catch (Exception $e) {
-            Log::error('Error occurred while creating attendance: ' . $e->getMessage());
+            Log::error('Error occurred while creating attendance: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -104,10 +102,12 @@ class AttendanceController extends Controller
                 $attendance->save();
             }
             DB::commit();
+
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!', 200]);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occurred while uploading attendance.' .  $e);
+            Log::error('Error occurred while uploading attendance.'.$e);
+
             return response()->json(['msg' => 'Oops! Error Occured. Please Try Again Later.', 400]);
         }
     }
@@ -134,7 +134,8 @@ class AttendanceController extends Controller
 
             return view('admin.attendance.edit', compact('attendances', 'user'));
         } catch (Exception $e) {
-            Log::error('Error occurred while editing attendance: ' . $e->getMessage());
+            Log::error('Error occurred while editing attendance: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
@@ -161,15 +162,17 @@ class AttendanceController extends Controller
                     $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : '';
                     $attendance->comment = $comment;
                 } else {
-                    $attendance->comment = "";
+                    $attendance->comment = '';
                 }
                 $attendance->save();
             }
             DB::commit();
+
             return response()->json(['msg' => 'Attendance Has Been Updated Successfully!'], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occured while updating attendance.' .  $e);
+            Log::error('Error occured while updating attendance.'.$e);
+
             return response()->json(['msg' => 'Oops! Error Occured. Please Try Again Later.'], 400);
         }
     }
@@ -189,10 +192,10 @@ class AttendanceController extends Controller
             if ($request->has('section')) {
 
                 $students = Student::where('section_id', $request->section)->get();
-                $checkIfTodayAttendanceExists =  Attendance::whereHas('student', function ($query) use ($request) {
+                $checkIfTodayAttendanceExists = Attendance::whereHas('student', function ($query) use ($request) {
                     return $query->where('students.section_id', $request->section);
                 })
-                    ->whereDate("created_at", date('Y-m-d'))
+                    ->whereDate('created_at', date('Y-m-d'))
                     ->count();
 
                 if ($checkIfTodayAttendanceExists) {
@@ -204,7 +207,8 @@ class AttendanceController extends Controller
 
             return view('admin.attendance.adminAttendance', compact('sections'));
         } catch (Exception $e) {
-            Log::error('Error occurred while taking attendance: ' . $e->getMessage());
+            Log::error('Error occurred while taking attendance: '.$e->getMessage());
+
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }

@@ -12,7 +12,7 @@ class AttendanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if (Auth::user()->hasRole("admin") || Auth::user()->hasRole("teacher")) {
+        if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('teacher')) {
             return true;
         }
 
@@ -27,13 +27,13 @@ class AttendanceRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'attendances'                           => ['required', 'array'],
-            'attendances.*'                         => ['required', 'array'],
-            'attendances.*.rollNo'                  => ['required', 'exists:students,roll_no'],
-            'attendances.*.attendanceStatus'        => ['required'],
-            'attendances.*.attendanceStatus.present'=> ['required', 'numeric'],
+            'attendances' => ['required', 'array'],
+            'attendances.*' => ['required', 'array'],
+            'attendances.*.rollNo' => ['required', 'exists:students,roll_no'],
+            'attendances.*.attendanceStatus' => ['required'],
+            'attendances.*.attendanceStatus.present' => ['required', 'numeric'],
             'attendances.*.attendanceStatus.absent' => ['required', 'numeric'],
-            'teacher'                               => ['exists:users,id']
+            'teacher' => ['exists:users,id'],
         ];
 
         return $rules;

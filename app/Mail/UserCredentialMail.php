@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -15,7 +14,9 @@ class UserCredentialMail extends Mailable
     use Queueable, SerializesModels;
 
     protected $email;
+
     protected $name;
+
     protected $roles;
 
     /**
@@ -48,9 +49,8 @@ class UserCredentialMail extends Mailable
             with: [
                 'name' => $this->name,
                 'email' => $this->email,
-                'roles' => $this->roles
+                'roles' => $this->roles,
             ]
         );
     }
-
 }

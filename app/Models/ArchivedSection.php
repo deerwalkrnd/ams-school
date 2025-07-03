@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ArchivedSection extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'name',
         'grade_id',
@@ -23,6 +24,7 @@ class ArchivedSection extends Model
     {
         return $this->belongsTo(ArchivedSection::class);
     }
+
     public function grade()
     {
         return $this->belongsTo(ArchivedGrade::class, 'grade_id');

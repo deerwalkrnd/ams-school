@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ArchivedStudent extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'roll_no',
         'name',

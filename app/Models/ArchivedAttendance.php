@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ArchivedAttendance extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'student_id',
         'teacher_id',
@@ -16,6 +17,7 @@ class ArchivedAttendance extends Model
         'absent',
         'comment',
     ];
+
     public function student()
     {
         return $this->belongsTo(ArchivedStudent::class);

@@ -74,7 +74,6 @@ class User extends Authenticatable
     /**
      * Check if user has a given role
      *
-     * @param  string $role
      * @return void
      */
     public function hasRole(string $role)
@@ -91,10 +90,10 @@ class User extends Authenticatable
      * Get all the attendances date
      *
      * Set a limit to the number of attendance dates to get
-     * @param integer $limit
-     * @param date $startDate
-     * @param date $endDate
-     * 
+     *
+     * @param  int  $limit
+     * @param  date  $startDate
+     * @param  date  $endDate
      * @return mixed
      */
     public function getAllAttendanceDates($startDate, $endDate)
@@ -104,29 +103,29 @@ class User extends Authenticatable
 
         // dd ($startDate, $endDate);
         $attendance = $this->attendances
-                            ->whereBetween('date', [$startDate, $endDate])
-                            ->groupBy(function ($query) {
-                                return Carbon::parse($query->date)->format('m/d');
-                            });
-                            
+            ->whereBetween('date', [$startDate, $endDate])
+            ->groupBy(function ($query) {
+                return Carbon::parse($query->date)->format('m/d');
+            });
 
-                            // dd($attendance);
-                            // dd( $attendance->keys());
+        // dd($attendance);
+        // dd( $attendance->keys());
 
         return $attendance->keys();
     }
 
     /**
      * Get total classes count
-     * @param date $startDate
-     * @param date $endDate
      *
+     * @param  date  $startDate
+     * @param  date  $endDate
      * @return mixed
      */
     public function getTotalClasses($startDate, $endDate)
     {
         $startDate = $startDate ?? Auth::user()->section->grade->start_date;
         $endDate = $endDate ?? date('Y-m-d');
-        return $this->attendances->whereBetween('date', [$startDate, $endDate])->count() ?? "-";
+
+        return $this->attendances->whereBetween('date', [$startDate, $endDate])->count() ?? '-';
     }
 }
