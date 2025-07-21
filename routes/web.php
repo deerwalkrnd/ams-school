@@ -28,13 +28,11 @@ Route::get('/', function () {
     if (Auth::check()) {
         return redirect('/home');
     }
-
     return view('auth.login');
 });
 
 Route::group(['middleware' => ['role:admin', 'preventBackHistory']], function () {
     Route::get('/home', [DashboardController::class, 'index'])->name('admin.index');
-
     Route::get('/grade', [GradeController::class, 'index'])->name('grade.index');
     Route::get('/grade/create/', [GradeController::class, 'create'])->name('grade.create');
     Route::post('/grade/store/', [GradeController::class, 'store'])->name('grade.store');
@@ -71,18 +69,20 @@ Route::group(['middleware' => ['role:admin', 'preventBackHistory']], function ()
     Route::get('/report/gradeSearch', [ReportController::class, 'gradeSearch'])->name('report.gradeSearch');
     Route::get('/report/search', [ReportController::class, 'adminSearch'])->name('report.search');
     Route::post('/admin-report/download', [ReportController::class, 'adminReportDownload'])->name('admin-report.download');
+
     // attendance edit
     Route::post('/admin-attendance', [AttendanceController::class, 'store'])->name('admin.attendance.store');
     Route::get('/today-attendance', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/today-attendance/take-attendance', [AttendanceController::class, 'adminAttendanceIndex'])->name('attendance.takeAttendance');
     Route::get('/attendance/{user}/edit', [AttendanceController::class, 'edit'])->name('attendance.edit');
     Route::put('/attendance/{user}', [AttendanceController::class, 'update'])->name('attendance.update');
+    
+    // New attendance status dashboard
+    Route::get('/attendance-status', [AttendanceController::class, 'attendanceStatusDashboard'])->name('attendance.status');
 
     Route::get('/grade/archive/{id}', [ArchiveController::class, 'archive'])->name('archive-grade');
     Route::get('/archive', [ArchiveController::class, 'show_all_archive'])->name('show-archive');
-
     Route::get('/archive/search', [ArchiveController::class, 'search'])->name('archive.search');
-
 });
 
 Route::group(['middleware' => ['role:teacher', 'password.change', 'preventBackHistory']], function () {

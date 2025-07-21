@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('archived_attendances', function (Blueprint $table) {
+        Schema::create('attendance_status', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('student_id');
             $table->unsignedBigInteger('teacher_id');
             $table->date('date');
-            $table->boolean('present')->default(0);
-            $table->boolean('absent')->default(0);
-            $table->text('comment')->nullable();
+            $table->tinyInteger('status')->default(0)->comment('0 = not taken, 1 = taken');
+            $table->timestamp('reminder_sent_at')->nullable();
             $table->timestamps();
+            
+            $table->foreign('teacher_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unique(['teacher_id', 'date']);
         });
     }
 
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('archived_attendances');
+        Schema::dropIfExists('attendance_status');
     }
 };
