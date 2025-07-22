@@ -12,7 +12,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Initialize daily attendance status at 06:00 am
+        $schedule->command('attendance:initialize-daily')
+                 ->dailyAt('11:55')
+                 ->withoutOverlapping();
+
+        $schedule->command('attendance:check-reminders')
+                 ->dailyAt('12:00')
+                 ->withoutOverlapping();
     }
 
     /**
