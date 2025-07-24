@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\AttendanceReminderMail;
+use App\Mail\AdminAttendanceSummaryMail; // Import the new Mailable
 use App\Models\AttendanceStatus;
 use App\Models\User;
 use Carbon\Carbon;
@@ -33,7 +34,6 @@ class CheckAttendanceReminders extends Command
     {
         $today = Carbon::today()->format('Y-m-d');
         $force = $this->option('force');
-
         $this->info("Checking attendance reminders for {$today}");
 
         // Get all teachers
@@ -41,7 +41,9 @@ class CheckAttendanceReminders extends Command
             $query->where('role', 'teacher');
         })->with('section.grade')->get();
 
-        $remindersSent = 0;
+        $remindersSentToTeachers = 0;
+        $pendingTeachersForAdminSummary = collect(); // Use a collection to store teachers with pending attendance
+
         $admins = User::whereHas('roles', function ($query) {
             $query->where('role', 'admin');
         })->get();
@@ -64,31 +66,42 @@ class CheckAttendanceReminders extends Command
             // If attendance not taken and reminder not sent (or force option is used)
             if ($attendanceStatus->status == 0 && (!$attendanceStatus->reminderSent() || $force)) {
                 try {
-                    // Send reminder to teacher
+                    // Send individual reminder to teacher
                     Mail::to($teacher->email)->send(new AttendanceReminderMail($teacher, $today, false));
 
-                    // Send alert to all admins
-                    foreach ($admins as $admin) {
-                        Mail::to($admin->email)->send(new AttendanceReminderMail($teacher, $today, true));
-                    }
+                    // Add teacher to the list for admin summary
+                    $pendingTeachersForAdminSummary->push($teacher);
 
-                    // Update reminder sent timestamp
+                    // Update reminder sent timestamp for the individual teacher's status
                     $attendanceStatus->update([
                         'reminder_sent_at' => now(),
                     ]);
-
-                    $remindersSent++;
-                    $this->info("Reminder sent to {$teacher->name} ({$teacher->email})");
-
+                    $remindersSentToTeachers++;
+                    $this->info("Individual reminder sent to {$teacher->name} ({$teacher->email})");
                 } catch (\Exception $e) {
                     Log::error("Failed to send attendance reminder to {$teacher->email}: " . $e->getMessage());
-                    $this->error("Failed to send reminder to {$teacher->name}");
+                    $this->error("Failed to send individual reminder to {$teacher->name}");
                 }
             }
         }
 
-        $this->info("Total reminders sent: {$remindersSent}");
-        Log::info("Attendance reminders check completed. Sent {$remindersSent} reminders.");
+        // Send consolidated email to admins if there are pending teachers
+        if ($pendingTeachersForAdminSummary->isNotEmpty()) {
+            foreach ($admins as $admin) {
+                try {
+                    Mail::to($admin->email)->send(new AdminAttendanceSummaryMail($pendingTeachersForAdminSummary, $today));
+                    $this->info("Consolidated attendance summary sent to admin {$admin->name} ({$admin->email})");
+                } catch (\Exception $e) {
+                    Log::error("Failed to send consolidated attendance summary to admin {$admin->email}: " . $e->getMessage());
+                    $this->error("Failed to send consolidated summary to admin {$admin->name}");
+                }
+            }
+        } else {
+            $this->info("All teachers have taken attendance. No consolidated summary sent to admins.");
+        }
+
+        $this->info("Total individual reminders sent to teachers: {$remindersSentToTeachers}");
+        Log::info("Attendance reminders check completed. Sent {$remindersSentToTeachers} individual reminders to teachers and consolidated summary to admins.");
 
         return 0;
     }

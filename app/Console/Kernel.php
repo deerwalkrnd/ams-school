@@ -14,11 +14,11 @@ class Kernel extends ConsoleKernel
     {
         // Initialize daily attendance status at 06:00 am
         $schedule->command('attendance:initialize-daily')
-                 ->dailyAt('13:51')
+                 ->dailyAt('11:55')
                  ->withoutOverlapping();
 
         $schedule->command('attendance:check-reminders')
-                 ->dailyAt('13:53')
+                 ->dailyAt('12:00')
                  ->withoutOverlapping();
     }
 
