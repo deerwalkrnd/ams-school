@@ -37,7 +37,7 @@ class AttendanceController extends Controller
 
             return view('admin.attendance.index', compact('users', 'attendanceStatuses'));
         } catch (Exception $e) {
-            Log::error('Error occurred while fetching attendance index: '.$e->getMessage());
+            Log::error('Error occurred while fetching attendance index: ' . $e->getMessage());
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
@@ -48,34 +48,33 @@ class AttendanceController extends Controller
     public function create()
     {
         try {
-            Log::info('Attendance create method called at '.Carbon::now());
-            $attendanceDates = Attendance::where('teacher_id', Auth::user()->id)
-                ->where('created_at', '>', Carbon::now()->subDays(6))
+            $attendanceDates = Attendance::where('teacher_id', auth()->id())
+                ->whereDate('created_at', '>=', now()->subDays(6))
+                ->orderBy('created_at')
                 ->get()
-                ->groupBy(function ($query) {
-                    return Carbon::parse($query->created_at)->format('M/d');
-                })
+                ->groupBy(fn($a) => $a->created_at->format('Y-m-d'))
                 ->take(5);
 
-            if ($attendanceDates->isEmpty()) {
-                return view('teacher.attendance.index', [
-                    'attendanceDates' => collect(),
-                    'minDate' => null,
-                    'maxDate' => null,
-                ]);
-            }
+            $todayTaken = $attendanceDates->has(now()->toDateString());
 
-            $minDateKey = $attendanceDates->keys()->first();
-            $maxDateKey = $attendanceDates->keys()->last();
-            $minDate = Carbon::createFromFormat('M/d', $minDateKey)->format('Y-m-d');
-            $maxDate = Carbon::createFromFormat('M/d', $maxDateKey)->format('Y-m-d');
+            $minDate = $attendanceDates->isNotEmpty()
+                ? now()->subDays(6)->toDateString()
+                : null;
 
-            return view('teacher.attendance.index', compact('attendanceDates', 'minDate', 'maxDate'));
+            $maxDate = now()->toDateString();
+
+            return view('teacher.attendance.index', compact(
+                'attendanceDates',
+                'minDate',
+                'maxDate',
+                'todayTaken'
+            ));
         } catch (Exception $e) {
-            Log::error('Error occurred while creating attendance: '.$e->getMessage());
-            return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
+            Log::error($e->getMessage());
+            return back()->with('error', 'Something went wrong.');
         }
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -85,7 +84,7 @@ class AttendanceController extends Controller
         $input = $request->validated();
         try {
             DB::beginTransaction();
-            
+
             $teacherId = $request->teacher ?? Auth::user()->id;
             $today = date('Y-m-d');
 
@@ -96,13 +95,13 @@ class AttendanceController extends Controller
                 $attendance->teacher_id = $teacherId;
                 $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
-                
+
                 // Handle comments for absent students
                 if ($attendance->absent) {
                     $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : '';
                     $attendance->comment = $comment;
                 }
-                
+
                 $attendance->date = $today;
                 $attendance->save();
             }
@@ -122,7 +121,7 @@ class AttendanceController extends Controller
             return response()->json(['msg' => 'Attendance Has Been Taken Successfully!'], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occurred while uploading attendance.'.$e);
+            Log::error('Error occurred while uploading attendance.' . $e);
             return response()->json(['msg' => 'Oops! Error Occurred. Please Try Again Later.'], 400);
         }
     }
@@ -149,7 +148,7 @@ class AttendanceController extends Controller
 
             return view('admin.attendance.edit', compact('attendances', 'user'));
         } catch (Exception $e) {
-            Log::error('Error occurred while editing attendance: '.$e->getMessage());
+            Log::error('Error occurred while editing attendance: ' . $e->getMessage());
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
@@ -162,17 +161,17 @@ class AttendanceController extends Controller
         $input = $request->validated();
         try {
             DB::beginTransaction();
-            
+
             foreach ($input['attendances'] as $attendanceAndRoll) {
                 $student = Student::where('roll_no', $attendanceAndRoll['rollNo'])->first();
                 $attendance = Attendance::where('teacher_id', $user->id)
                     ->where('student_id', $student->id)
                     ->where('date', date('Y-m-d'))
                     ->first();
-                    
+
                 $attendance->present = $attendanceAndRoll['attendanceStatus']['present'];
                 $attendance->absent = $attendanceAndRoll['attendanceStatus']['absent'];
-                
+
                 // Handle comments for absent students
                 if ($attendanceAndRoll['attendanceStatus']['absent'] > 0) {
                     $comment = isset($attendanceAndRoll['attendanceStatus']['comment']) ? $attendanceAndRoll['attendanceStatus']['comment'] : '';
@@ -180,7 +179,7 @@ class AttendanceController extends Controller
                 } else {
                     $attendance->comment = '';
                 }
-                
+
                 $attendance->save();
             }
 
@@ -199,7 +198,7 @@ class AttendanceController extends Controller
             return response()->json(['msg' => 'Attendance Has Been Updated Successfully!'], 200);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('Error occurred while updating attendance.'.$e);
+            Log::error('Error occurred while updating attendance.' . $e);
             return response()->json(['msg' => 'Oops! Error Occurred. Please Try Again Later.'], 400);
         }
     }
@@ -233,7 +232,7 @@ class AttendanceController extends Controller
 
             return view('admin.attendance.adminAttendance', compact('sections'));
         } catch (Exception $e) {
-            Log::error('Error occurred while taking attendance: '.$e->getMessage());
+            Log::error('Error occurred while taking attendance: ' . $e->getMessage());
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }
@@ -245,7 +244,7 @@ class AttendanceController extends Controller
     {
         try {
             $today = date('Y-m-d');
-            
+
             // Get all teachers with their attendance status
             $teachers = User::whereHas('roles', function ($query) {
                 $query->where('role', 'teacher');
@@ -268,7 +267,7 @@ class AttendanceController extends Controller
 
             return view('admin.attendance.status-dashboard', compact('teacherStatuses', 'today'));
         } catch (Exception $e) {
-            Log::error('Error occurred while fetching attendance status dashboard: '.$e->getMessage());
+            Log::error('Error occurred while fetching attendance status dashboard: ' . $e->getMessage());
             return back()->with('error', 'Oops! Error Occurred. Please Try Again Later.');
         }
     }

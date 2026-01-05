@@ -3,98 +3,116 @@
 @section('title', 'Attendance Page')
 
 @section('content')
-    <div class="below_header">
-        <!-- <h1>Attendance</h1> -->
-        {{-- {{auth()->user()}} --}}
-        <h1>Daily Attendance : Class {{ auth()->user()->section->grade->name }}
-            - Sec {{ auth()->user()->section->name }}</h1>
+<div class="below_header">
+    <!-- <h1>Attendance</h1> -->
+    {{-- {{auth()->user()}} --}}
+    <h1>Daily Attendance : Class {{ auth()->user()->section->grade->name }}
+        - Sec {{ auth()->user()->section->name }}</h1>
 
-    </div>
+</div>
 
-    <!-- table start -->
-    <div class="table_container mt-5">
-        <form>
-            <table class="_table mx-auto">
-                <tr class="table_title">
-                    <th class="border-end">Roll</th>
-                    <th class="border-end">Name</th>
-                    <th colspan="{{ $attendanceDates->count() }}" class="text-center border-end">Status</th>
-                    @if (!$attendanceDates->has(now()->format('M/d')))
-                        <th class="border-end"><i class='bx bxs-down-arrow text-primary'></i></th>
-                    @endif
-                    @if (!$attendanceDates->has(now()->format('M/d')))
-                        <th class="border-end">Absent Comment</th>
-                    @endif
-                </tr>
-                <tr class="table_date">
-                    <th colspan="2" class="border-end"></th>
-                    @foreach ($attendanceDates as $date => $attendanceDate)
-                        <th class="border-end"> {{ $date }}</th>
-                    @endforeach
+<!-- table start -->
+<div class="table_container mt-5">
+    <form>
+        <table class="_table mx-auto">
 
-                    @if ($attendanceDates->isEmpty())
-                        <th colspan="1"></th>
-                    @endif
-                    <th colspan="1">
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                            {{ date('M/d') }}
-                        @endif
-                    </th>
-                </tr>
-                @foreach (auth()->user()->students as $student)
-                    <tr>
-                        <td class="border-end roll_no">{{ $student->roll_no }}</td>
-                        <td class="border-end">{{ $student->name }}</td>
-                        @forelse ($student->getAttendances($minDate, $maxDate) as $dateOfAttendance)
-                            <td class="border-end">
-                                @if ($dateOfAttendance['present'] > 0)
-                                    <span class="attendanceSymbol presentSymbol">P</span>
-                                @endif
-                                @if ($dateOfAttendance['absent'] > 0)
-                                    <span class="attendanceSymbol absentSymbol" data-toogle="tooltip" title="{{$dateOfAttendance['comment']}}" date-placement="top">A</span>
-                                @endif
+            <tr class="table_title">
+                <th class="border-end">Roll</th>
+                <th class="border-end">Name</th>
 
-                            </td>
-                        @empty
-                            <td class="text-center border-end"> Attendance has not been taken. </td>
-                        @endforelse
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                            <td class="border-end student_attendance_status">
-                                <div onclick="toggleState(this)" class="attendance-state"
-                                    id="attendance_{{ $student->roll_no }}" data-attendance-state= "1">
-                                    <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}"
-                                        id="r_{{ $student->roll_no }}">
-                                </div>
-                            </td>
-                        @endif
-                        @if (!$attendanceDates->has(now()->format('M/d')))
-                        <td>
-                            <input type="text" name="comment" id="comment{{ $student->roll_no }}" placeholder="Reason:" required
-                                disabled>
-                        </td>
-                        @endif
-                    </tr>
+                <th colspan="{{ $attendanceDates->count() }}" class="text-center border-end">
+                    Status
+                </th>
+
+                @if (!$attendanceDates->has(now()->toDateString()))
+                <th class="border-end">Today</th>
+                <th class="border-end">Absent Comment</th>
+                @endif
+            </tr>
+
+            <tr class="table_date">
+                <th colspan="2" class="border-end"></th>
+
+                @foreach ($attendanceDates as $date => $items)
+                <th class="border-end text-center" title="{{ \Carbon\Carbon::parse($date)->format('Y') }}">
+                    {{ \Carbon\Carbon::parse($date)->format('M/d') }}
+                </th>
                 @endforeach
 
-            </table>
-            <div class="row justify-content-center">
-                @if (!$attendanceDates->has(now()->format('M/d')))
-                    <div class="justify-content-center text-end my-3 me-5">
-                        <button class="btn btn-success my-2 me-5" id="attendance_submit">Submit</button>
-                    </div>
+                @if (!$attendanceDates->has(now()->toDateString()))
+                <th class="border-end">{{ now()->format('M/d') }}</th>
+                <th class="border-end"></th>
                 @endif
-            </div>
-        </form>
+            </tr>
 
-        <!-- table end -->
-    </div>
-    <!--Container Main end-->
+            @foreach (auth()->user()->students as $student)
+            <tr>
+                <td class="border-end roll_no">{{ $student->roll_no }}</td>
+                <td class="border-end">{{ $student->name }}</td>
+
+                @foreach ($attendanceDates as $date => $items)
+                @php
+                $attendance = $student->attendanceByDate($date);
+                @endphp
+
+                <td class="border-end text-center">
+                    @if ($attendance)
+                    @if ($attendance->present)
+                    <span class="attendanceSymbol presentSymbol">P</span>
+                    @else
+                    <span class="attendanceSymbol absentSymbol" title="{{ $attendance->comment }}">A</span>
+                    @endif
+                    @else
+                    —
+                    @endif
+                </td>
+                @endforeach
+
+                @if (!$attendanceDates->has(now()->toDateString()))
+                <td class="border-end student_attendance_status">
+                    <div onclick="toggleState(this)" class="attendance-state" id="attendance_{{ $student->roll_no }}"
+                        data-attendance-state="1">
+                        <img class="attendance_img" src="{{ asset('assets/images/P.svg') }}">
+                    </div>
+                </td>
+
+                <td class="border-end">
+                    <input type="text" id="comment{{ $student->roll_no }}" placeholder="Reason" disabled>
+                </td>
+                @endif
+            </tr>
+            @endforeach
+
+        </table>
+
+
+        <div class="row justify-content-center">
+            @if (!$todayTaken)
+            <div class="justify-content-center text-end my-3 me-5">
+                <button class="btn btn-success my-2 me-5" id="attendance_submit">
+                    Submit
+                </button>
+            </div>
+            @else
+            <div class="text-end my-3 me-5">
+                <button class="btn btn-secondary my-2 me-5" disabled>
+                    Attendance Already Submitted
+                </button>
+            </div>
+            @endif
+
+        </div>
+    </form>
+
+    <!-- table end -->
+</div>
+<!--Container Main end-->
 
 @endsection
 @section('scripts')
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        const Toast = Swal.mixin({
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
@@ -235,5 +253,5 @@
 
             return student;
         }
-    </script>
+</script>
 @endsection
