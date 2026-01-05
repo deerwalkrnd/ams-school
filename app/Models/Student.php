@@ -81,4 +81,11 @@ class Student extends Model
 
         return $attendance;
     }
+
+    public function attendanceByDate($date)
+    {
+        return $this->attendances()
+            ->whereDate('created_at', $date)
+            ->first();
+    }
 }
