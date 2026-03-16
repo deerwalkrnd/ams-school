@@ -157,6 +157,8 @@
         let submit = document.getElementById("attendance_submit");
         submit.addEventListener("click", function(event) {
             event.preventDefault();
+            
+            submit.disabled = true;
 
             Swal.fire({
                 title: "Are you Sure?",

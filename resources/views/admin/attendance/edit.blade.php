@@ -73,6 +73,7 @@
 
         submit.addEventListener("click", function(event) {
             event.preventDefault();
+            submit.disabled = true;
             let student = prepareData();
             $.ajax({
                 type: "PUT",
