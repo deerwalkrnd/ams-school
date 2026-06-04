@@ -13,13 +13,20 @@
                     </h5>
                 </td>
             @endforelse
+            <th class="text-center border-end">Total Present</th>
+            <th class="text-center border-end">Total Absent</th>
         </tr>
     </thead>
     <tbody>
         @foreach ($students as $student)
+            @php
+                $attendances = $student->getAttendances($startDate, $endDate);
+                $totalPresent = $attendances->sum('present');
+                $totalAbsent = $attendances->sum('absent');
+            @endphp
             <tr>
                 <td class="border-end">{{ $student->name }}</td>
-                @forelse ($student->getAttendances($startDate??null, $endDate??null) as $dateOfAttendance)
+                @forelse ($attendances as $dateOfAttendance)
                     <td class="border-end">
                         @if ($dateOfAttendance['present'] > 0)
                             @for ($i = 1; $i <= $dateOfAttendance['present']; $i++)
@@ -36,13 +43,15 @@
                 @empty
                     <td class="text-center border-end"> Attendance has not been taken. </td>
                 @endforelse
+                <td class="text-center border-end">{{ $totalPresent }}</td>
+                <td class="text-center border-end">{{ $totalAbsent }}</td>
             </tr>
         @endforeach
     </tbody>
     <tfoot>
         <tr>
             <td class="border-end"> Total Classes</td>
-            <td colspan="{{ $attendanceDates->count() }}">
+            <td colspan="{{ $attendanceDates->count() + 2 }}">
                 {{ $teacher->getTotalClasses($startDate ?? null, $endDate ?? null) }}</td>
         </tr>
     </tfoot>
