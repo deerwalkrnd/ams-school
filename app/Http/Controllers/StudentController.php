@@ -93,10 +93,15 @@ class StudentController extends Controller
     public function delete($id)
     {
         try {
-            $students = Student::find($id);
-            $students->delete();
 
-            return redirect(route('student.index'))->with('success', 'Student Deleted Successfully');
+            $student = Student::findOrFail($id);
+
+            $student->attendances()->delete();
+
+            $student->delete();
+
+            return redirect(route('student.index'))
+                ->with('success', 'Student Deleted Successfully');
         } catch (Exception $e) {
             Log::error('Error occurred while deleting student: '.$e->getMessage());
 
