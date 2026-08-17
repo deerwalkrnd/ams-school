@@ -64,7 +64,9 @@ class UserController extends Controller
             $roles = $request->input('role');
             $user->roles()->sync($roles);
 
-            Mail::to($user->email)->send(new UserCredentialMail($user, [Role::select('role')->where('id', $request->role)->first()->role]));
+            if ($user->hasRole('admin')) {
+                Mail::to($user->email)->send(new UserCredentialMail($user, [Role::select('role')->where('id', $request->role)->first()->role]));
+            }
 
             DB::commit();
 

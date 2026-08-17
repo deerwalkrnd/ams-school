@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Mail\AttendanceReminderMail;
-use App\Mail\AdminAttendanceSummaryMail; // Import the new Mailable
+use App\Mail\AdminAttendanceSummaryMail;
 use App\Models\AttendanceStatus;
 use App\Models\User;
 use Carbon\Carbon;
@@ -41,8 +40,7 @@ class CheckAttendanceReminders extends Command
             $query->where('role', 'teacher');
         })->with('section.grade')->get();
 
-        $remindersSentToTeachers = 0;
-        $pendingTeachersForAdminSummary = collect(); // Use a collection to store teachers with pending attendance
+        $pendingTeachersForAdminSummary = collect();
 
         $admins = User::whereHas('roles', function ($query) {
             $query->where('role', 'admin');
@@ -64,24 +62,12 @@ class CheckAttendanceReminders extends Command
             }
 
             // If attendance not taken and reminder not sent (or force option is used)
-            if ($attendanceStatus->status == 0 && (!$attendanceStatus->reminderSent() || $force)) {
-                try {
-                    // Send individual reminder to teacher
-                    Mail::to($teacher->email)->send(new AttendanceReminderMail($teacher, $today, false));
+            if ($attendanceStatus->status == 0 && (! $attendanceStatus->reminderSent() || $force)) {
+                $pendingTeachersForAdminSummary->push($teacher);
 
-                    // Add teacher to the list for admin summary
-                    $pendingTeachersForAdminSummary->push($teacher);
-
-                    // Update reminder sent timestamp for the individual teacher's status
-                    $attendanceStatus->update([
-                        'reminder_sent_at' => now(),
-                    ]);
-                    $remindersSentToTeachers++;
-                    $this->info("Individual reminder sent to {$teacher->name} ({$teacher->email})");
-                } catch (\Exception $e) {
-                    Log::error("Failed to send attendance reminder to {$teacher->email}: " . $e->getMessage());
-                    $this->error("Failed to send individual reminder to {$teacher->name}");
-                }
+                $attendanceStatus->update([
+                    'reminder_sent_at' => now(),
+                ]);
             }
         }
 
@@ -100,8 +86,8 @@ class CheckAttendanceReminders extends Command
             $this->info("All teachers have taken attendance. No consolidated summary sent to admins.");
         }
 
-        $this->info("Total individual reminders sent to teachers: {$remindersSentToTeachers}");
-        Log::info("Attendance reminders check completed. Sent {$remindersSentToTeachers} individual reminders to teachers and consolidated summary to admins.");
+        $this->info("Teacher reminder emails skipped (teachers use ARMS 360). Pending teachers tracked: {$pendingTeachersForAdminSummary->count()}");
+        Log::info("Attendance reminders check completed. Teacher emails skipped. Admin summary sent for {$pendingTeachersForAdminSummary->count()} pending teachers.");
 
         return 0;
     }
