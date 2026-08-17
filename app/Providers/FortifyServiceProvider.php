@@ -62,19 +62,23 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::authenticateUsing(function (Request $request) {
             $user = User::where('email', $request->email)->first();
-            if (
-                $user &&
-                Hash::check($request->password, $user->password)
-            ) {
-                $user['last_login'] = date('Y-m-d H:i:s');
-                $user->update();
 
-                return $user;
-            } else {
+            if (! $user || ! Hash::check($request->password, $user->password)) {
                 throw ValidationException::withMessages([
-                    'role' => 'Incorrect Email or Password.',
+                    'role' => 'Login failed.',
                 ]);
             }
+
+            if ($user->hasRole('teacher')) {
+                throw ValidationException::withMessages([
+                    'role' => 'Login failed.',
+                ]);
+            }
+
+            $user['last_login'] = date('Y-m-d H:i:s');
+            $user->update();
+
+            return $user;
         });
 
         Fortify::requestPasswordResetLinkView(function () {
